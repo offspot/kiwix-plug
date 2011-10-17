@@ -1,0 +1,39 @@
+server {
+	listen   80;
+	server_name localhost kiwix;
+
+	location /wp {
+	  rewrite /wp/(.*) /$1 break;
+	  proxy_pass        http://localhost:4201;
+	  proxy_set_header  X-Real-IP  $remote_addr;
+	}
+
+	rewrite ^/(.)/(.*)$ /wp/$1/$2 last;
+
+	rewrite ^/search(.*)$ /wp/search$1 last;
+
+	location /download/ {
+		alias DATAPATH; // /media/usb2/;
+	}
+
+	error_page   404 = /;
+
+	access_log  /var/log/nginx/localhost.access.log;
+
+	location / {
+		root ROOTPATH; // /var/www/kiwix/;
+		index  index.html index.htm;
+	}
+
+	location /doc {
+		root   /usr/share;
+		autoindex on;
+		allow 127.0.0.1;
+		deny all;
+	}
+
+	location /images {
+		root   /usr/share;
+		autoindex on;
+	}
+}
