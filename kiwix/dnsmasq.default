@@ -1,0 +1,7 @@
+#DOMAIN_SUFFIX=`dnsdomainname`
+#DNSMASQ_OPTS="--conf-file=/etc/dnsmasq.alt"
+
+# Whether or not to run the dnsmasq daemon; set to 0 to disable.
+ENABLED=1
+DNSMASQ_OPTS="--address=/#/192.168.2.1 --address=/#/192.168.3.1"
+

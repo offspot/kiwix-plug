@@ -1,0 +1,1 @@
+KERNEL=="sd[c-z]1", SUBSYSTEM=="block", DRIVERS=="usb", SYMLINK+="kiwixusb", RUN+="/root/reload_usb.sh"

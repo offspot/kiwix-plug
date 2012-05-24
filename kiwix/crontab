@@ -1,0 +1,3 @@
+# m h  dom mon dow   command
+* * * * * /root/check_status.sh > /tmp/kiwix_status && /sbin/ifconfig >> /tmp/kiwix_status
+@reboot cd /root/awstats/ && ./awstats_buildstaticpages.pl -config=kiwix -update -lang-fr -awstatsprog=./awstats.pl -dir=/var/www/kiwix/stats/

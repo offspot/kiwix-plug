@@ -1,39 +1,54 @@
 server {
-	listen   80;
-	server_name localhost kiwix;
 
-	location /wp {
-	  rewrite /wp/(.*) /$1 break;
-	  proxy_pass        http://localhost:4201;
-	  proxy_set_header  X-Real-IP  $remote_addr;
-	}
+        listen   80;
+        listen   [::]:80 default ipv6only=on;
 
-	rewrite ^/(.)/(.*)$ /wp/$1/$2 last;
+        server_name localhost kiwix;
 
-	rewrite ^/search(.*)$ /wp/search$1 last;
+        location /download/ {
+                alias /media/usb2/;
+        }
 
-	location /download/ {
-		alias DATAPATH; // /media/usb2/;
-	}
+        location /downloads/ {
+                alias /media/usb2/data/;
+                autoindex on;
+        }
 
-	error_page   404 = /;
+        error_page   404 = /;
 
-	access_log  /var/log/nginx/localhost.access.log;
+        access_log  /var/log/nginx/kiwix.access.log;
+        error_log /dev/null crit;
 
-	location / {
-		root ROOTPATH; // /var/www/kiwix/;
-		index  index.html index.htm;
-	}
+        location /_ {
+                rewrite /_(.*)  /_$1 break;
+                proxy_pass        http://localhost:4201;
+                proxy_set_header  X-Real-IP  $remote_addr;
+        }
 
-	location /doc {
-		root   /usr/share;
-		autoindex on;
-		allow 127.0.0.1;
-		deny all;
-	}
+        location /search {
+                rewrite /search(.*)     /search$1 break;
+                proxy_pass        http://localhost:4201;
+                proxy_set_header  X-Real-IP  $remote_addr;
+        }
 
-	location /images {
-		root   /usr/share;
-		autoindex on;
-	}
+        location /skin {
+                rewrite /skin/(.*)      /skin/$1 break;
+                proxy_pass        http://localhost:4201;
+                proxy_set_header  X-Real-IP  $remote_addr;
+        }
+
+        location /@status {
+                alias /tmp/kiwix_status;
+        }
+
+        location /@stats/ {
+                alias /var/www/kiwix/stats/;
+                index awstats.kiwix.html;
+                autoindex on;
+        }
+
+        location /{
+                root /var/www/kiwix;
+                index  index.html index.htm;
+        }
 }
