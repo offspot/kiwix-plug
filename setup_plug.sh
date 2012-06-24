@@ -32,10 +32,41 @@ else
 fi
 
 # Write remote commands in a file
-echo "                                                   \
-echo ""                                                \n\
-echo 'Successfuly connected to the plug...'            \n\
+echo "                                                                                     \n\
+echo \"\"                                                                                  \n\
+echo \"Successfuly connected to the plug...\"                                              \n\
 " > $COMMANDS
+
+# For security reason run dpkg
+echo "                                                                                     \n\
+dpkg --configure -a                                                                        \n\
+" >> $COMMANDS
+
+# Check if dnsmasq is there and install it otherwise
+echo "                                                                                     \n\
+DNSMASQ=\`whereis dnsmasq | cut --delimiter=\":\" -f2 | cut --delimiter=\" \" -f2\`        \n\
+if [ \"\$DNSMASQ\" = \"\" ]                                                                \n\
+then                                                                                       \n\
+  echo \"Installing dnsmasq...\"                                                           \n\
+  apt-get update                                                                           \n\
+  apt-get --assume-yes install dnsmasq-base                                                \n\
+else                                                                                       \n\
+  echo \"dnsmasq is already installed.\"                                                   \n\
+fi                                                                                         \n\
+" >> $COMMANDS
+
+# Check if nginx is there and install it otherwise
+echo "                                                                                     \n\
+NGINX=\`whereis nginx | cut --delimiter=\":\" -f2 | cut --delimiter=\" \" -f2\`            \n\
+if [ \"\$NGINX\" = \"\" ]                                                                  \n\
+then                                                                                       \n\
+  echo \"Installing nginx...\"                                                             \n\
+  apt-get update                                                                           \n\
+  apt-get --assume-yes install nginx                                                       \n\
+else                                                                                       \n\
+  echo \"nginx is already installed.\"                                                     \n\
+fi                                                                                         \n\
+" >> $COMMANDS
 
 # Connect the plug per ssh and run a few commands
 "$PLINK" -ssh -pw "$SSH_PASS" "$SSH_LOGIN@$IP" -m $COMMANDS <<EOF
