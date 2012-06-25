@@ -1,0 +1,48 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides: kiwix-plug
+# Required-Start: $all
+# Required-Stop: $all
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Start kiwix-plug at the boot time
+# Description: Make everything necessary to have a kiwix-plug running
+### END INIT INFO
+
+# Some things that run always
+touch /var/lock/kiwix-plug
+
+# Carry out specific functions when asked to by the system
+case "$1" in
+  start)
+    echo "Starting script kiwix-plug"
+    for DEVICE in `df | sed "s/^ *//;s/ *$//;s/ \{1,\}/ /g" | cut --delimiter=" " -f6 | grep "/media/"`
+    do 
+      if [ -f $DEVICE/kiwix-plug ]
+      then
+        USB=$DEVICE
+      fi
+    done
+
+    if [ "$USB" = "" ]
+    then
+      echo "Unable to find a kiwix-plug USB key plugged :("
+    else
+      echo "Found kiwix-plug USB key at $USB"
+      cp "$USB/kiwix-plug" /tmp/
+      chmod +x /tmp/kiwix-plug
+    fi
+
+    /tmp/kiwix-plug > /tmp/kiwix-plug.log
+    ;;
+  stop)
+    echo "Stopping script kiwix-plug"
+    rm /var/lock/kiwix-plug
+    ;;
+  *)
+    echo "Usage: /etc/init.d/kiwix-plug {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0
