@@ -18,7 +18,7 @@ case "$1" in
     echo "Starting script kiwix-plug"
     for DEVICE in `df | sed "s/^ *//;s/ *$//;s/ \{1,\}/ /g" | cut --delimiter=" " -f6 | grep "/media/"`
     do 
-      if [ -f $DEVICE/kiwix-plug ]
+      if [ -f $DEVICE/system/kiwix-plug ]
       then
         USB=$DEVICE
       fi
@@ -29,11 +29,11 @@ case "$1" in
       echo "Unable to find a kiwix-plug USB key plugged :("
     else
       echo "Found kiwix-plug USB key at $USB"
-      cp "$USB/kiwix-plug" /tmp/
+      cp "$USB/system/kiwix-plug" /tmp/
       chmod +x /tmp/kiwix-plug
     fi
 
-    /tmp/kiwix-plug > /tmp/kiwix-plug.log
+    /tmp/kiwix-plug $USB > /tmp/kiwix-plug.log
     ;;
   stop)
     echo "Stopping script kiwix-plug"

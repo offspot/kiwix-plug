@@ -21,6 +21,14 @@ then
     exit 1
 fi
 
+# Check if "pscp" is installed
+PSCP=`whereis pscp | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
+if [ "$PSCP" = "" ]
+then
+    echo "You need to install pscp (apt-get install putty-tools)."
+    exit 1
+fi
+
 # Find the IP of the plug
 IP=`sudo arp-scan --localnet | grep "f0:ad:4e" | cut -s -f1 | tail -n1`
 if [ "$IP" = "" ]
@@ -30,6 +38,11 @@ then
 else
     echo "The IP of the plug is $IP"
 fi
+
+# Copy init.d script
+"$PSCP" -pw "$SSH_PASS" kiwix-plug.host "$SSH_LOGIN@$IP:/etc/init.d/kiwix-plug" <<EOF
+n
+EOF
 
 # Write remote commands in a file
 echo "                                                                                     \n\
@@ -66,6 +79,34 @@ then                                                                            
 else                                                                                       \n\
   echo \"nginx is already installed.\"                                                     \n\
 fi                                                                                         \n\
+" >> $COMMANDS
+
+# Check if wireless-tools is installed
+echo "                                                                                     \n\
+WTOOLS=\`dpkg -l | grep wireless-tools\`                                                   \n\
+if [ \"\$WTOOLS\" = \"\" ]                                                                 \n\
+then                                                                                       \n\
+  echo \"Installing wireless-tools...\"                                                    \n\
+  apt-get update                                                                           \n\
+  apt-get --assume-yes install wireless-tools                                              \n\
+else                                                                                       \n\
+  echo \"wireless-tools are already installed.\"                                           \n\
+fi                                                                                         \n\
+" >> $COMMANDS
+
+# Setup the init.d script
+echo "                                                                                     \n\
+IN_RC_LOCAL=\`grep \"/etc/init.d/kiwix-plug\" /etc/rc.local\`                              \n\
+if [ \"\$IN_RC_LOCAL\" = \"\" ]                                                            \n\
+then                                                                                       \n\
+  echo \"Updating /etc/rc.local...\"                                                       \n\
+  echo \"\" >> /etc/rc.local                                                               \n\
+  echo \"/etc/init.d/kiwix-plug start\" >> /etc/rc.local                                   \n\
+  echo \"\" >> /etc/rc.local                                                               \n\
+else                                                                                       \n\
+  echo \"rc.local already updated\"                                                        \n\
+fi                                                                                         \n\
+chmod +x /etc/init.d/kiwix-plug                                                            \n\
 " >> $COMMANDS
 
 # Connect the plug per ssh and run a few commands
