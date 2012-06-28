@@ -94,6 +94,20 @@ else                                                                            
 fi                                                                                         \n\
 " >> $COMMANDS
 
+# Check if ntpdate is installed and update the clock (ntpdate-debian)
+echo "                                                                                     \n\
+NTPDATE=\`dpkg -l | grep ntpdate\`                                                         \n\
+if [ \"\$NTPDATE\" = \"\" ]                                                                \n\
+then                                                                                       \n\
+  echo \"Installing ntpdate...\"                                                           \n\
+  apt-get update                                                                           \n\
+  apt-get --assume-yes install ntpdate                                                     \n\
+else                                                                                       \n\
+  echo \"ntpdate is already installed.\"                                                   \n\
+fi                                                                                         \n\
+ntpdate-debian                                                                             \n\
+" >> $COMMANDS
+
 # Setup the init.d script
 echo "                                                                                     \n\
 IN_RC_LOCAL=\`grep \"/etc/init.d/kiwix-plug\" /etc/rc.local\`                              \n\
