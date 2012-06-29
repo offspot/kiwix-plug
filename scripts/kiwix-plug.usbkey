@@ -1,0 +1,30 @@
+#!/bin/bash
+ROOT=$1
+ROOT_ESCAPED="${ROOT//\//\/}" 
+
+# Stop the WIFI hotspot
+uaputl bss_stop
+ifconfig uap0 down
+
+# Start the WIFI hotspot
+uaputl sys_cfg_ssid KIWIX
+ifconfig uap0 192.168.1.1 up
+uaputl bss_start
+
+# Setup DNS & DHCP (dnsmasq)
+/etc/init.d/dnsmasq stop
+/etc/init.d/udhcpd stop
+dnsmasq --conf-file=$ROOT/system/conf/dnsmasq.conf
+
+# Launch kiwix-serve
+kill -9 `pidof kiwix-serve`
+cp $ROOT/system/bin/kiwix-serve /tmp/kiwix-serve
+chmod +x /tmp/kiwix-serve
+/tmp/kiwix-serve --library --port=4201 --daemon $ROOT/data/library/library.xml 
+
+# Setup Web server (nginx)
+/etc/init.d/nginx stop
+sed -e "s/ROOT/$ROOT_ESCAPED/" $ROOT/system/conf/kiwix.nginx > /tmp/kiwix.nginx
+unlink /etc/nginx/sites-enabled/default
+ln -s /tmp/kiwix.nginx /etc/nginx/sites-enabled/default
+/etc/init.d/nginx start
