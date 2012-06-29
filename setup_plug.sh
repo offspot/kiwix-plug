@@ -40,7 +40,7 @@ else
 fi
 
 # Copy init.d script
-"$PSCP" -pw "$SSH_PASS" kiwix-plug.host "$SSH_LOGIN@$IP:/etc/init.d/kiwix-plug" <<EOF
+"$PSCP" -pw "$SSH_PASS" kiwix-plug.plug "$SSH_LOGIN@$IP:/etc/init.d/kiwix-plug" <<EOF
 n
 EOF
 
