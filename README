@@ -1,0 +1,100 @@
+*********************************************************************
+*                                                                   *
+*                      KIWIX-PLUG                                   *
+*                                                                   *
+*********************************************************************
+
+This is the documentation about Kiwix-plug. Kiwix-plug is a solution
+allowing everyone to set up an open Wifi kiosk to deliver contents
+available in the ZIM format. The solution is adapated for the
+Globalscape Dreamplug, use the Kiwix-serve technology and many open
+source technologies. This documentation explains how to setup
+Kiwix-plug.
+
+== Requirements ==
+* A Dreamplug
+  (http://www.globalscaletechnologies.com/p-54-dreamplug-devkit.aspx)
+* An empty USB key or SDcard (with enough place, be careful) to store
+  the ZIM files an a few other things
+* A few ZIM files you want to spread
+  (http://openzim.org/ZIM_File_Archive)
+* A wireline LAN allowing access to Internet with a free RJ45 port
+* A DHCP on the LAN able to automaticaly deliver IPs to new devices
+* A computer with a UNIX and a root access, GNU/Linux is perfect. This
+  computer needs a free USB/SDcard port to put the flash drive to
+  setup.
+
+The setup process has 3 steps, based on 3 scripts:
+
+0 Get the code to do all the stuff
+
+1 Run "setup_master.sh" to prepare everything on your computer. It
+  especialy download the binaries to install on the plug, compute
+  indexes, etc.
+
+2 Run "setup_plug.sh" to configure your plug.
+
+3 Run "setup_usbkey.sh" to copy everything necessary on your usb key
+
+== Retrieving the code ==
+
+The code to setup the Dreamplug and the flash drive is available on
+Internet here: http://kiwix.svn.sourceforge.net/viewvc/kiwix/plug/
+
+To retrieve it you need to have subversion (code version control
+system) client installed on your computer. If you use a Debian base
+GNU/Linux distribution you can type: apt-get install subversion in the
+console.
+
+To download the code type: 
+svn co https://kiwix.svn.sourceforge.net/svnroot/kiwix/plug
+
+You will get a plug "directory". Go inside.
+
+== Setup the master ==
+
+This will do all preparatory work before setting up the Dreamplug and
+the flash drive.
+
+You need to know at this moment what for contents (ZIM files) you want
+to install on the plug computer. Copy thus file in "./data/content/"
+
+Run "./setup_master.sh" this will take many minutes to downloads
+binaries for the plug and also compute fulltext indexes for each ZIM
+files. Be patient.
+
+== Setup the plug ==
+
+We will now do a minimal configuration of the plug computer. You need
+to plug it to the power and link it (using the "external RJ45 port on
+the side) with a RJ45 on the same LAN switch as your master computer.
+
+The plug should be automaticaly detected, but to avoid any conflicts
+and problem put always only one plug at the same time to the LAN. If
+everything goes right the plug should get an IP and the blue LED
+should blink.
+
+Run "./setup_plug.sh", this should find the plug, connect per ssh to it
+and do a few things. This will be fast, because this only install if
+necessary a few packages, add an init.d script and initiate the clock.
+
+== Setup the flash storage ==
+
+You need to put a free USB key to your computer and run the script
+"./setup_usbkey.sh". This will copy many things to the USB key, so
+this can take many minutes, be patient.
+
+== Conclusion ==
+
+You should have now a perfectly working kiwix-plug. Remove the RJ45
+cable from the plug computer, put the flash drive to the plug computer
+and restart it. You should see now a new Wifi network called "KIWIX"
+appearing. Connect to it using your laptop/smartophone/tablet and open
+a new Web browser windows. You should land to the Kiwix-plug Welcome
+page.
+
+Enjoy! To any problem: http://reportabug.kiwix.org
+
+
+
+
