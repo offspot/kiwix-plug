@@ -36,6 +36,8 @@ The setup process has 3 steps, based on 3 scripts:
 
 3 Run "setup_usbkey.sh" to copy everything necessary on your usb key
 
+4 OPTIONAL: Add a router to the plug to increase the wireless coverage
+
 == Retrieving the code ==
 
 The code to setup the Dreamplug and the flash drive is available on
@@ -83,6 +85,10 @@ necessary a few packages, add an init.d script and initiate the clock.
 You need to put a free USB key to your computer and run the script
 "./setup_usbkey.sh". This will copy many things to the USB key, so
 this can take many minutes, be patient.
+
+== Optional: Add a router ==
+
+This could be useful to increase the wifi coverage of the whole setup.
 
 == Conclusion ==
 
