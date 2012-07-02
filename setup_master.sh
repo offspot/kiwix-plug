@@ -46,23 +46,31 @@ fi
 if [ "$1" == "clean" ]
 then
     echo "Remove file before a new downoad"
-    DO_CLEAN=1
+    `rm -rf $ROOT/bin/kiwix* $ROOT/bin/.kiwix-*`
 else
     echo "Do not re-download already present files"
 fi
 
 # Download GNU/Linux static (for kiwix-index)
-wget -c $KIWIX_X86_STATIC_URL -O $ROOT/bin/kiwix-x86.tar.bz2
-if [ ! -f $ROOT/bin/.kiwix-x86.tar.bz2.finished ]
+if [ ! -f "$ROOT/bin/.kiwix-x86.tar.bz2.finished" ]
 then
-    cd $ROOT/bin/ ; tar -xvjf $ROOT/bin/kiwix-x86.tar.bz2 ; cd ../
-    touch $ROOT/bin/.kiwix-x86.tar.bz2.finished
+    wget -c $KIWIX_X86_STATIC_URL -O "$ROOT/bin/kiwix-x86.tar.bz2"
+    cd "$ROOT/bin/" ; tar -xvjf "$ROOT/bin/kiwix-x86.tar.bz2" ; cd ../
+    touch "$ROOT/bin/.kiwix-x86.tar.bz2.finished"
 fi
 
 # Download ARM static (for the kiwix-serve to install)
-wget -c $KIWIX_ARM_STATIC_URL -O $ROOT/bin/kiwix-arm.tar.bz2
-if [ ! -f $ROOT/bin/.kiwix-arm.tar.bz2.finished ]
+if [ ! -f "$ROOT/bin/.kiwix-arm.tar.bz2.finished" ]
 then
-    cd $ROOT/bin/ ; tar -xvjf $ROOT/bin/kiwix-arm.tar.bz2 ; cd ../
-    touch $ROOT/bin/.kiwix-arm.tar.bz2.finished
+    wget -c $KIWIX_ARM_STATIC_URL -O "$ROOT/bin/kiwix-arm.tar.bz2"
+    cd $ROOT/bin/ ; tar -xvjf "$ROOT/bin/kiwix-arm.tar.bz2" ; cd ../
+    touch "$ROOT/bin/.kiwix-arm.tar.bz2.finished"
 fi
+
+# Check if there is ZIM files in the /data/content
+ZIMS=`find data/content/ -name ".zim"`
+if [ "$ZIMS" = "" ]
+then
+    echo "Please put ZIM files in /data/content"
+    exit 1
+fi 
