@@ -1,6 +1,7 @@
 #!/bin/bash
 
-KIWIX_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-07-01/kiwix-20120701_r3740-static-i686.tar.bz2
+KIWIX_X86_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-07-01/kiwix-20120701_r3740-static-i686.tar.bz2
+KIWIX_ARM_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-07-01/kiwix-20120701_r3740-server_armv5tejl.tar.bz2
 
 # Compute script path
 BINARY_ORG="$0"
@@ -51,5 +52,17 @@ else
 fi
 
 # Download GNU/Linux static (for kiwix-index)
-wget -c $KIWIX_STATIC_URL -O $ROOT/bin/kiwix-x86.tar.bz2
-cd $ROOT/bin/ ; tar -xvjf $ROOT/bin/kiwix-x86.tar.bz2 ; cd ../
+wget -c $KIWIX_X86_STATIC_URL -O $ROOT/bin/kiwix-x86.tar.bz2
+if [ ! -f $ROOT/bin/.kiwix-x86.tar.bz2.finished ]
+then
+    cd $ROOT/bin/ ; tar -xvjf $ROOT/bin/kiwix-x86.tar.bz2 ; cd ../
+    touch $ROOT/bin/.kiwix-x86.tar.bz2.finished
+fi
+
+# Download ARM static (for the kiwix-serve to install)
+wget -c $KIWIX_ARM_STATIC_URL -O $ROOT/bin/kiwix-arm.tar.bz2
+if [ ! -f $ROOT/bin/.kiwix-arm.tar.bz2.finished ]
+then
+    cd $ROOT/bin/ ; tar -xvjf $ROOT/bin/kiwix-arm.tar.bz2 ; cd ../
+    touch $ROOT/bin/.kiwix-arm.tar.bz2.finished
+fi
