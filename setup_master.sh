@@ -68,9 +68,17 @@ then
 fi
 
 # Check if there is ZIM files in the /data/content
-ZIMS=`find data/content/ -name ".zim"`
+ZIMS=`find "$ROOT/data/content/" -name "*.zim" ; find "$ROOT/data/content/" -name "*.zimaa"`
 if [ "$ZIMS" = "" ]
 then
     echo "Please put ZIM files in /data/content"
     exit 1
-fi 
+else
+    for ZIM in `find "$ROOT/data/content/" -name "*.zim" -size +2G`
+    do
+	echo "Splitting $ZIM in parts of 2GB..."
+	split --bytes=2000M "$ZIM" "$ZIM"
+	rm "$ZIM"
+    done
+fi
+
