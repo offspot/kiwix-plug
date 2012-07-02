@@ -31,9 +31,8 @@ case "$1" in
       echo "Found kiwix-plug USB key at $USB"
       cp "$USB/system/kiwix-plug" /tmp/
       chmod +x /tmp/kiwix-plug
+      /tmp/kiwix-plug $USB > /tmp/kiwix-plug.log
     fi
-
-    /tmp/kiwix-plug $USB > /tmp/kiwix-plug.log
     ;;
   stop)
     echo "Stopping script kiwix-plug"
