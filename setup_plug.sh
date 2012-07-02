@@ -68,6 +68,19 @@ else                                                                            
 fi                                                                                         \n\
 " >> $COMMANDS
 
+# Check if awstats is installed
+echo "                                                                                     \n\
+AWSTATS=\`dpkg -l | grep awstats\`                                                         \n\
+if [ \"\$AWSTATS\" = \"\" ]                                                                \n\
+then                                                                                       \n\
+  echo \"Installing awstats...\"                                                           \n\
+  apt-get update                                                                           \n\
+  apt-get --assume-yes install awstats                                                     \n\
+else                                                                                       \n\
+  echo \"awstats is already installed.\"                                                   \n\
+fi                                                                                         \n\
+" >> $COMMANDS
+
 # Check if nginx is there and install it otherwise
 echo "                                                                                     \n\
 NGINX=\`whereis nginx | cut --delimiter=\":\" -f2 | cut --delimiter=\" \" -f2\`            \n\
