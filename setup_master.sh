@@ -46,7 +46,9 @@ fi
 if [ "$1" == "clean" ]
 then
     echo "Remove file before a new downoad"
-    `rm -rf $ROOT/bin/kiwix* $ROOT/bin/.kiwix-*`
+    rm -rf $ROOT/bin/kiwix* $ROOT/bin/.kiwix-*
+    rm -rf $ROOT/data/library/library.xml
+    rm -rf $ROOT/data/index/*.idx
 else
     echo "Do not re-download already present files"
 fi
@@ -81,4 +83,31 @@ else
 	rm "$ZIM"
     done
 fi
+
+# Index all ZIM files
+for ZIM in `find "$ROOT/data/content/" -name "*.zim" ; find "$ROOT/data/content/" -name "*.zimaa"`
+do
+    ZIM=`echo "$ZIM" | sed -e s/\.zimaa/.zim/`
+    BASENAME=`echo "$ZIM" | sed -e "s/.*\///"`
+    IDX="$ROOT/data/index/$BASENAME.idx"
+    if [ -f "$IDX/.finished" ]
+    then
+	echo "Index of $ZIM already created"
+    else
+	echo "Indexing $ZIM at $IDX ..."
+	`kiwix-index --verbose --backend=xapian "$ZIM" "$IDX"`
+	touch "$IDX/.finished"
+    fi
+done
+
+# Create the library file "library.xml"
+LIBRARY="$ROOT/data/library/library.xml"
+rm -f "$LIBRARY"
+echo "Recreating library at '$LIBRARY'"
+for ZIM in `find "$ROOT/data/content/" -name "*.zim" ; find "$ROOT/data/content/" -name "*.zimaa"`
+do
+    ZIM=`echo "$ZIM" | sed -e s/\.zimaa/.zim/`
+    echo "Adding $ZIM to library.xml"
+    
+done
 
