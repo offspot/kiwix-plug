@@ -1,13 +1,14 @@
 #!/bin/bash
 ROOT=$1
 ROOT_ESCAPED="${ROOT//\//\/}" 
+SSID=KIWIX_PLUG
 
 # Stop the WIFI hotspot
 uaputl bss_stop
 ifconfig uap0 down
 
 # Start the WIFI hotspot
-uaputl sys_cfg_ssid KIWIX
+uaputl sys_cfg_ssid $SSID
 ifconfig uap0 192.168.1.1 up
 uaputl bss_start
 
