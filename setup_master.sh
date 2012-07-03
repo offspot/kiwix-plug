@@ -95,7 +95,8 @@ do
 	echo "Index of $ZIM already created"
     else
 	echo "Indexing $ZIM at $IDX ..."
-	`kiwix-index --verbose --backend=xapian "$ZIM" "$IDX"`
+	rm -rf "$IDX"
+	kiwix-index --verbose --backend=xapian "$ZIM" "$IDX"
 	touch "$IDX/.finished"
     fi
 done
@@ -107,7 +108,9 @@ echo "Recreating library at '$LIBRARY'"
 for ZIM in `find "$ROOT/data/content/" -name "*.zim" ; find "$ROOT/data/content/" -name "*.zimaa"`
 do
     ZIM=`echo "$ZIM" | sed -e s/\.zimaa/.zim/`
+    BASENAME=`echo "$ZIM" | sed -e "s/.*\///"`
+    IDX="$BASENAME.idx"
     echo "Adding $ZIM to library.xml"
-    
+    kiwix-manage "$LIBRARY" add "$ZIM" --zimPathToSave="../content/$BASENAME" --indexBackend=xapian --indexPath="../index/$IDX"
 done
 
