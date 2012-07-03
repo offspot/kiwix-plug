@@ -40,12 +40,14 @@ do
 	DEVICE=`df | sed "s/^ *//;s/ *$//;s/ \{1,\}/ /g" | grep "$MOUNT" | cut --delimiter=" " -f1`
 	break
     fi
+    MOUNT=
 done
 
 # Check if an empty removable device was found
 if [ "$MOUNT" = "" ]
 then
     echo "Unable to find an empty removable device. Are you sure you have put a USB key to your computer?"
+    exit 1
 fi
 
 # Set USB label
@@ -54,3 +56,31 @@ echo "drive a: file=\"$DEVICE\"" > ~/.mtoolsrc
 sudo mlabel a:42
 sudo mlabel a:KIWIX
 sudo mlabel -s a:
+
+# Copy the data files
+cp --verbose -r "$ROOT/data/" "$MOUNT"
+
+# Create system directory
+mkdir "$MOUNT/system/"
+
+# Copy system kiwix-plug script
+cp --verbose "$ROOT/scripts/kiwix-plug.usbkey" "$MOUNT/system/kiwix-plug"
+chmod +x "$MOUNT/system/kiwix-plug"
+
+# Copy the binaries
+mkdir "$MOUNT/system/bin/"
+cp --verbose "$ROOT/bin/kiwix-serve" "$MOUNT/system/bin/"
+
+# Copy the landing HTML pages
+mkdir "$MOUNT/system/landing/"
+cp -r --verbose "$ROOT/landing" "$MOUNT/system/"
+
+# Copy the configuration scripts
+mkdir "$MOUNT/system/conf/"
+cp -r --verbose "$ROOT/conf/" "$MOUNT/system/"
+
+# Remove potential ".svn" directories
+for DIR in `find "$MOUNT"  -name ".svn"`
+do
+    rm -rf $DIR
+done
