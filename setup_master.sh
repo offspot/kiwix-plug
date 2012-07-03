@@ -1,6 +1,6 @@
 #!/bin/bash
 
-KIWIX_X86_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-07-01/kiwix-20120701_r3740-static-i686.tar.bz2
+KIWIX_X86_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-07-03/kiwix-20120703_r3762-static-i686.tar.bz2
 KIWIX_ARM_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-07-01/kiwix-20120701_r3740-server_armv5tejl.tar.bz2
 
 # Compute script path
@@ -96,7 +96,7 @@ do
     else
 	echo "Indexing $ZIM at $IDX ..."
 	rm -rf "$IDX"
-	kiwix-index --verbose --backend=xapian "$ZIM" "$IDX"
+	"$ROOT/bin/kiwix/bin/kiwix-index" --verbose --backend=xapian "$ZIM" "$IDX"
 	touch "$IDX/.finished"
     fi
 done
@@ -111,6 +111,6 @@ do
     BASENAME=`echo "$ZIM" | sed -e "s/.*\///"`
     IDX="$BASENAME.idx"
     echo "Adding $ZIM to library.xml"
-    kiwix-manage "$LIBRARY" add "$ZIM" --zimPathToSave="../content/$BASENAME" --indexBackend=xapian --indexPath="../index/$IDX"
+    "$ROOT/bin/kiwix/bin/kiwix-manage" "$LIBRARY" add "$ZIM" --zimPathToSave="../content/$BASENAME" --indexBackend=xapian --indexPath="../index/$IDX"
 done
 
