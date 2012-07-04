@@ -65,6 +65,9 @@ Run "./setup_master.sh" this will take many minutes to downloads
 binaries for the plug and also compute fulltext indexes for each ZIM
 files. Be patient.
 
+Run "./setup_master.sh clean" to clean everything was downloaded
+before re-preparing the master.
+
 == Setup the plug ==
 
 We will now do a minimal configuration of the plug computer. You need
