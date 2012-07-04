@@ -71,6 +71,12 @@ chmod +x "$MOUNT/system/kiwix-plug"
 mkdir "$MOUNT/system/bin/"
 cp --verbose "$ROOT/bin/kiwix-serve" "$MOUNT/system/bin/"
 
+# Copy the binaries packages
+mkdir "$MOUNT/packages/"
+cp --verbose "$ROOT/bin/kiwix.tar.bz2" "$MOUNT/packages/"
+cp --verbose "$ROOT/bin/kiwix.dmg" "$MOUNT/packages/"
+cp --verbose "$ROOT/bin/kiwix.zip" "$MOUNT/packages/"
+
 # Copy the landing HTML pages
 mkdir "$MOUNT/system/landing/"
 cp -r --verbose "$ROOT/landing" "$MOUNT/system/"
@@ -84,3 +90,6 @@ for DIR in `find "$MOUNT"  -name ".svn"`
 do
     rm -rf $DIR
 done
+
+# Create log directory
+mkdir "$MOUNT/log/"
