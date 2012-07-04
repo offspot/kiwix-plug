@@ -1,6 +1,8 @@
 #!/bin/bash
 
 KIWIX_X86_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-07-03/kiwix-20120703_r3762-static-i686.tar.bz2
+KIWIX_WINDOWS_URL=http://download.kiwix.org/bin/nightly/2012-07-04/kiwix-20120704_r3768-win.zip
+KIWIX_OSX_URL=http://download.kiwix.org/bin/nightly/2012-07-04/kiwix-20120704_r3768-x86_64.dmg
 KIWIX_ARM_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-07-01/kiwix-20120701_r3740-server_armv5tejl.tar.bz2
 
 # Compute script path
@@ -67,6 +69,20 @@ then
     wget -c $KIWIX_ARM_STATIC_URL -O "$ROOT/bin/kiwix-arm.tar.bz2"
     cd $ROOT/bin/ ; tar -xvjf "$ROOT/bin/kiwix-arm.tar.bz2" ; cd ../
     touch "$ROOT/bin/.kiwix-arm.tar.bz2.finished"
+fi
+
+# Download Kiwix for Windows
+if [ ! -f "$ROOT/bin/.kiwix.zip.finished" ]
+then
+    wget -c $KIWIX_WINDOWS_URL -O "$ROOT/bin/kiwix.zip"
+    touch "$ROOT/bin/.kiwix.zip.finished"
+fi
+
+# Download Kiwix for OSX
+if [ ! -f "$ROOT/bin/.kiwix.dmg.finished" ]
+then
+    wget -c $KIWIX_OSX_URL -O "$ROOT/bin/kiwix.dmg"
+    touch "$ROOT/bin/.kiwix.dmg.finished"
 fi
 
 # Check if there is ZIM files in the /data/content
