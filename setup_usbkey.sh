@@ -93,3 +93,6 @@ done
 
 # Create log directory
 mkdir "$MOUNT/log/"
+
+# Flush everythin on the USB drive
+sync
