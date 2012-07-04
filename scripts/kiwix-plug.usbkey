@@ -29,3 +29,11 @@ sed -e "s/ROOT/$ROOT_ESCAPED/" $ROOT/system/conf/nginx.conf > /tmp/kiwix.nginx.c
 unlink /etc/nginx/sites-enabled/default
 ln -s /tmp/kiwix.nginx.conf /etc/nginx/sites-enabled/default
 /etc/init.d/nginx start
+
+# Run awstats in loop
+sed -e "s/ROOT/$ROOT_ESCAPED/" $ROOT/system/conf/awstats.conf > /tmp/awstats.kiwix.conf
+while [ 42 ]
+do
+    sleep 3600
+    /usr/share/awstats/tools/awstats_buildstaticpages.pl -config=kiwix -update -lang-fr -dir=$ROOT/stats/ -configdir=/tmp/
+done
