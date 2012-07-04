@@ -56,11 +56,11 @@ else
 fi
 
 # Download GNU/Linux static (for kiwix-index)
-if [ ! -f "$ROOT/bin/.kiwix-x86.tar.bz2.finished" ]
+if [ ! -f "$ROOT/bin/.kiwix.tar.bz2.finished" ]
 then
-    wget -c $KIWIX_X86_STATIC_URL -O "$ROOT/bin/kiwix-x86.tar.bz2"
-    cd "$ROOT/bin/" ; tar -xvjf "$ROOT/bin/kiwix-x86.tar.bz2" ; cd ../
-    touch "$ROOT/bin/.kiwix-x86.tar.bz2.finished"
+    wget -c $KIWIX_X86_STATIC_URL -O "$ROOT/bin/kiwix.tar.bz2"
+    cd "$ROOT/bin/" ; tar -xvjf "$ROOT/bin/kiwix.tar.bz2" ; cd ../
+    touch "$ROOT/bin/.kiwix.tar.bz2.finished"
 fi
 
 # Download ARM static (for the kiwix-serve to install)
