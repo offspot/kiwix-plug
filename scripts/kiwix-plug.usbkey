@@ -9,8 +9,11 @@ ifconfig uap0 down
 
 # Start the WIFI hotspot
 uaputl sys_cfg_ssid $SSID
-ifconfig uap0 192.168.1.1 up
+ifconfig uap0 192.168.3.1 up
 uaputl bss_start
+
+# Configure the eth1 interface
+ifconfig eth1 192.168.2.1 netmask 255.255.255.0
 
 # Setup DNS & DHCP (dnsmasq)
 /etc/init.d/dnsmasq stop
