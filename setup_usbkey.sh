@@ -91,9 +91,10 @@ do
     rm -rf $DIR
 done
 
-# Create log & stats directories
+# Create log & stats & share directories
 mkdir "$MOUNT/log/"
 mkdir "$MOUNT/stats/"
+mkdir "$MOUNT/goinfre/"
 
 # Flush everythin on the USB drive
 sync
