@@ -101,7 +101,7 @@ else
 fi
 
 # Rename the ZIM files by adding a "_" at the beginning
-for FILE in `find "$ROOT/data/content/" -name "*.zim" ; find "$ROOT/data/content/" -name "*.zimaa"`
+for FILE in `find "$ROOT/data/content/" -name "*.zim*" ; find "$ROOT/data/content/" -name "*.zimaa"`
 do
     DIRNAME=`dirname "$FILE"`
     BASENAME=`basename "$FILE"`
