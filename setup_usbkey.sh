@@ -76,6 +76,7 @@ mkdir "$MOUNT/packages/"
 cp --verbose "$ROOT/bin/kiwix.tar.bz2" "$MOUNT/packages/"
 cp --verbose "$ROOT/bin/kiwix.dmg" "$MOUNT/packages/"
 cp --verbose "$ROOT/bin/kiwix.zip" "$MOUNT/packages/"
+cp --verbose "$ROOT/bin/kiwix-src.tar.gz" "$MOUNT/packages/"
 
 # Copy the landing HTML pages
 mkdir "$MOUNT/system/landing/"

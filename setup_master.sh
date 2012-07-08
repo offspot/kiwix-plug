@@ -4,6 +4,7 @@ KIWIX_X86_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-07-08/kiwix-2012
 KIWIX_WINDOWS_URL=http://download.kiwix.org/bin/nightly/2012-07-08/kiwix-20120708_r3827-win.zip
 KIWIX_OSX_URL=http://download.kiwix.org/bin/nightly/2012-07-04/kiwix-20120704_r3768-x86_64.dmg
 KIWIX_ARM_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-07-01/kiwix-20120701_r3740-server_armv5tejl.tar.bz2
+KIWIX_SRC_URL=http://download.kiwix.org/src/nightly/2012-07-08/kiwix-20120708_r3827.tar.gz
 
 # Compute script path
 BINARY_ORG="$0"
@@ -83,6 +84,13 @@ if [ ! -f "$ROOT/bin/.kiwix.dmg.finished" ]
 then
     wget -c $KIWIX_OSX_URL -O "$ROOT/bin/kiwix.dmg"
     touch "$ROOT/bin/.kiwix.dmg.finished"
+fi
+
+# Download the sources
+if [ ! -f "$ROOT/bin/.kiwix-src.tar.gz.finished" ]
+then
+    wget -c $KIWIX_SRC_URL -O "$ROOT/bin/kiwix-src.tar.gz"
+    touch "$ROOT/bin/.kiwix-src.tar.gz.finished"
 fi
 
 # Check if there is ZIM files in the /data/content
