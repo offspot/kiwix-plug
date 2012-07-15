@@ -1,10 +1,10 @@
 #!/bin/bash
 
-KIWIX_X86_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-07-08/kiwix-20120708_r3827-static-i686.tar.bz2
-KIWIX_WINDOWS_URL=http://download.kiwix.org/bin/nightly/2012-07-08/kiwix-20120708_r3827-win.zip
-KIWIX_OSX_URL=http://download.kiwix.org/bin/nightly/2012-07-04/kiwix-20120704_r3768-x86_64.dmg
-KIWIX_ARM_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-07-01/kiwix-20120701_r3740-server_armv5tejl.tar.bz2
-KIWIX_SRC_URL=http://download.kiwix.org/src/nightly/2012-07-08/kiwix-20120708_r3827.tar.gz
+KIWIX_X86_STATIC_URL=http://download.kiwix.org/bin/0.9_rc1/kiwix-0.9-rc1-linux-i686.tar.bz2
+KIWIX_WINDOWS_URL=http://download.kiwix.org/bin/0.9_rc1/kiwix-0.9-rc1-win.zip
+KIWIX_OSX_URL=http://download.kiwix.org/bin/0.9_rc1/kiwix-0.9-rc1.dmg
+KIWIX_ARM_STATIC_URL=http://download.kiwix.org/bin/0.9_rc1/kiwix-server-0.9-rc1-linux-armv5tejl.tar.bz2
+KIWIX_SRC_URL=http://download.kiwix.org/src/kiwix-0.9-rc1-src.tar.gz
 
 # Compute script path
 BINARY_ORG="$0"
