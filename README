@@ -8,15 +8,14 @@ This is the documentation about Kiwix-plug. Kiwix-plug is a solution
 allowing everyone to set up an open Wifi kiosk to deliver contents
 available in the ZIM format. The solution is adapated for the
 Globalscape Dreamplug, use the Kiwix-serve technology and many open
-source technologies. This documentation explains how to setup
-Kiwix-plug.
+source softwares. This documentation explains how to setup Kiwix-plug.
 
 == Requirements ==
 * A Dreamplug
   (http://www.globalscaletechnologies.com/p-54-dreamplug-devkit.aspx)
-* An empty USB key or SDcard (with enough place, be careful) to store
+* An empty USB key or SDcard (with enough space, be careful) to store
   the ZIM files an a few other things
-* A few ZIM files you want to spread
+* ZIM files you want to spread
   (http://openzim.org/ZIM_File_Archive)
 * A wireline LAN allowing access to Internet with a free RJ45 port
 * A DHCP on the LAN able to automaticaly deliver IPs to new devices
@@ -29,7 +28,7 @@ The setup process has 3 steps, based on 3 scripts:
 0 Get the code to do all the stuff
 
 1 Run "setup_master.sh" to prepare everything on your computer. It
-  especialy download the binaries to install on the plug, compute
+  especialy downloads the binaries to install on the plug, compute
   indexes, etc.
 
 2 Run "setup_plug.sh" to configure your plug.
@@ -44,11 +43,11 @@ The code to setup the Dreamplug and the flash drive is available on
 Internet here: http://kiwix.svn.sourceforge.net/viewvc/kiwix/plug/
 
 To retrieve it you need to have subversion (code version control
-system) client installed on your computer. If you use a Debian base
-GNU/Linux distribution you can type: apt-get install subversion in the
-console.
+system) client installed on your computer. If you use a Debian based
+GNU/Linux distribution you can type (like Ubuntu): "apt-get install
+subversion" in the console.
 
-To download the code type: 
+To download the code, type: 
 svn co https://kiwix.svn.sourceforge.net/svnroot/kiwix/plug
 
 You will get a plug "directory". Go inside.
@@ -61,18 +60,19 @@ the flash drive.
 You need to know at this moment what for contents (ZIM files) you want
 to install on the plug computer. Copy thus file in "./data/content/"
 
-Run "./setup_master.sh" this will take many minutes to downloads
+Run "./setup_master.sh", this will take many minutes to downloads
 binaries for the plug and also compute fulltext indexes for each ZIM
-files. Be patient.
+files. Be patient...
 
-Run "./setup_master.sh clean" to clean everything was downloaded
-before re-preparing the master.
+Run "./setup_master.sh clean" to clean everything (but not the ZIM
+files) was downloaded before re-preparing the master.
 
 == Setup the plug ==
 
 We will now do a minimal configuration of the plug computer. You need
-to plug it to the power and link it (using the "external RJ45 port on
-the side) with a RJ45 on the same LAN switch as your master computer.
+to plug it to the power and link it (using the "external" RJ45 LAN
+port on the side) with a RJ45 on the same LAN switch as your master
+computer.
 
 The plug should be automaticaly detected, but to avoid any conflicts
 and problem put always only one plug at the same time to the LAN. If
@@ -87,7 +87,7 @@ necessary a few packages, add an init.d script and initiate the clock.
 
 You need to put a free USB key to your computer and run the script
 "./setup_usbkey.sh". This will copy many things to the USB key, so
-this can take many minutes, be patient.
+this can take many minutes, be patient...
 
 == Optional: Add a router ==
 
@@ -97,10 +97,10 @@ This could be useful to increase the wifi coverage of the whole setup.
 
 You should have now a perfectly working kiwix-plug. Remove the RJ45
 cable from the plug computer, put the flash drive to the plug computer
-and restart it. You should see now a new Wifi network called "KIWIX"
-appearing. Connect to it using your laptop/smartophone/tablet and open
-a new Web browser windows. You should land to the Kiwix-plug Welcome
-page.
+and restart it. You should see now a new Wifi network called
+"KIWIX_PLUG" appearing. Connect to it using your
+laptop/smartophone/tablet and open a new Web browser windows. You
+should land to the Kiwix-plug Welcome page.
 
 Enjoy! To any problem: http://reportabug.kiwix.org
 
