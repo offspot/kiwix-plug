@@ -21,7 +21,8 @@ source softwares. This documentation explains how to setup Kiwix-plug.
 * A DHCP on the LAN able to automaticaly deliver IPs to new devices
 * A computer with a UNIX and a root access, GNU/Linux is perfect. This
   computer needs a free USB/SDcard port to put the flash drive to
-  setup.
+  setup. You need free space on your hard-disk: at least 3x the size
+  of the ZIM files you want to copy on the USB key.
 
 The setup process has 3 steps, based on 3 scripts:
 
