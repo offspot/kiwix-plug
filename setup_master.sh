@@ -29,6 +29,24 @@ else
     ROOT=`cd $ROOT ; pwd`
 fi
 
+# Check if the DNS works
+`host www.kiwix.org > /dev/null`
+EXIT_VALUE=$?
+if [ ! "$EXIT_VALUE" = "0" ]
+then
+    echo "Was not able to resolve www.kiwix.org. Are you access to Internet is OK?"
+    exit 1
+fi
+
+# Check if the access to Internet works
+`ping -c3 www.kiwix.org >& /dev/null`
+EXIT_VALUE=$?
+if [ ! "$EXIT_VALUE" = "0" ]
+then
+    echo "Was not able to ping www.kiwix.org. Are you access to Internet is OK?"
+    exit 1
+fi
+
 # Check if "wget" is installed
 WGET=`whereis wget | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
 if [ "$WGET" = "" ]
