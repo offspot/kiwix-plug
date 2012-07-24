@@ -68,6 +68,11 @@ echo \"\"                                                                       
 echo \"Successfuly connected to the plug...\"                                              \n\
 " > $COMMANDS
 
+# Setup the environement variable for non-interactive tty
+echo "                                                                                     \n\
+export DEBIAN_FRONTEND=noninteractive                                                      \n\
+" >> $COMMANDS
+
 # For security reason run dpkg
 echo "                                                                                     \n\
 dpkg --configure -a                                                                        \n\
@@ -75,7 +80,7 @@ dpkg --configure -a                                                             
 
 # Check if dialog is there and install it otherwise
 echo "                                                                                     \n\
-DIALOG=\`dpkg -l | grep dialog\`                                                           \n\
+DIALOG=\`dpkg -l dialog | grep ii\`                                                        \n\
 if [ \"\$DIALOG\" = \"\" ]                                                                 \n\
 then                                                                                       \n\
   echo \"Installing dialog...\"                                                            \n\
