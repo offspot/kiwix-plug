@@ -73,6 +73,19 @@ echo "                                                                          
 dpkg --configure -a                                                                        \n\
 " >> $COMMANDS
 
+# Check if dialog is there and install it otherwise
+echo "                                                                                     \n\
+DIALOG=\`dpkg -l | grep dialog\`                                                           \n\
+if [ \"\$DIALOG\" = \"\" ]                                                                 \n\
+then                                                                                       \n\
+  echo \"Installing dialog...\"                                                            \n\
+  apt-get update                                                                           \n\
+  apt-get --assume-yes install dialog                                                      \n\
+else                                                                                       \n\
+  echo \"dialog is already installed.\"                                                    \n\
+fi                                                                                         \n\
+" >> $COMMANDS
+
 # Check if dnsmasq is there and install it otherwise
 echo "                                                                                     \n\
 DNSMASQ=\`whereis dnsmasq | cut --delimiter=\":\" -f2 | cut --delimiter=\" \" -f2\`        \n\
