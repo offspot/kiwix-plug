@@ -97,5 +97,5 @@ mkdir "$MOUNT/log/"
 mkdir "$MOUNT/stats/"
 mkdir "$MOUNT/goinfre/"
 
-# Flush everythin on the USB drive
+# Flush everything on the USB drive
 sync
