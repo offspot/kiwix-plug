@@ -27,10 +27,8 @@ chmod +x /tmp/kiwix-serve
 /tmp/kiwix-serve --library --port=4201 --daemon $ROOT/data/library/library.xml 
 
 # Stop apache (if necessary)
-if [ -e /etc/init.d/apache ]
-then
-    /etc/init.d/apache stop
-fi
+if [ -e /etc/init.d/apache ] ; then /etc/init.d/apache stop ; fi
+if [ -e /etc/init.d/apache2 ] ; then /etc/init.d/apache2 stop ; fi
 
 # Setup Web server (nginx)
 /etc/init.d/nginx stop
