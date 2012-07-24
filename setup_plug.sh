@@ -15,7 +15,7 @@ then
 fi
 
 # Check if the access to Internet works
-`ping -c3 www.kiwix.org >& /dev/null`
+`ping -c3 www.kiwix.org > /dev/null`
 EXIT_VALUE=$?
 if [ ! "$EXIT_VALUE" = "0" ]
 then
