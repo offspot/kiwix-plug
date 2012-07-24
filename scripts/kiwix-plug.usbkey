@@ -26,6 +26,12 @@ cp $ROOT/system/bin/kiwix-serve /tmp/kiwix-serve
 chmod +x /tmp/kiwix-serve
 /tmp/kiwix-serve --library --port=4201 --daemon $ROOT/data/library/library.xml 
 
+# Stop apache (if necessary)
+if [ -e /etc/init.d/apache ]
+then
+    /etc/init.d/apache stop
+fi
+
 # Setup Web server (nginx)
 /etc/init.d/nginx stop
 sed -e "s/ROOT/$ROOT_ESCAPED/" $ROOT/system/conf/nginx.conf > /tmp/kiwix.nginx.conf
