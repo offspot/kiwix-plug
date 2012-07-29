@@ -86,11 +86,9 @@ cp -r --verbose "$ROOT/landing" "$MOUNT/system/"
 mkdir "$MOUNT/system/conf/"
 cp -r --verbose "$ROOT/conf/" "$MOUNT/system/"
 
-# Remove potential ".svn" directories
-for DIR in `find "$MOUNT"  -name ".svn"`
-do
-    rm -rf $DIR
-done
+# Remove useless files & directories
+find "$MOUNT" -name ".svn" -exec /bin/rm -rf '{}' \;
+find "$MOUNT" -name ".finished" -exec /bin/rm -rf '{}' \;
 
 # Create log & stats & share directories
 mkdir "$MOUNT/log/"
