@@ -23,14 +23,6 @@ else
     ROOT=`cd $ROOT ; pwd`
 fi
 
-# Check if the mtools are installed
-MLABEL=`whereis mlabel | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
-if [ "$MLABEL" = "" ]
-then
-    echo "You need to install the mtools (apt-get install mtools)."
-    exit 1
-fi
-
 # Detect USB storage
 for MOUNT in `df | sed "s/^ *//;s/ *$//;s/ \{1,\}/ /g" | cut --delimiter=" " -f6 | grep "/media/"`
 do

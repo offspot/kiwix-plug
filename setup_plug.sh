@@ -23,30 +23,6 @@ then
     exit 1
 fi
 
-# Check if "arp-scan" is installed
-ARP_SCAN=`whereis arp-scan | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
-if [ "$ARP_SCAN" = "" ]
-then
-    echo "You need to install arp-scan (apt-get install arp-scan)."
-    exit 1
-fi
-
-# Check if "plink" is installed
-PLINK=`whereis plink | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
-if [ "$PLINK" = "" ]
-then
-    echo "You need to install plink (apt-get install putty-tools)."
-    exit 1
-fi
-
-# Check if "pscp" is installed
-PSCP=`whereis pscp | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
-if [ "$PSCP" = "" ]
-then
-    echo "You need to install pscp (apt-get install putty-tools)."
-    exit 1
-fi
-
 # Find the IP of the plug
 IP=`sudo arp-scan --localnet | grep "f0:ad:4e" | cut -s -f1 | tail -n1`
 if [ "$IP" = "" ]

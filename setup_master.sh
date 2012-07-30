@@ -5,6 +5,7 @@ KIWIX_WINDOWS_URL=http://download.kiwix.org/bin/0.9_rc1/kiwix-0.9-rc1-win.zip
 KIWIX_OSX_URL=http://download.kiwix.org/bin/0.9_rc1/kiwix-0.9-rc1.dmg
 KIWIX_ARM_STATIC_URL=http://download.kiwix.org/bin/0.9_rc1/kiwix-server-0.9-rc1-linux-armv5tejl.tar.bz2
 KIWIX_SRC_URL=http://download.kiwix.org/src/kiwix-0.9-rc1-src.tar.gz
+BIN_TO_INSTALL="no"
 
 # Compute script path
 BINARY_ORG="$0"
@@ -44,7 +45,15 @@ EXIT_VALUE=$?
 if [ ! "$EXIT_VALUE" = "0" ]
 then
     echo "Was not able to ping www.kiwix.org. Are you access to Internet is OK?"
-    exit 1
+    BIN_TO_INSTALL="yes"
+fi
+
+# Check if the mtools are installed
+MLABEL=`whereis mlabel | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
+if [ "$MLABEL" = "" ]
+then
+    echo "You need to install the mtools (apt-get install mtools)."
+    BIN_TO_INSTALL="yes"
 fi
 
 # Check if "wget" is installed
@@ -52,7 +61,7 @@ WGET=`whereis wget | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
 if [ "$WGET" = "" ]
 then
     echo "You need to install wget (apt-get install wget)."
-    exit 1
+    BIN_TO_INSTALL="yes"
 fi
 
 # Check if "split" is installed
@@ -60,6 +69,37 @@ SPLIT=`whereis split | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
 if [ "$SPLIT" = "" ]
 then
     echo "You need to install split (apt-get install coreutils)."
+    exit 1
+fi
+
+# Check if "arp-scan" is installed
+ARP_SCAN=`whereis arp-scan | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
+if [ "$ARP_SCAN" = "" ]
+then
+    echo "You need to install arp-scan (apt-get install arp-scan)."
+    BIN_TO_INSTALL="yes"
+fi
+
+# Check if "plink" is installed
+PLINK=`whereis plink | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
+if [ "$PLINK" = "" ]
+then
+    echo "You need to install plink (apt-get install putty-tools)."
+    BIN_TO_INSTALL="yes"
+fi
+
+# Check if "pscp" is installed
+PSCP=`whereis pscp | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
+if [ "$PSCP" = "" ]
+then
+    echo "You need to install pscp (apt-get install putty-tools)."
+    BIN_TO_INSTALL="yes"
+fi
+
+# Check if packages need to be installed
+if [ "$BIN_TO_INSTALL" = "yes" ]
+then
+    echo "You need to install thus packages before going further..."
     exit 1
 fi
 
