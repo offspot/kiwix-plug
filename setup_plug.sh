@@ -34,7 +34,7 @@ else
 fi
 
 # Copy init.d script
-"$PSCP" -pw "$SSH_PASS" scripts/kiwix-plug.plug "$SSH_LOGIN@$IP:/etc/init.d/kiwix-plug" <<EOF
+pscp -pw "$SSH_PASS" scripts/kiwix-plug.plug "$SSH_LOGIN@$IP:/etc/init.d/kiwix-plug" <<EOF
 n
 EOF
 
@@ -62,6 +62,13 @@ then                                                                            
   echo \"Installing dialog...\"                                                            \n\
   apt-get update                                                                           \n\
   apt-get --assume-yes install dialog                                                      \n\
+  if [ \"$?\" != \"0\" ]                                                                   \n\
+  then                                                                                     \n\
+    echo \"Unable to install correctly dialog\"                                            \n\
+    exit 1                                                                                 \n\
+  else                                                                                     \n\
+    echo \"dialog installation successful\"                                                \n\
+  fi                                                                                       \n\
 else                                                                                       \n\
   echo \"dialog is already installed.\"                                                    \n\
 fi                                                                                         \n\
@@ -75,6 +82,13 @@ then                                                                            
   echo \"Installing dnsmasq...\"                                                           \n\
   apt-get update                                                                           \n\
   apt-get --assume-yes install dnsmasq-base                                                \n\
+  if [ \"$?\" != \"0\" ]                                                                   \n\
+  then                                                                                     \n\
+    echo \"Unable to install correctly dnsmasq\"                                           \n\
+    exit 1                                                                                 \n\
+  else                                                                                     \n\
+    echo \"dnsmasq installation successful\"                                               \n\
+  fi                                                                                       \n\
 else                                                                                       \n\
   echo \"dnsmasq is already installed.\"                                                   \n\
 fi                                                                                         \n\
@@ -82,12 +96,19 @@ fi                                                                              
 
 # Check if awstats is installed
 echo "                                                                                     \n\
-AWSTATS=\`dpkg -l | grep awstats\`                                                         \n\
+AWSTATS=\`dpkg -l awstats | grep ii\`                                                      \n\
 if [ \"\$AWSTATS\" = \"\" ]                                                                \n\
 then                                                                                       \n\
   echo \"Installing awstats...\"                                                           \n\
   apt-get update                                                                           \n\
   apt-get --assume-yes install awstats                                                     \n\
+  if [ \"$?\" != \"0\" ]                                                                   \n\
+  then                                                                                     \n\
+    echo \"Unable to install correctly awstats\"                                           \n\
+    exit 1                                                                                 \n\
+  else                                                                                     \n\
+    echo \"awstats installation successful\"                                               \n\
+  fi                                                                                       \n\
 else                                                                                       \n\
   echo \"awstats is already installed.\"                                                   \n\
 fi                                                                                         \n\
@@ -108,12 +129,19 @@ fi                                                                              
 
 # Check if wireless-tools is installed
 echo "                                                                                     \n\
-WTOOLS=\`dpkg -l | grep wireless-tools\`                                                   \n\
+WTOOLS=\`dpkg -l wireless-tools | grep ii\`                                                \n\
 if [ \"\$WTOOLS\" = \"\" ]                                                                 \n\
 then                                                                                       \n\
   echo \"Installing wireless-tools...\"                                                    \n\
   apt-get update                                                                           \n\
   apt-get --assume-yes install wireless-tools                                              \n\
+  if [ \"$?\" != \"0\" ]                                                                   \n\
+  then                                                                                     \n\
+    echo \"Unable to install correctly dialog\"                                            \n\
+    exit 1                                                                                 \n\
+  else                                                                                     \n\
+    echo \"dialog installation successful\"                                                \n\
+  fi                                                                                       \n\
 else                                                                                       \n\
   echo \"wireless-tools are already installed.\"                                           \n\
 fi                                                                                         \n\
@@ -121,12 +149,19 @@ fi                                                                              
 
 # Check if ntpdate is installed and update the clock (ntpdate-debian)
 echo "                                                                                     \n\
-NTPDATE=\`dpkg -l | grep ntpdate\`                                                         \n\
+NTPDATE=\`dpkg -l ntpdate | grep ii\`                                                      \n\
 if [ \"\$NTPDATE\" = \"\" ]                                                                \n\
 then                                                                                       \n\
   echo \"Installing ntpdate...\"                                                           \n\
   apt-get update                                                                           \n\
   apt-get --assume-yes install ntpdate                                                     \n\
+  if [ \"$?\" != \"0\" ]                                                                   \n\
+  then                                                                                     \n\
+    echo \"Unable to install correctly ntpdate\"                                           \n\
+    exit 1                                                                                 \n\
+  else                                                                                     \n\
+    echo \"ntpdate installation successful\"                                               \n\
+  fi                                                                                       \n\
 else                                                                                       \n\
   echo \"ntpdate is already installed.\"                                                   \n\
 fi                                                                                         \n\
@@ -149,6 +184,6 @@ chmod +x /etc/init.d/kiwix-plug                                                 
 " >> $COMMANDS
 
 # Connect the plug per ssh and run a few commands
-"$PLINK" -ssh -pw "$SSH_PASS" "$SSH_LOGIN@$IP" -m $COMMANDS <<EOF
+plink -ssh -pw "$SSH_PASS" "$SSH_LOGIN@$IP" -m $COMMANDS <<EOF
 n
 EOF
