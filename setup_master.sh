@@ -115,38 +115,43 @@ else
 fi
 
 # Download GNU/Linux static (for kiwix-index)
-if [ ! -f "$ROOT/bin/.kiwix.tar.bz2.finished" ]
+if [ ! -f "$ROOT/bin/.kiwix.tar.bz2.finished" -o  ! -f "$ROOT/bin/kiwix.tar.bz2" ]
 then
+    rm -f "$ROOT/bin/.kiwix.tar.bz2.finished" "$ROOT/bin/kiwix.tar.bz2"
     wget -c $KIWIX_X86_STATIC_URL -O "$ROOT/bin/kiwix.tar.bz2"
     cd "$ROOT/bin/" ; tar -xvjf "$ROOT/bin/kiwix.tar.bz2" ; cd ../
     touch "$ROOT/bin/.kiwix.tar.bz2.finished"
 fi
 
 # Download ARM static (for the kiwix-serve to install)
-if [ ! -f "$ROOT/bin/.kiwix-arm.tar.bz2.finished" ]
+if [ ! -f "$ROOT/bin/.kiwix-arm.tar.bz2.finished" -o ! -f "$ROOT/bin/kiwix-arm.tar.bz2" ]
 then
+    rm -f "$ROOT/bin/.kiwix-arm.tar.bz2.finished" "$ROOT/bin/kiwix-arm.tar.bz2"
     wget -c $KIWIX_ARM_STATIC_URL -O "$ROOT/bin/kiwix-arm.tar.bz2"
     cd $ROOT/bin/ ; tar -xvjf "$ROOT/bin/kiwix-arm.tar.bz2" ; cd ../
     touch "$ROOT/bin/.kiwix-arm.tar.bz2.finished"
 fi
 
 # Download Kiwix for Windows
-if [ ! -f "$ROOT/bin/.kiwix.zip.finished" ]
+if [ ! -f "$ROOT/bin/.kiwix.zip.finished" -o ! -f "$ROOT/bin/kiwix.zip" ]
 then
+    rm -f "$ROOT/bin/.kiwix.zip.finished" "$ROOT/bin/kiwix.zip"
     wget -c $KIWIX_WINDOWS_URL -O "$ROOT/bin/kiwix.zip"
     touch "$ROOT/bin/.kiwix.zip.finished"
 fi
 
 # Download Kiwix for OSX
-if [ ! -f "$ROOT/bin/.kiwix.dmg.finished" ]
+if [ ! -f "$ROOT/bin/.kiwix.dmg.finished" -o ! -f "$ROOT/bin/kiwix.dmg" ]
 then
+    rm -f "$ROOT/bin/.kiwix.dmg.finished" "$ROOT/bin/kiwix.dmg"
     wget -c $KIWIX_OSX_URL -O "$ROOT/bin/kiwix.dmg"
     touch "$ROOT/bin/.kiwix.dmg.finished"
 fi
 
 # Download the sources
-if [ ! -f "$ROOT/bin/.kiwix-src.tar.gz.finished" ]
+if [ ! -f "$ROOT/bin/.kiwix-src.tar.gz.finished" -o ! -f "$ROOT/bin/kiwix-src.tar.gz" ]
 then
+    rm -f "$ROOT/bin/.kiwix-src.tar.gz.finished" "$ROOT/bin/kiwix-src.tar.gz"
     wget -c $KIWIX_SRC_URL -O "$ROOT/bin/kiwix-src.tar.gz"
     touch "$ROOT/bin/.kiwix-src.tar.gz.finished"
 fi
