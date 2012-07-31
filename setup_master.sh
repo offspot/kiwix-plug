@@ -3,7 +3,7 @@
 KIWIX_X86_STATIC_URL=http://download.kiwix.org/bin/0.9_rc1/kiwix-0.9-rc1-linux-i686.tar.bz2
 KIWIX_WINDOWS_URL=http://download.kiwix.org/bin/0.9_rc1/kiwix-0.9-rc1-win.zip
 KIWIX_OSX_URL=http://download.kiwix.org/bin/0.9_rc1/kiwix-0.9-rc1.dmg
-KIWIX_ARM_STATIC_URL=http://download.kiwix.org/bin/0.9_rc1/kiwix-server-0.9-rc1-linux-armv5tejl.tar.bz2
+KIWIX_ARM_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-07-31/kiwix-20120731_r3883-server_armv5tejl.tar.bz2
 KIWIX_SRC_URL=http://download.kiwix.org/src/kiwix-0.9-rc1-src.tar.gz
 BIN_TO_INSTALL="no"
 
