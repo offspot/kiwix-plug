@@ -30,6 +30,9 @@ chmod +x /tmp/kiwix-serve
 if [ -e /etc/init.d/apache ] ; then /etc/init.d/apache stop ; fi
 if [ -e /etc/init.d/apache2 ] ; then /etc/init.d/apache2 stop ; fi
 
+# Stop ssh
+if [ -e /etc/init.d/ssh ] ; then /etc/init.d/ssh stop ; fi
+
 # Setup Web server (nginx)
 /etc/init.d/nginx stop
 sed -e "s/ROOT/$ROOT_ESCAPED/" $ROOT/system/conf/nginx.conf > /tmp/kiwix.nginx.conf
