@@ -97,6 +97,28 @@ this can take many minutes, be patient...
 == Optional: Add a router ==
 
 This could be useful to increase the wifi coverage of the whole setup.
+To achieve to do that, you can add a new wifi hotspot which is linked
+per RJ45 to the plug. the router you add acts like a new wifi hotspot
+providing exactly the same as the original hotspot... So it's like
+having two plugs.
+
+So, you need an additional router. This tutorial works with the
+Netgear N300 but you can use any router providing similar
+functionalities.
+
+To configure the router, connect to its web user interface (default IP
+should be 192.168.1.1) and:
+* Change its ip to 192.168.2.2
+* Shutdown its DHCP daemon
+* Remove any password from the WIFI configuration
+* Change the SSID to "KIWIX"
+
+We provide a pre-configured file you can already play in the Netgear N300:
+http://download.kiwix.org/dev/kiwix-plug/NETGEAR_WNR3500Lv2_KIWIX-PLUG.cfg
+
+After that you need to plug the router with a RJ45 cable to the
+*external* (they are two) RJ45 plug of the dreamplug. You should get
+in addition a new "KIWIX" hotspot.
 
 == Conclusion ==
 
