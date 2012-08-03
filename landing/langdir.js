@@ -13,7 +13,7 @@ lang = lang.substr(0,2);
 var dest = window.location.href;
 for (i=langcodes.length-1;i >= 0; i--) {
     if (lang==langcodes[i]) {
-	dest = dest.substr(0,dest.lastIndexOf('.')) + '-' + lang.substr(0,2) + dest.substr(dest.lastIndexOf('.'));
+	dest = '/index-' + lang.substr(0,2) + '.html';
 	window.location.replace ? window.location.replace(dest) : window.location=dest;
     }
 }
