@@ -4,7 +4,7 @@
 // provided that all of the code in this script (with the sole exception
 // of the langcodes array entries) is used without any alteration
 
-var langcodes=["fr"];
+var langcodes=["fr", "de"];
 
 var langCode = navigator.language || navigator.systemLanguage;
 var lang = langCode.toLowerCase();
