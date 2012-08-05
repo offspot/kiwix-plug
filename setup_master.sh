@@ -156,21 +156,6 @@ then
     touch "$ROOT/bin/.kiwix-src.tar.gz.finished"
 fi
 
-# Check if there is ZIM files in the /data/content
-ZIMS=`find "$ROOT/data/content/" -name "*.zim" ; find "$ROOT/data/content/" -name "*.zimaa"`
-if [ "$ZIMS" = "" ]
-then
-    echo "Please put ZIM files in /data/content"
-    exit 1
-else
-    for ZIM in `find "$ROOT/data/content/" -name "*.zim" -size +2G`
-    do
-	echo "Splitting $ZIM in parts of 2GB..."
-	split --bytes=2000M "$ZIM" "$ZIM"
-	rm "$ZIM"
-    done
-fi
-
 # Rename the ZIM files by adding a "_" at the beginning
 for FILE in `find "$ROOT/data/content/" -name "*.zim*" ; find "$ROOT/data/content/" -name "*.zimaa"`
 do
@@ -198,6 +183,21 @@ do
 	touch "$IDX/.finished"
     fi
 done
+
+# Check if there is ZIM files in the /data/content
+ZIMS=`find "$ROOT/data/content/" -name "*.zim" ; find "$ROOT/data/content/" -name "*.zimaa"`
+if [ "$ZIMS" = "" ]
+then
+    echo "Please put ZIM files in /data/content"
+    exit 1
+else
+    for ZIM in `find "$ROOT/data/content/" -name "*.zim" -size +2G`
+    do
+	echo "Splitting $ZIM in parts of 2GB..."
+	split --bytes=2000M "$ZIM" "$ZIM"
+	rm "$ZIM"
+    done
+fi
 
 # Create the library file "library.xml"
 LIBRARY="$ROOT/data/library/library.xml"
