@@ -20,6 +20,10 @@ ifconfig eth1 192.168.2.1 netmask 255.255.255.0
 /etc/init.d/udhcpd stop
 dnsmasq --conf-file=$ROOT/system/conf/dnsmasq.conf
 
+# Add IP forwarding
+sysctl -w net.ipv4.ip_forward=1
+iptables -t nat -A PREROUTING -p tcp -j DNAT --to-destination 192.168.3.1
+
 # Launch kiwix-serve
 kill -9 `pidof kiwix-serve`
 cp $ROOT/system/bin/kiwix-serve /tmp/kiwix-serve
