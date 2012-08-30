@@ -194,7 +194,7 @@ then
     echo "Please put ZIM files in /data/content"
     exit 1
 else
-    for ZIM in `find "$ROOT/data/content/" -name "*.zim" -size +2G`
+    for ZIM in `find -L "$ROOT/data/content/" -name "*.zim" -size +2G`
     do
 	echo "Splitting $ZIM in parts of 2GB..."
 	split --bytes=2000M "$ZIM" "$ZIM"
