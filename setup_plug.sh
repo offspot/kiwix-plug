@@ -121,7 +121,7 @@ if [ \"\$NGINX\" = \"\" ]                                                       
 then                                                                                       \n\
   echo \"Installing nginx...\"                                                             \n\
   apt-get update                                                                           \n\
-  apt-get --assume-yes install nginx                                                       \n\
+  apt-get -o DPkg::options::=--force-confmiss --assume-yes install nginx                   \n\
 else                                                                                       \n\
   echo \"nginx is already installed.\"                                                     \n\
 fi                                                                                         \n\
