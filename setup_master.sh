@@ -1,6 +1,6 @@
 #!/bin/bash
 
-KIWIX_X86_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-08-28/kiwix-20120828_r3997-static-i686.tar.bz2
+KIWIX_X86_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-09-06/kiwix-20120906_r4030-static-i686.tar.bz2
 KIWIX_ARM_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-08-28/kiwix-20120828_r3993-server_armv5tejl.tar.bz2
 KIWIX_WINDOWS_URL=http://download.kiwix.org/bin/0.9_rc1/kiwix-0.9-rc1-win.zip
 KIWIX_OSX_URL=http://download.kiwix.org/bin/0.9_rc1/kiwix-0.9-rc1.dmg
@@ -181,6 +181,7 @@ do
 	echo "Index of $ZIM already created"
     else
 	echo "Indexing $ZIM at $IDX ..."
+	sleep 3
 	rm -rf "$IDX"
 	"$ROOT/bin/kiwix/bin/kiwix-index" --verbose --backend=xapian "$ZIM" "$IDX"
 	touch "$IDX/.finished"
