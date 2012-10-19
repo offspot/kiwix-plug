@@ -1,7 +1,7 @@
 #!/bin/bash
 
-KIWIX_X86_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-09-06/kiwix-20120906_r4030-static-i686.tar.bz2
-KIWIX_ARM_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-08-28/kiwix-20120828_r3993-server_armv5tejl.tar.bz2
+KIWIX_X86_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-10-13/kiwix-20121013_r4075-static-i686.tar.bz2
+KIWIX_ARM_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-10-13/kiwix-20121013_r4076-server_armv5tejl.tar.bz2
 KIWIX_WINDOWS_URL=http://download.kiwix.org/bin/0.9_rc1/kiwix-0.9-rc1-win.zip
 KIWIX_OSX_URL=http://download.kiwix.org/bin/0.9_rc1/kiwix-0.9-rc1.dmg
 KIWIX_SRC_URL=http://download.kiwix.org/src/kiwix-0.9-rc1-src.tar.gz
