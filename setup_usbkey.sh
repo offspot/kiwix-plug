@@ -24,7 +24,8 @@ else
 fi
 
 # Detect USB storage
-for MOUNT in `df | sed "s/^ *//;s/ *$//;s/ \{1,\}/ /g" | cut --delimiter=" " -f6 | grep "/media/"`
+IFS=$'\n'
+for MOUNT in `df | sed "s/^ *//;s/ *$//;s/ \{1,\}/ /g" | cut --delimiter=" " -f6- | grep "/media/"`
 do
     if [ "$(ls -A "$MOUNT")" = "" ]
     then
@@ -34,6 +35,7 @@ do
     fi
     MOUNT=
 done
+unset IFS
 
 # Check if an empty removable device was found
 if [ "$MOUNT" = "" ]
