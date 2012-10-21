@@ -47,9 +47,9 @@ fi
 # Set USB label
 echo "Setting new label KIWIX to USB key at $DEVICE ..."
 echo "drive a: file=\"$DEVICE\"" > ~/.mtoolsrc
-sudo mlabel a:42
 sudo mlabel a:KIWIX
 sudo mlabel -s a:
+sync
 
 # Copy the data files
 cp --verbose -r "$ROOT/data/" "$MOUNT"
