@@ -25,7 +25,11 @@ sysctl -w net.ipv4.ip_forward=1
 iptables -t nat -A PREROUTING -p tcp -j DNAT --to-destination 192.168.3.1
 
 # Launch kiwix-serve
-kill -9 `pidof kiwix-serve`
+PID=`pidof kiwix-serve`
+if [ ! "$PID" = "" ]
+then
+    kill -9 `pidof kiwix-serve`
+fi
 cp $ROOT/system/bin/kiwix-serve /tmp/kiwix-serve
 chmod +x /tmp/kiwix-serve
 /tmp/kiwix-serve --library --port=4201 --daemon $ROOT/data/library/library.xml 
