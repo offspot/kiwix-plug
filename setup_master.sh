@@ -1,10 +1,10 @@
 #!/bin/bash
 
-KIWIX_X86_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-10-13/kiwix-20121013_r4075-static-i686.tar.bz2
-KIWIX_ARM_STATIC_URL=http://download.kiwix.org/bin/nightly/2012-11-16/kiwix-20121116_r4173-server_armv5tejl.tar.bz2
-KIWIX_WINDOWS_URL=http://download.kiwix.org/bin/0.9_rc1/kiwix-0.9-rc1-win.zip
-KIWIX_OSX_URL=http://download.kiwix.org/bin/0.9_rc1/kiwix-0.9-rc1.dmg
-KIWIX_SRC_URL=http://download.kiwix.org/src/kiwix-0.9-rc1-src.tar.gz
+KIWIX_X86_STATIC_URL=http://download.kiwix.org/bin/0.9_rc2/kiwix-0.9-rc2-linux-i686.tar.bz2
+KIWIX_ARM_STATIC_URL=http://download.kiwix.org/bin/0.9_rc2/kiwix-server-0.9-rc2-linux-armv5tejl.tar.bz2
+KIWIX_WINDOWS_URL=http://download.kiwix.org/bin/0.9_rc2/kiwix-0.9-rc2-win.zip
+KIWIX_OSX_URL=http://download.kiwix.org/bin/0.9_rc2/kiwix-0.9-rc2.dmg
+KIWIX_SRC_URL=http://download.kiwix.org/src/kiwix-0.9~rc2-src.tar.gz
 BIN_TO_INSTALL="no"
 
 # Compute script path
