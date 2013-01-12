@@ -3,6 +3,12 @@ ROOT=$1
 ROOT_ESCAPED="${ROOT//\//\/}" 
 SSID=KIWIX_PLUG
 
+# Insert mandatory module for WIfi
+modprobe sd8xxx
+
+# Remount (with read permission) for the Toniplug
+mount -o remount "$ROOT"
+
 # Stop the WIFI hotspot
 uaputl bss_stop
 ifconfig uap0 down
@@ -12,11 +18,23 @@ uaputl sys_cfg_ssid $SSID
 ifconfig uap0 192.168.3.1 up
 uaputl bss_start
 
-# Configure the eth1 interface
-ifconfig eth1 192.168.2.1 netmask 255.255.255.0
+# Configure the eth0 or eth1 interface
+ifconfig eth1 >& /dev/null
+RC=$?
+NIC=eth1
+if [[ $RC != 0 ]]
+then
+    NIC=eth0
+fi
+ifconfig $NIC 192.168.2.1 netmask 255.255.255.0
 
 # Setup DNS & DHCP (dnsmasq)
 /etc/init.d/dnsmasq stop
+PID=`pidof dnsmasq`
+if [ ! "$PID" = "" ]
+then
+    kill -9 `pidof dnsmasq`
+fi
 /etc/init.d/udhcpd stop
 dnsmasq --conf-file=$ROOT/system/conf/dnsmasq.conf
 
