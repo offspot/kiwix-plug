@@ -168,12 +168,33 @@ fi                                                                              
 ntpdate-debian                                                                             \n\
 " >> $COMMANDS
 
+# Check if udhcpd is installed and install it otherwise
+echo "                                                                                     \n\
+UDHCPD=\`dpkg -l udhcpd | grep ii\`                                                        \n\
+if [ \"\$UDHCPD\" = \"\" ]                                                                 \n\
+then                                                                                       \n\
+  echo \"Installing udhcpd...\"                                                            \n\
+  apt-get update                                                                           \n\
+  apt-get --assume-yes install udhcpd                                                      \n\
+  if [ \"$?\" != \"0\" ]                                                                   \n\
+  then                                                                                     \n\
+    echo \"Unable to install correctly udhcpd\"                                            \n\
+    exit 1                                                                                 \n\
+  else                                                                                     \n\
+    echo \"udhcpd installation successful\"                                                \n\
+  fi                                                                                       \n\
+else                                                                                       \n\
+  echo \"udhcpd is already installed.\"                                                    \n\
+fi                                                                                         \n\
+" >> $COMMANDS
+
 # Setup the init.d script
 echo "                                                                                     \n\
 IN_RC_LOCAL=\`grep \"/etc/init.d/kiwix-plug\" /etc/rc.local\`                              \n\
 if [ \"\$IN_RC_LOCAL\" = \"\" ]                                                            \n\
 then                                                                                       \n\
   echo \"Updating /etc/rc.local...\"                                                       \n\
+  sed -i -e 's/exit 0//' /etc/rc.local                                                     \n\
   echo \"\" >> /etc/rc.local                                                               \n\
   echo \"/etc/init.d/kiwix-plug start\" >> /etc/rc.local                                   \n\
   echo \"\" >> /etc/rc.local                                                               \n\
@@ -181,6 +202,7 @@ else                                                                            
   echo \"rc.local already updated\"                                                        \n\
 fi                                                                                         \n\
 chmod +x /etc/init.d/kiwix-plug                                                            \n\
+chmod +x /etc/rc.local                                                                     \n\
 " >> $COMMANDS
 
 # Connect the plug per ssh and run a few commands
