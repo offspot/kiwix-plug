@@ -168,26 +168,6 @@ fi                                                                              
 ntpdate-debian                                                                             \n\
 " >> $COMMANDS
 
-# Check if udhcpd is installed and install it otherwise
-echo "                                                                                     \n\
-UDHCPD=\`dpkg -l udhcpd | grep ii\`                                                        \n\
-if [ \"\$UDHCPD\" = \"\" ]                                                                 \n\
-then                                                                                       \n\
-  echo \"Installing udhcpd...\"                                                            \n\
-  apt-get update                                                                           \n\
-  apt-get --assume-yes install udhcpd                                                      \n\
-  if [ \"$?\" != \"0\" ]                                                                   \n\
-  then                                                                                     \n\
-    echo \"Unable to install correctly udhcpd\"                                            \n\
-    exit 1                                                                                 \n\
-  else                                                                                     \n\
-    echo \"udhcpd installation successful\"                                                \n\
-  fi                                                                                       \n\
-else                                                                                       \n\
-  echo \"udhcpd is already installed.\"                                                    \n\
-fi                                                                                         \n\
-" >> $COMMANDS
-
 # Setup the init.d script
 echo "                                                                                     \n\
 IN_RC_LOCAL=\`grep \"/etc/init.d/kiwix-plug\" /etc/rc.local\`                              \n\
