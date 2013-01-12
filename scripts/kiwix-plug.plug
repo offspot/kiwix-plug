@@ -31,7 +31,7 @@ case "$1" in
     then
       echo "Unable to find a kiwix-plug USB key plugged :("
     else
-      echo "Found kiwix-plug USB key at $USB"
+      echo "Found kiwix-plug USB key at $MOUNT"
       cp "$MOUNT/system/kiwix-plug" /tmp/
       chmod +x /tmp/kiwix-plug
       /tmp/kiwix-plug "$MOUNT" > /tmp/kiwix-plug.log
