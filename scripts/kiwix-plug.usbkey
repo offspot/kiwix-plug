@@ -39,8 +39,13 @@ fi
 dnsmasq --conf-file=$ROOT/system/conf/dnsmasq.conf
 
 # Add IP forwarding
-sysctl -w net.ipv4.ip_forward=1
-iptables -t nat -A PREROUTING -p tcp -j DNAT --to-destination 192.168.3.1
+ifconfig uap0 >& /dev/null
+RC=$?
+if [[ $RC = 0 ]]
+then
+    sysctl -w net.ipv4.ip_forward=1
+    iptables -t nat -A PREROUTING -p tcp -j DNAT --to-destination 192.168.3.1
+fi
 
 # Launch kiwix-serve
 PID=`pidof kiwix-serve`
