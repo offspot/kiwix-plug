@@ -48,16 +48,16 @@ then
     BIN_TO_INSTALL="yes"
 fi
 
-# Check if the mtools are installed
-MLABEL=`whereis mlabel | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
-if [ "$MLABEL" = "" ]
+# Check if "mkdosfs" is installed
+MKDOSFS=`whereis -b mkdosfs | cut -d" " -f2`
+if [ "$MKDOSFS" = "" ]
 then
-    echo "You need to install the mtools (apt-get install mtools)."
+    echo "You need to install the dosfstools (apt-get install dosfstools)."
     BIN_TO_INSTALL="yes"
 fi
 
 # Check if "wget" is installed
-WGET=`whereis wget | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
+WGET=`whereis -b wget | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
 if [ "$WGET" = "" ]
 then
     echo "You need to install wget (apt-get install wget)."
@@ -65,7 +65,7 @@ then
 fi
 
 # Check if "split" is installed
-SPLIT=`whereis split | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
+SPLIT=`whereis -b split | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
 if [ "$SPLIT" = "" ]
 then
     echo "You need to install split (apt-get install coreutils)."
@@ -73,7 +73,7 @@ then
 fi
 
 # Check if "arp-scan" is installed
-ARP_SCAN=`whereis arp-scan | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
+ARP_SCAN=`whereis -b arp-scan | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
 if [ "$ARP_SCAN" = "" ]
 then
     echo "You need to install arp-scan (apt-get install arp-scan)."
@@ -81,7 +81,7 @@ then
 fi
 
 # Check if "plink" is installed
-PLINK=`whereis plink | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
+PLINK=`whereis -b plink | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
 if [ "$PLINK" = "" ]
 then
     echo "You need to install plink (apt-get install putty-tools)."
@@ -89,7 +89,7 @@ then
 fi
 
 # Check if "pscp" is installed
-PSCP=`whereis pscp | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
+PSCP=`whereis -b pscp | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
 if [ "$PSCP" = "" ]
 then
     echo "You need to install pscp (apt-get install putty-tools)."
