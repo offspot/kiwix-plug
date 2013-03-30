@@ -45,10 +45,10 @@ then
 fi
 
 # Set USB label
-sudo umount "$DEVICE"
+umount "$DEVICE"
 MKDOSFS=`whereis mkdosfs | cut -d" " -f2`
 $MKDOSFS -n KIWIX "$DEVICE"
-sudo mount "$DEVICE" "$MOUNT"
+mount "$DEVICE" "$MOUNT"
 
 # Copy the data files
 cp --verbose -r "$ROOT/data/" "$MOUNT"
