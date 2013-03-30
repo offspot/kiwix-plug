@@ -31,7 +31,7 @@ else
 fi
 
 # Check if the DNS works
-`host www.kiwix.org > /dev/null`
+`host -a www.kiwix.org > /dev/null`
 EXIT_VALUE=$?
 if [ ! "$EXIT_VALUE" = "0" ]
 then
