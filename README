@@ -45,17 +45,17 @@ The setup process has 3 steps, based on 3 scripts:
 == Retrieving the code ==
 
 The code to setup the Dreamplug and the flash drive is available on
-Internet here: http://kiwix.svn.sourceforge.net/viewvc/kiwix/plug/
+Internet here: https://sourceforge.net/p/kiwix/other/
 
-To retrieve it you need to have subversion (code version control
-system) client installed on your computer. If you use a Debian based
-GNU/Linux distribution you can type (like Ubuntu): "apt-get install
-subversion" in the console.
+To retrieve it you need to have git (code version control system)
+client installed on your computer. If you use a Debian based GNU/Linux
+distribution you can type (like Ubuntu): "apt-get install subversion"
+in the console.
 
-To download the code, type: 
-svn co https://kiwix.svn.sourceforge.net/svnroot/kiwix/plug
+To download the code, type:
+git clone git://git.code.sf.net/p/kiwix/other kiwix-other
 
-You will get a plug "directory". Go inside.
+You will get a "kiwix-other/plug" directory. Go inside.
 
 == Setup the master ==
 
