@@ -104,7 +104,7 @@ then
 fi
 
 # Make a subversion update
-svn update "$ROOT"
+git pull origin master
 
 # Check if should clean
 if [ "$1" == "clean" ]
