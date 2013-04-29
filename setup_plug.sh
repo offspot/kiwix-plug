@@ -185,6 +185,16 @@ chmod +x /etc/init.d/kiwix-plug                                                 
 chmod +x /etc/rc.local                                                                     \n\
 " >> $COMMANDS
 
+# Avoid ubsmount mounting a flashdrive with a 077 umask
+echo "                                                                                     \n\
+if [ -f \"/etc/usbmount/usbmount.conf\" ]                                                  \n\
+then                                                                                       \n\
+  sed \"s/umask=077/umask=022/g\" /etc/usbmount/usbmount.conf                              \n\
+else                                                                                       \n\
+  echo \"no usbmount config file to patch\"                                                \n\
+fi                                                                                         \n\
+" >> $COMMANDS
+
 # Connect the plug per ssh and run a few commands
 plink -ssh -pw "$SSH_PASS" "$SSH_LOGIN@$IP" -m $COMMANDS <<EOF
 n

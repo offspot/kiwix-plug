@@ -48,6 +48,14 @@ then
     BIN_TO_INSTALL="yes"
 fi
 
+# Check if the mtools are installed
+MLABEL=`whereis mlabel | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
+if [ "$MLABEL" = "" ]
+then
+    echo "You need to install the mtools (apt-get install mtools)."
+    BIN_TO_INSTALL="yes"
+fi
+
 # Check if "mkdosfs" is installed
 MKDOSFS=`whereis -b mkdosfs | cut -d" " -f2`
 if [ "$MKDOSFS" = "" ]

@@ -27,28 +27,29 @@ fi
 IFS=$'\n'
 for MOUNT in `df | sed "s/^ *//;s/ *$//;s/ \{1,\}/ /g" | cut --delimiter=" " -f6- | grep "/media/"`
 do
-    if [ "$(ls -A "$MOUNT")" = "" ]
-    then
-	echo "Empty removable device found at $MOUNT. This will be used to install kiwix-plug."
-	DEVICE=`df | sed "s/^ *//;s/ *$//;s/ \{1,\}/ /g" | grep "$MOUNT" | cut --delimiter=" " -f1`
-	break
-    fi
-    MOUNT=
+   if [ "$(ls -A "$MOUNT")" = "" ]
+   then
+      echo "Empty removable device found at $MOUNT. This will be used to install kiwix-plug."
+      DEVICE=`df | sed "s/^ *//;s/ *$//;s/ \{1,\}/ /g" | grep "$MOUNT$" | cut --delimiter=" " -f1`
+      break
+   fi
+   MOUNT=
 done
 unset IFS
 
 # Check if an empty removable device was found
 if [ "$MOUNT" = "" ]
 then
-    echo "Unable to find an empty removable device. Are you sure you have put a USB key to your computer?"
-    exit 1
+   echo "Unable to find an empty removable device. Are you sure you have put a USB key to your computer?"
+   exit 1
 fi
 
 # Set USB label
-umount "$DEVICE"
-MKDOSFS=`whereis mkdosfs | cut -d" " -f2`
-$MKDOSFS -n KIWIX "$DEVICE"
-mount "$DEVICE" "$MOUNT"
+echo "Setting new label KIWIX to USB key at $DEVICE ..."
+echo "drive a: file=\"$DEVICE\"" > ~/.mtoolsrc
+sudo mlabel a:KIWIX
+sudo mlabel -s a:
+sync
 
 # Copy the data files
 cp --verbose -r "$ROOT/data/" "$MOUNT"
@@ -81,6 +82,7 @@ cp -r --verbose "$ROOT/conf/" "$MOUNT/system/"
 
 # Remove useless files & directories
 find "$MOUNT" -name ".svn" -exec /bin/rm -rf '{}' \;
+find "$MOUNT" -name ".git*" -exec /bin/rm -rf '{}' \;
 find "$MOUNT" -name ".finished" -exec /bin/rm -rf '{}' \;
 
 # Create log & stats & share directories
