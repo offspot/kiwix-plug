@@ -9,6 +9,12 @@ modprobe sd8xxx
 # Remount (with read permission) for the Toniplug
 mount -o remount "$ROOT"
 
+# Stop Tonido stuff if necessary
+if [ -f "/etc/init.d/tonido" ]
+then
+    /etc/init.d/tonido stop
+fi
+
 # Stop the WIFI hotspot
 uaputl bss_stop
 ifconfig uap0 down
