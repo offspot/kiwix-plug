@@ -69,6 +69,7 @@ cp --verbose "$ROOT/bin/kiwix-serve" "$MOUNT/system/bin/"
 mkdir "$MOUNT/packages/"
 cp --verbose "$ROOT/bin/kiwix.tar.bz2" "$MOUNT/packages/"
 cp --verbose "$ROOT/bin/kiwix.dmg" "$MOUNT/packages/"
+cp --verbose "$ROOT/bin/kiwix.apk" "$MOUNT/packages/"
 cp --verbose "$ROOT/bin/kiwix.zip" "$MOUNT/packages/"
 cp --verbose "$ROOT/bin/kiwix-src.tar.gz" "$MOUNT/packages/"
 

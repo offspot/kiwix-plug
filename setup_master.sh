@@ -4,6 +4,7 @@ KIWIX_X86_STATIC_URL=http://download.kiwix.org/bin/0.9_rc2/kiwix-0.9-rc2-linux-i
 KIWIX_ARM_STATIC_URL=http://download.kiwix.org/bin/0.9_rc2/kiwix-server-0.9-rc2-linux-armv5tejl.tar.bz2
 KIWIX_WINDOWS_URL=http://download.kiwix.org/bin/0.9_rc2/kiwix-0.9-rc2-win.zip
 KIWIX_OSX_URL=http://download.kiwix.org/bin/0.9_rc2/kiwix-0.9-rc2.dmg
+KIWIX_ANDROID_URL=http://download.kiwix.org/bin/android/kiwix-1.3.apk
 KIWIX_SRC_URL=http://download.kiwix.org/src/kiwix-0.9~rc2-src.tar.gz
 BIN_TO_INSTALL="no"
 
@@ -157,6 +158,14 @@ then
     rm -f "$ROOT/bin/.kiwix.dmg.finished" "$ROOT/bin/kiwix.dmg"
     wget -c $KIWIX_OSX_URL -O "$ROOT/bin/kiwix.dmg"
     touch "$ROOT/bin/.kiwix.dmg.finished"
+fi
+
+# Download Kiwix for Android
+if [ ! -f "$ROOT/bin/.kiwix.apk.finished" -o ! -f "$ROOT/bin/kiwix.apk" ]
+then
+    rm -f "$ROOT/bin/.kiwix.apk.finished" "$ROOT/bin/kiwix.apk"
+    wget -c $KIWIX_ANDROID_URL -O "$ROOT/bin/kiwix.apk"
+    touch "$ROOT/bin/.kiwix.apk.finished"
 fi
 
 # Download the sources
