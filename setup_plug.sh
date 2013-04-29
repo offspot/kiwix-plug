@@ -189,7 +189,7 @@ chmod +x /etc/rc.local                                                          
 echo "                                                                                     \n\
 if [ -f \"/etc/usbmount/usbmount.conf\" ]                                                  \n\
 then                                                                                       \n\
-  sed \"s/umask=077/umask=022/g\" /etc/usbmount/usbmount.conf                              \n\
+  sed -i \"s/umask=077/umask=022/g\" /etc/usbmount/usbmount.conf                              \n\
 else                                                                                       \n\
   echo \"no usbmount config file to patch\"                                                \n\
 fi                                                                                         \n\
