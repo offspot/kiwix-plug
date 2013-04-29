@@ -15,6 +15,11 @@ then
     /etc/init.d/tonido stop
 fi
 
+if [ -f "/etc/init.d/ifplugd" ]
+then
+    /etc/init.d/ifplugd stop
+fi
+
 # Stop the WIFI hotspot
 uaputl bss_stop
 ifconfig uap0 down
@@ -33,6 +38,13 @@ then
     NIC=eth0
 fi
 ifconfig $NIC 192.168.2.1 netmask 255.255.255.0
+
+# Kill dhclient if necessary
+DHCLIENT_RUNNING=`ps aux | grep dhclient | grep $NIC | wc -l`
+if [ ! "$DHCLIENT_RUNNING" = "1" ]
+then
+    kill -9 `pidof dhclient`
+fi
 
 # Setup DNS & DHCP (dnsmasq)
 /etc/init.d/dnsmasq stop
