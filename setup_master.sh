@@ -105,6 +105,14 @@ then
     BIN_TO_INSTALL="yes"
 fi
 
+# Check if "beep" is installed
+BEEP=`whereis -b beep | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
+if [ "$BEEP" = "" ]
+then
+    echo "You need to install beep (apt-get install beep)."
+    BIN_TO_INSTALL="yes"
+fi
+
 # Check if packages need to be installed
 if [ "$BIN_TO_INSTALL" = "yes" ]
 then
@@ -233,3 +241,5 @@ do
     "$ROOT/bin/kiwix/bin/kiwix-manage" "$LIBRARY" add "$ZIM" --zimPathToSave="../content/$BASENAME" --indexBackend=xapian --indexPath="../index/$IDX"
 done
 
+# End music
+beep -f 659 -l 460 -n -f 784 -l 340 -n -f 659 -l 230 -n -f 659 -l 110 -n -f 880 -l 230 -n -f 659 -l 230 -n -f 587 -l 230 -n -f 659 -l 460 -n -f 988 -l 340 -n -f 659 -l 230 -n -f 659 -l 110 -n -f 1047 -l 230 -n -f 988 -l 230 -n -f 784 -l 230 -n -f 659 -l 230 -n -f 988 -l 230 -n -f 1318 -l 230 -n -f 659 -l 110 -n -f 587 -l 230 -n -f 587 -l 110 -n -f 494 -l 230 -n -f 740 -l 230 -n -f 659 -l 460
