@@ -1,7 +1,7 @@
 #!/bin/bash
 
 KIWIX_X86_STATIC_URL=http://download.kiwix.org/bin/0.9_rc2/kiwix-0.9-rc2-linux-i686.tar.bz2
-KIWIX_ARM_STATIC_URL=http://download.kiwix.org/bin/0.9_rc2/kiwix-server-0.9-rc2-linux-armv5tejl.tar.bz2
+KIWIX_ARM_STATIC_URL=http://download.kiwix.org/bin/nightly/2013-06-05/kiwix-20130605_rc18c20515c32e3ae446d536c4f59c10418068525-server_armv5tejl.tar.bz2
 KIWIX_WINDOWS_URL=http://download.kiwix.org/bin/0.9_rc2/kiwix-0.9-rc2-win.zip
 KIWIX_OSX_URL=http://download.kiwix.org/bin/0.9_rc2/kiwix-0.9-rc2.dmg
 KIWIX_ANDROID_URL=http://download.kiwix.org/bin/android/kiwix-1.3.apk
@@ -32,7 +32,7 @@ else
 fi
 
 # Check if the DNS works
-`host -a www.kiwix.org > /dev/null`
+`host -a www.kiwix.org 8.8.8.8 > /dev/null`
 EXIT_VALUE=$?
 if [ ! "$EXIT_VALUE" = "0" ]
 then
