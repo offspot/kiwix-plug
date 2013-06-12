@@ -1,0 +1,427 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html{
+	/* background-color:#d9e376; */
+	background: url("../img/body.png") repeat-x #009de1 ;
+	margin: 0 auto;
+	width: 100%;
+}
+
+body {
+	color: #333;
+	font-family: "Helvetica",Arial;
+	line-height: 1.3;
+}
+a,img {
+	border: 0;
+}
+
+a{
+	color: #605429;
+	-webkit-transition: all 0.3s ease;
+	-moz-transition: all 0.3s ease;
+	-o-transition: all 0.3s ease;
+	transition: all 0.3s ease;
+}
+
+a:hover{
+	color: #000;
+}
+
+p {
+	margin: 1em 0 0.8em;
+}
+.clear {
+	clear: both;
+}
+.right {
+    float: right;
+    margin-left: 10px;
+}
+
+#main .content {
+	width: 838px;
+	margin: 0 auto;
+	padding: 70px 0;
+}
+#main .content #afri-visu {
+	width: 343px;
+	height: 380px;
+	float: left;
+}
+#visual{
+	float:left;
+	width:366px;
+}
+
+.liens-sous-logo-afri{
+	font-size: 12px;
+	margin-left: 70px;
+}
+
+.bienvenue-afri{
+    font-family: 'gnuolanefree';
+	font-size: 48px;
+	color: #e71c72;
+}
+
+.puce-list{
+	color:#9acc6e;
+}
+
+/* @group #intro */
+
+#main .content #intro {
+	position: relative;
+	width: 472px;
+	float: right;
+	color:#404836;
+}
+#main .content #intro h1,
+#main .content #intro p,
+#main .content #intro ul {
+	padding-left: 0;
+}
+#main .content #intro #presents{
+	font-size:110%;
+	margin:0 0 0.4em 0;
+	color:#839966;
+}
+#main .content #intro #presents a{
+	color:#333;
+}
+#main .content #intro h1 img {
+	width: 426px;
+	height: 47px;
+}
+#main .content #intro p {
+	font-size: 1.3em;
+	margin-top:0.4em;
+	font-family: "rockwell light", rockwell, clarendon, helvetica,"sans-serif";
+}
+#main .content #intro ul {
+	list-style: none;
+	background-color:#D3FF99;
+	float:left;
+    width:49.9%;
+    font-size:0.875em; /* 14px/16px */
+}
+#main .content #intro ul li {
+	background: transparent url("/images/icons/banana-sb2.gif") left 5px no-repeat;
+	position: relative;
+	padding: 0.5em 0 1em 25px;
+}
+#main .content #intro #features {
+    clear:both;
+    padding-top:5px;
+	padding-bottom:10px;
+	position:relative;
+}
+#main .content #intro #features .new-features {
+    position:absolute;
+    top:0px;
+    right:15px;
+}
+#main .content #intro #features dl {
+    float:left;
+    width:100%;
+}
+#main .content #intro #features dt {
+    font-size:1em;
+	font-family: "rockwell light", rockwell, clarendon, helvetica,"sans-serif";
+
+}
+#main .content #intro #features dd {
+    font-size:0.8125em; /* 13px/16px */
+    margin:0.3em 0 1em 0;
+}
+#main .content #intro #features .container {
+    margin:0 10px;
+    background-color:#dedc38;
+    padding:10px 20px;
+    overflow:hidden;
+    min-height: 230px;
+}
+
+.container{
+	margin-left: 0px!important;
+}
+
+.pic-wikipedia{
+	text-align: center;
+}
+
+.bt-dl-later{
+	display: block;
+    font-size: 13px;
+    padding-top: 20px;
+}
+
+#shadow-box{
+	background: url("../img/shadow-box.png") no-repeat;
+	width: 453px;
+	height: 22px;
+}
+
+#main .content #intro #features p {
+    font-family:"rockwell light", rockwell, clarendon, helvetica, "sans-serif";
+}
+#main .content #intro #download {
+	position:absolute;
+	left:10px;
+	bottom:15px;
+}
+#main .content #intro form {
+	position:absolute;
+	right:10px;
+	bottom:15px;
+}
+#main .content #intro form fieldset {
+	border: 0;
+}
+#main .content #intro p#reqs{
+	color: #fff;
+	font-size: 0.8em;
+	font-weight:normal;
+	vertical-align:middle;
+	position:relative;
+	left:-350px;
+	bottom:20px;
+}
+#main .content #intro p#reqs img{
+	margin-right: 0.5em;
+}
+#main .content #intro p#reqs span{
+	float: left;
+	margin-right: 0.5em;
+	margin-left:-0.8em;
+	vertical-align: middle;
+}
+/* @end */
+
+
+/* @group footer */
+
+#footer {
+
+	bottom: 0;
+	width: 400px;
+	margin:auto;
+	padding-top: 19px;
+}
+
+#footer-min{
+	display: none;
+}
+
+#footer .outer {
+	overflow: hidden;
+	text-align:center;
+}
+#footer .inner {
+	color: #ccc;
+	width:320px;
+	margin:0 auto;
+	text-align:center;
+}
+#footer a {
+	color: #fff;
+}
+#footer .content {
+	width: 430px;
+	margin:40px 50px 0 0;
+	font-size: 0.9em;
+	float:left;
+	background: transparent url("/images/icons/clearleft.gif") left top no-repeat;
+}
+#footer .content p {
+	margin-left: 80px;
+	font-size: 12px;
+}
+#footer form {
+	font-size:12px;
+	padding-top:0.7em;
+}
+#footer form input#email {
+	font-family: "Helvetica Neue",Helvetica,Arial;
+	font-size:1.3em;
+	padding:0.2em;
+}
+#footer .content p.marginn, #footer form p label {
+	font-weight: bold;
+	color: #fff;
+}
+
+#footer-links{
+    background: none repeat scroll 0 0 #FFFFFF;
+    display: table;
+    margin-left: -140px;
+    margin-top: 15px;
+    padding-bottom: 20px;
+    padding-right: 30px;
+    padding-top: 20px;
+    width: 600px;
+
+}
+
+.footer-link-1:hover, .footer-link-2:hover, .footer-link-3:hover, .footer-link-4:hover {
+	opacity: 1;
+}
+
+.footer-link-1, .footer-link-2, .footer-link-3, .footer-link-4 {
+	opacity: 0.9;
+	-webkit-transition: all 0.3s ease;
+	-moz-transition: all 0.3s ease;
+	-o-transition: all 0.3s ease;
+	transition: all 0.3s ease;
+}
+
+.footer-link-1{
+	background: url("../img/link-1.png") no-repeat;
+	width: 72px;
+	height: 50px;
+	margin: 0 auto;
+}
+
+.footer-link-2{
+	background: url("../img/link-2.png") no-repeat;
+	width: 112px;
+	height: 50px;
+	margin: 0 auto;
+}
+
+.footer-link-3{
+	background: url("../img/link-3.png") no-repeat;
+	width: 70px;
+	height: 70px;
+	margin-left: 46px;
+	margin: 0 auto;
+}
+
+.footer-link-4{
+	background: url("../img/link-4.png") no-repeat;
+	width: 50px;
+	height: 50px;
+	margin: 0 auto;
+}
+
+.footer-link-5{
+	background: url("../img/link-5.png") no-repeat;
+	width: 156px;
+	height: 50px;
+	margin: 0 auto;
+	margin-left: 20px;
+}
+
+.links-table{
+	display: table-cell;
+	width: 29%;
+	height: 50px;
+}
+
+@font-face {
+    font-family: 'gnuolanefree';
+    src: url('../fontface/gnuolane/gnuolane-webfont-webfont.eot');
+    src: url('../fontface/gnuolane/gnuolane-webfont-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fontface/gnuolane/gnuolane-webfont-webfont.woff') format('woff'),
+         url('../fontface/gnuolane/gnuolane-webfont-webfont.ttf') format('truetype'),
+         url('../fontface/gnuolane/gnuolane-webfont-webfont.svg#gnuolanefree') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+/** -------- VERSION IPHONE ---------- **/
+@media screen and (max-width: 680px), screen and (max-device-width: 460px) {
+
+#main .content{
+	width: 350px;
+	padding: 10px 0;
+	margin: 0 auto;
+	text-align: center;
+}
+
+#main .content #intro form{
+	bottom: 15px;
+    margin-top: 70px;
+    position: relative;
+    margin-left: 30px;
+}
+
+#footer-min{
+ 	display: block;
+    margin: 10px auto 0;
+    text-align: center;
+    width: 350px;
+}
+#footer-links{
+display: block;
+}
+
+#visual{
+	width: 330px;
+}
+
+#main .content #intro #features .container{
+	width: 320px;
+}
+
+.bt-dl-later{
+	text-align: center;
+}
+
+#main .content #intro{
+	width: 350px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+#main .content #afri-visu{
+	margin-left: 10px;
+}
+
+.liens-sous-logo-afri{
+	margin-top: 340px;
+	margin-left: 20px;
+}
+
+#footer{
+	display: none;
+}
+
+#footer .inner{
+	width: 320px;
+}
+
+#footer-links{
+	width: 300px;
+}
+
+.links-table{
+	display: table-header-group;
+	width: 25%;
+	background-color: #fff;
+}
+
+#shadow-box{
+	background: url(../img/shadow-box-min.png) no-repeat;
+	width: 263px;
+	height: 7px;
+	margin: 0 auto;
+}
+
+.footer-link-1, .footer-link-2, .footer-link-3, .footer-link-4{
+	margin-top: 10px!important;
+	margin-bottom: 10px!important;
+}
+
+#footer form{
+	font-size: 25px;
+	text-align: center;
+}
+
+}
