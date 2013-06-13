@@ -4,7 +4,7 @@ KIWIX_X86_STATIC_URL=http://download.kiwix.org/bin/0.9_rc2/kiwix-0.9-rc2-linux-i
 KIWIX_ARM_STATIC_URL=http://download.kiwix.org/bin/nightly/2013-06-05/kiwix-20130605_rc18c20515c32e3ae446d536c4f59c10418068525-server_armv5tejl.tar.bz2
 KIWIX_WINDOWS_URL=http://download.kiwix.org/bin/0.9_rc2/kiwix-0.9-rc2-win.zip
 KIWIX_OSX_URL=http://download.kiwix.org/bin/0.9_rc2/kiwix-0.9-rc2.dmg
-KIWIX_ANDROID_URL=http://download.kiwix.org/bin/android/kiwix-1.3.apk
+KIWIX_ANDROID_URL=http://download.kiwix.org/bin/android/kiwix-1.2.apk
 KIWIX_SRC_URL=http://download.kiwix.org/src/kiwix-0.9~rc2-src.tar.gz
 BIN_TO_INSTALL="no"
 
