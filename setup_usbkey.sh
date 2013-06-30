@@ -47,6 +47,7 @@ fi
 # Set USB label
 echo "Setting new label KIWIX to USB key at $DEVICE ..."
 echo "drive a: file=\"$DEVICE\"" > ~/.mtoolsrc
+echo "mtools_skip_check=1" >> ~/.mtoolsrc
 sudo mlabel a:"KIWIX"
 sudo mlabel -s a:
 sync
