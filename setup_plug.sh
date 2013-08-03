@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# List deb packages to check/install:
+# apt-get -o DPkg::options::=--force-confmiss --assume-yes install dialog install dnsmasq-base awstats nginx wireless-tools ntpdate
+
 # Init a few variables
 SSH_LOGIN=root
 SSH_PASS=nosoup4u
