@@ -27,7 +27,7 @@ then
 fi
 
 # Find the IP of the plug
-IP=`sudo arp-scan --localnet | grep -E '^f0:ad:4e|40:2c:f4' | cut -s -f1 | tail -n1`
+IP=`sudo arp-scan --localnet | grep -E $'\t(f0:ad:4e|40:2c:f4)' | cut -s -f1 | tail -n1`
 if [ "$IP" = "" ]
 then
     echo "Unable to find the IP of the plug on your local network."
