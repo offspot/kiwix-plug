@@ -3,18 +3,18 @@ ROOT=$1
 ROOT_ESCAPED="${ROOT//\//\/}" 
 SSID=KIWIX_PLUG
 
-# WARNING: current heavy work on this file for Raspberry Pi ~ Seb35
-
 # Device probber
-DEVICE=GURUPLUG
+DEVICE=guruplug
 if [ -f "/etc/init.d/tonido" ] ; then
-    DEVICE=TONIDOPLUG
-else if [ "$(cat /etc/issue | cut -c1-8)" = "Raspbian" ] ; then
-    DEVICE=RASPBERRYPI
+    DEVICE=tonidoplug
+else
+    if [ "$(cat /etc/issue | cut -c1-8)" = "Raspbian" ] ; then
+        DEVICE=raspberrypi
+    fi
 fi
 
-# Insert mandatory module for Wifi
-if [ ! "$DEVICE" = "RASPBERRYPI" ] ; then
+# Insert mandatory module for Wi-Fi
+if [ ! "$DEVICE" = "raspberrypi" ] ; then
     modprobe sd8xxx
 fi
 
@@ -32,26 +32,20 @@ then
     /etc/init.d/ifplugd stop
 fi
 
-# Stop the WIFI hotspot
-if [ ! "$DEVICE" = "RASPBERRYPI" ] ; then
+# Configure the Wi-Fi and start the Wi-Fi hotspot on non-Raspberry
+if [ ! "$DEVICE" = "raspberrypi" ] ; then
     uaputl bss_stop
     ifconfig uap0 down
-else
-    ifconfig wlan0 down
-fi
-
-# Start the WIFI hotspot
-if [ ! "$DEVICE" = "RASPBERRYPI" ] ; then
     uaputl sys_cfg_ssid $SSID
     ifconfig uap0 192.168.3.1 up
     uaputl bss_start
 else
+    ifconfig wlan0 down
     ifconfig wlan0 192.168.3.1 up
-    #hostapd
 fi
 
 # Configure the eth0 or eth1 interface
-if [ ! "$DEVICE" = "RASPBERRYPI" ] ; then
+if [ ! "$DEVICE" = "raspberrypi" ] ; then
     ifconfig eth1 >& /dev/null
     RC=$?
     NIC=eth1
@@ -80,14 +74,14 @@ if [ -f "/etc/init.d/udhcpd" ]
 then
     /etc/init.d/udhcpd stop
 fi
-if [ "$DEVICE" = "RASPBERRYPI" ] ; then
+if [ "$DEVICE" = "raspberrypi" ] ; then
     dnsmasq --conf-file=$ROOT/system/conf/dnsmasq-raspberrypi.conf
 else
     dnsmasq --conf-file=$ROOT/system/conf/dnsmasq.conf
 fi
 
 # Add IP forwarding
-if [ ! "$DEVICE" = "RASPBERRYPI" ] ; then
+if [ ! "$DEVICE" = "raspberrypi" ] ; then
     ifconfig uap0 >& /dev/null
     RC=$?
     if [[ $RC = 0 ]]
@@ -95,6 +89,14 @@ if [ ! "$DEVICE" = "RASPBERRYPI" ] ; then
         sysctl -w net.ipv4.ip_forward=1
         iptables -t nat -A PREROUTING -p tcp -j DNAT --to-destination 192.168.3.1
     fi
+fi
+
+# Start the WIFI hotspot on Raspberry
+# (requires the DHCP service is activated)
+if [ "$DEVICE" = "raspberrypi" ] ; then
+    cp "$ROOT/system/conf/hostapd.conf" /tmp/hostapd.conf
+    sed -i -e "s/KIWIX/$SSID/" /tmp/hostapd.conf
+    hostapd -B /tmp/hostapd.conf
 fi
 
 # Launch kiwix-serve
@@ -105,7 +107,7 @@ then
 fi
 cp $ROOT/system/bin/kiwix-serve /tmp/kiwix-serve
 chmod +x /tmp/kiwix-serve
-#/tmp/kiwix-serve --library --port=4201 --daemon $ROOT/data/library/library.xml 
+/tmp/kiwix-serve --library --port=4201 --daemon $ROOT/data/library/library.xml 
 
 # Stop apache (if necessary)
 if [ -e /etc/init.d/apache ] ; then /etc/init.d/apache stop ; fi
@@ -116,17 +118,17 @@ if [ -e /etc/init.d/apache2 ] ; then /etc/init.d/apache2 stop ; fi
 
 # Setup Web server (nginx)
 /etc/init.d/nginx stop
-#sed -e "s/ROOT/$ROOT_ESCAPED/" $ROOT/system/conf/nginx.conf > /tmp/kiwix.nginx.conf
-#unlink /etc/nginx/sites-enabled/default
-#ln -s /tmp/kiwix.nginx.conf /etc/nginx/sites-enabled/default
-#/etc/init.d/nginx start
+sed -e "s/ROOT/$ROOT_ESCAPED/" $ROOT/system/conf/nginx.conf > /tmp/kiwix.nginx.conf
+unlink /etc/nginx/sites-enabled/default
+ln -s /tmp/kiwix.nginx.conf /etc/nginx/sites-enabled/default
+/etc/init.d/nginx start
 
 # Run awstats in loop
-#sed -e "s/ROOT/$ROOT_ESCAPED/" $ROOT/system/conf/awstats.conf > /tmp/awstats.kiwix.conf
-#while [ 42 ]
-#do
-#    echo "kiwix-plug running..."
-#    sleep 3600
-#    /usr/share/awstats/tools/awstats_buildstaticpages.pl -config=kiwix -update -lang-fr -dir=$ROOT/stats/ -configdir=/tmp/
-#done
+sed -e "s/ROOT/$ROOT_ESCAPED/" $ROOT/system/conf/awstats.conf > /tmp/awstats.kiwix.conf
+while [ 42 ]
+do
+    echo "kiwix-plug running..."
+    sleep 3600
+    /usr/share/awstats/tools/awstats_buildstaticpages.pl -config=kiwix -update -lang-fr -dir=$ROOT/stats/ -configdir=/tmp/
+done
 
