@@ -5,21 +5,27 @@ SSID=KIWIX_PLUG
 
 # Device probber
 DEVICE=guruplug
-if [ -f "/etc/init.d/tonido" ] ; then
+if [ -f "/etc/init.d/tonido" ]
+then
     DEVICE=tonidoplug
 else
-    if [ "$(cat /etc/issue | cut -c1-8)" = "Raspbian" ] ; then
+    if [ "$(cat /etc/issue | cut -c1-8)" = "Raspbian" ]
+    then
         DEVICE=raspberrypi
     fi
 fi
 
 # Insert mandatory module for Wi-Fi
-if [ ! "$DEVICE" = "raspberrypi" ] ; then
+if [ ! "$DEVICE" = "raspberrypi" ]
+then
     modprobe sd8xxx
 fi
 
 # Remount (with read permission) for the Toniplug
-mount -o remount "$ROOT"
+if [ ! "$DEVICE" = "raspberry" ]
+then
+  mount -o remount "$ROOT"
+fi
 
 # Stop Tonido stuff if necessary
 if [ -f "/etc/init.d/tonido" ]
@@ -33,7 +39,8 @@ then
 fi
 
 # Configure the Wi-Fi and start the Wi-Fi hotspot on non-Raspberry
-if [ ! "$DEVICE" = "raspberrypi" ] ; then
+if [ ! "$DEVICE" = "raspberrypi" ]
+then
     uaputl bss_stop
     ifconfig uap0 down
     uaputl sys_cfg_ssid $SSID
@@ -45,7 +52,8 @@ else
 fi
 
 # Configure the eth0 or eth1 interface
-if [ ! "$DEVICE" = "raspberrypi" ] ; then
+if [ ! "$DEVICE" = "raspberrypi" ]
+then
     ifconfig eth1 >& /dev/null
     RC=$?
     NIC=eth1
@@ -74,14 +82,16 @@ if [ -f "/etc/init.d/udhcpd" ]
 then
     /etc/init.d/udhcpd stop
 fi
-if [ "$DEVICE" = "raspberrypi" ] ; then
+if [ "$DEVICE" = "raspberrypi" ]
+then
     dnsmasq --conf-file=$ROOT/system/conf/dnsmasq-raspberrypi.conf
 else
     dnsmasq --conf-file=$ROOT/system/conf/dnsmasq.conf
 fi
 
 # Add IP forwarding
-if [ ! "$DEVICE" = "raspberrypi" ] ; then
+if [ ! "$DEVICE" = "raspberrypi" ]
+then
     ifconfig uap0 >& /dev/null
     RC=$?
     if [[ $RC = 0 ]]
@@ -91,9 +101,10 @@ if [ ! "$DEVICE" = "raspberrypi" ] ; then
     fi
 fi
 
-# Start the WIFI hotspot on Raspberry
+# Start the Wi-Fi hotspot on Raspberry
 # (requires the DHCP service is activated)
-if [ "$DEVICE" = "raspberrypi" ] ; then
+if [ "$DEVICE" = "raspberrypi" ]
+then
     cp "$ROOT/system/conf/hostapd.conf" /tmp/hostapd.conf
     sed -i -e "s/KIWIX/$SSID/" /tmp/hostapd.conf
     hostapd -B /tmp/hostapd.conf
@@ -117,18 +128,47 @@ if [ -e /etc/init.d/apache2 ] ; then /etc/init.d/apache2 stop ; fi
 #if [ -e /etc/init.d/ssh ] ; then /etc/init.d/ssh stop ; fi
 
 # Setup Web server (nginx)
+# Horrible hack for Raspberry: the FAT USB keys are mounted with dmask=0077, making
+#  them unreadable by nginx (user www-data), so I copy nginx files in /tmp.
+#  kiwix-serve has no problem since it is executed as root.
 /etc/init.d/nginx stop
-sed -e "s/ROOT/$ROOT_ESCAPED/" $ROOT/system/conf/nginx.conf > /tmp/kiwix.nginx.conf
+cp $ROOT/system/conf/nginx.conf /tmp/kiwix.nginx.conf
+chmod 744 /tmp/kiwix.nginx.conf
+if [ "$DEVICE" = "raspberrypi" ]
+then
+  cp -a "$ROOT/system/landing" /tmp/kiwix-landing
+  cp -a "$ROOT/packages" /tmp/kiwix-packages
+  cp -a "$ROOT/log" /tmp/kiwix-log
+  cp -a "$ROOT/stats" /tmp/kiwix-stats
+  chmod 444 /tmp/kiwix-landing/* /tmp/kiwix-packages/*
+  chmod 555 /tmp/kiwix-landing /tmp/kiwix-log /tmp/kiwix-stats /tmp/kiwix-packages
+  chmod 777 /tmp/kiwix-log/* /tmp/kiwix-stats/*
+  sed -i -e "s/ROOT\\/system\\/landing\\//\/tmp\/kiwix-landing\//" /tmp/kiwix.nginx.conf
+  sed -i -e "s/ROOT\\/packages\\//\/tmp\/kiwix-packages\//" /tmp/kiwix.nginx.conf
+  sed -i -e "s/ROOT\\/log\\//\/tmp\/kiwix-log\//" /tmp/kiwix.nginx.conf
+  sed -i -e "s/ROOT\\/stats\\//\/tmp\/kiwix-stats\//" /tmp/kiwix.nginx.conf
+fi
+sed -i -e "s/ROOT/$ROOT_ESCAPED/" /tmp/kiwix.nginx.conf
 unlink /etc/nginx/sites-enabled/default
 ln -s /tmp/kiwix.nginx.conf /etc/nginx/sites-enabled/default
 /etc/init.d/nginx start
 
 # Run awstats in loop
-sed -e "s/ROOT/$ROOT_ESCAPED/" $ROOT/system/conf/awstats.conf > /tmp/awstats.kiwix.conf
+if [ "$DEVICE" = "raspberrypi" ]
+then
+  sed -e "s/ROOT\\//\/tmp\/kiwix-/" $ROOT/system/conf/awstats.conf > /tmp/awstats.kiwix.conf
+else
+  sed -e "s/ROOT/$ROOT_ESCAPED/" $ROOT/system/conf/awstats.conf > /tmp/awstats.kiwix.conf
+fi
 while [ 42 ]
 do
     echo "kiwix-plug running..."
     sleep 3600
-    /usr/share/awstats/tools/awstats_buildstaticpages.pl -config=kiwix -update -lang-fr -dir=$ROOT/stats/ -configdir=/tmp/
+    if [ "$DEVICE" = "raspberry" ]
+    then
+      /usr/share/awstats/tools/awstats_buildstaticpages.pl -config=kiwix -update -lang-fr -dir=/tmp/kiwix-stats/ -configdir=/tmp/
+    else
+      /usr/share/awstats/tools/awstats_buildstaticpages.pl -config=kiwix -update -lang-fr -dir=$ROOT/stats/ -configdir=/tmp/
+    fi
 done
 

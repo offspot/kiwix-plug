@@ -11,6 +11,10 @@ is adapated for the Raspberry Pi, use the Kiwix-serve technology and
 many open source softwares. This documentation explains how to setup
 Kiwix-plug.
 
+This port for Raspberry Pi is still EXPERIMENTAL: it has been tested
+only by the developer, so there could be bugs or issues on other
+configurations. Please report them on http://reportabug.kiwix.org.
+
 == Overview and installation choices ==
 
 The installation comes in 3 steps:
@@ -34,7 +38,9 @@ to this computer through the local network.
 
 == Requirements ==
 * A Raspberry Pi (http://www.raspberry.org)
-* An SD card with Raspbian installed there
+* A Wi-Fi USB dongle or any Wi-Fi device, with a Linux driver compatible
+  with hostapd: currently hostap, wired, madwifi, test, none, nl80211, bsd
+* The system SD card with Raspbian installed there
 * Some place on an empty USB key or on the system SD card, to store
   the ZIM files and a few other things
 * ZIM files you want to spread
@@ -109,23 +115,32 @@ Run "./setup_raspberry.sh", this should do a few things. This will be
 fast, because this only install if necessary a few packages, add an
 init.d script and initiate the clock.
 
+WARNING: make sure your Wi-Fi USB dongle or Wi-Fi connection has a
+Linux driver, and this one is compatible with the Wi-Fi Access Point
+software (hostapd). Currently it has only been tested with a D-Link
+with the driver rtl8192cu, which requires a special compilation of hostapd.
+
 == Setup the flash storage ==
 
 You need to put a free USB key to your computer and run the script
 "./setup_usbkey.sh". This will copy many things to the USB key, so
 this can take many minutes, be patient...
 
+If you want to customize the name of the Wi-Fi connection ("KIWIX_PLUG"
+by default), open the file "USBKEY/system/kiwix-plug" and change the
+name in the first lines.
+
 == Conclusion ==
 
 You should have now a perfectly working kiwix-plug. Remove the RJ45
-cable from the plug computer, put the flash drive to the plug computer
-and restart it. You should see now a new Wifi network called
-"KIWIX_PLUG" appearing. Connect to it using your
-laptop/smartophone/tablet and open a new Web browser windows. You
-should land to the Kiwix-plug Welcome page.
+cable from the Raspberry Pi, put the system SD card and the Wi-Fi device
+and restart the Raspberry Pi. You can insert the USB key with the content
+either before the starting the Raspberry Pi, either once it is started
+(if you remove the USB key, you will have to restart to re-launch the
+Wi-Fi connection). You should see now a new Wifi network called
+"KIWIX_PLUG" appearing. Connect to it using your laptop/smartophone/tablet,
+open a new Web browser windows and go on any website (NB: avoid to select a
+HTTPS website). You should land to the Kiwix-plug Welcome page.
 
 Enjoy! To any problem: http://reportabug.kiwix.org
-
-
-
 

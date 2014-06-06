@@ -54,14 +54,15 @@ if [ "`cat /etc/issue | cut -c1-8`" = "Raspbian" ] ; then
   
   # Install required packages
   dpkg --configure -a
-  install_package dialog  dialog       soft
-  install_package dnsmasq dnsmasq-base hard
-  install_package awstats awstats      soft
-  install_package nginx   nginx        hard "-o DPkg::options::=--force-confmiss"
-  install_package hostapd hostapd      soft
+  install_package dialog        dialog        soft
+  install_package dnsmasq       dnsmasq-base  hard
+  install_package awstats       awstats       soft
+  install_package nginx         nginx         hard "-o DPkg::options::=--force-confmiss"
+  install_package hostapd       hostapd       soft
+  install_package inotify-tools inotify-tools soft
   
   # Setup the init.d script
-  sudo cp scripts/kiwix-plug.plug /etc/init.d/kiwix-plug
+  sudo cp scripts/kiwix-plug.raspberrypi /etc/init.d/kiwix-plug
   IN_RC_LOCAL=\`grep "/etc/init.d/kiwix-plug" /etc/rc.local\`
   if [ "$IN_RC_LOCAL" = "" ]
   then
@@ -98,7 +99,7 @@ else
 fi
 
 # Copy init.d script
-pscp -pw "$SSH_PASS" scripts/kiwix-plug.plug "$SSH_LOGIN@$IP:/tmp/kiwix-plug" <<EOF
+pscp -pw "$SSH_PASS" scripts/kiwix-plug.raspberrypi "$SSH_LOGIN@$IP:/tmp/kiwix-plug" <<EOF
 n
 EOF
 
@@ -217,6 +218,26 @@ then                                                                            
   fi                                                                                       \n\
 else                                                                                       \n\
   echo \"hostapd is already installed.\"                                                   \n\
+fi                                                                                         \n\
+" >> $COMMANDS
+
+# Check if inotify-tools is there and install it otherwise
+echo "                                                                                     \n\
+HOSTAPD=\`dpkg -l inotify-tools | grep ^ii\`                                               \n\
+if [ \"\$INOTIFY\" = \"\" ]                                                                \n\
+then                                                                                       \n\
+  echo \"Installing inotify-tools...\"                                                     \n\
+  sudo apt-get update                                                                      \n\
+  sudo apt-get --assume-yes install inotify-tools                                          \n\
+  if [ \"$?\" != \"0\" ]                                                                   \n\
+  then                                                                                     \n\
+    echo \"Unable to install correctly inotify-tools\"                                     \n\
+    exit 1                                                                                 \n\
+  else                                                                                     \n\
+    echo \"inotify-tools installation successful\"                                         \n\
+  fi                                                                                       \n\
+else                                                                                       \n\
+  echo \"inotify-tools is already installed.\"                                             \n\
 fi                                                                                         \n\
 " >> $COMMANDS
 
