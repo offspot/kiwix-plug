@@ -1,11 +1,11 @@
 #!/bin/bash
 
-KIWIX_X86_STATIC_URL=http://download.kiwix.org/bin/0.9_rc2/kiwix-0.9-rc2-linux-i686.tar.bz2
-KIWIX_ARM_STATIC_URL=http://download.kiwix.org/bin/nightly/2014-04-05/kiwix-20140405_dbc7eef4-server_armv5tejl.tar.bz2
-KIWIX_WINDOWS_URL=http://download.kiwix.org/bin/0.9_rc2/kiwix-0.9-rc2-win.zip
-KIWIX_OSX_URL=http://download.kiwix.org/bin/0.9_rc2/kiwix-0.9-rc2.dmg
-KIWIX_ANDROID_URL=http://download.kiwix.org/bin/android/kiwix-1.8.apk
-KIWIX_SRC_URL=http://download.kiwix.org/src/kiwix-0.9~rc2-src.tar.gz
+KIWIX_X86_STATIC_URL=http://download.kiwix.org/bin/0.9/kiwix-0.9-linux-i686.tar.bz2
+KIWIX_ARM_STATIC_URL=http://download.kiwix.org/bin/0.9/kiwix-server-0.9-linux-armv5tejl.tar.bz2
+KIWIX_WINDOWS_URL=http://download.kiwix.org/bin/0.9/kiwix-0.9-win.zip
+KIWIX_OSX_URL=http://download.kiwix.org/bin/0.9/kiwix-0.9.dmg
+KIWIX_ANDROID_URL=http://download.kiwix.org/bin/android/kiwix-1.9.apk
+KIWIX_SRC_URL=http://download.kiwix.org/src/kiwix-0.9-src.tar.xz
 BIN_TO_INSTALL="no"
 
 # Compute script path
@@ -178,11 +178,11 @@ then
 fi
 
 # Download the sources
-if [ ! -f "$ROOT/bin/.kiwix-src.tar.gz.finished" -o ! -f "$ROOT/bin/kiwix-src.tar.gz" ]
+if [ ! -f "$ROOT/bin/.kiwix-src.tar.xz.finished" -o ! -f "$ROOT/bin/kiwix-src.tar.xz" ]
 then
-    rm -f "$ROOT/bin/.kiwix-src.tar.gz.finished" "$ROOT/bin/kiwix-src.tar.gz"
-    wget -c $KIWIX_SRC_URL -O "$ROOT/bin/kiwix-src.tar.gz"
-    touch "$ROOT/bin/.kiwix-src.tar.gz.finished"
+    rm -f "$ROOT/bin/.kiwix-src.tar.xz.finished" "$ROOT/bin/kiwix-src.tar.xz"
+    wget -c $KIWIX_SRC_URL -O "$ROOT/bin/kiwix-src.tar.xz"
+    touch "$ROOT/bin/.kiwix-src.tar.xz.finished"
 fi
 
 # Rename the ZIM files by adding a "_" at the beginning
