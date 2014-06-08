@@ -119,6 +119,13 @@ WARNING: make sure your Wi-Fi USB dongle or Wi-Fi connection has a
 Linux driver, and this one is compatible with the Wi-Fi Access Point
 software (hostapd). Currently it has only been tested with a D-Link
 with the driver rtl8192cu, which requires a special compilation of hostapd.
+If your Wi-Fi driver is not nl80211, you have to change this parameter in the
+USB key configuration USBKEY/system/conf/hostapd.conf after the files are
+copied on the USB key in the next step.
+
+WARNING: before activating Kiwix on your Raspberry Pi, you have to configure
+Raspbian to a graphical session (even if the display is not connected) since
+the graphical environnement is managing the automatic mount of USB devices.
 
 == Setup the flash storage ==
 
@@ -143,4 +150,33 @@ open a new Web browser windows and go on any website (NB: avoid to select a
 HTTPS website). You should land to the Kiwix-plug Welcome page.
 
 Enjoy! To any problem: http://reportabug.kiwix.org
+
+== Bugs/Todo ==
+* Managing the auto-mount ourselves instead of relying on the mount by LXDE
+* Mount the USB key with fmask=0000,dmask=0022 instead of copying the config
+  files in /tmp
+* Add a possibility to store the ZIM files and config files in the system SD
+  card instead of an external USB key, given the Raspberry Pi model A has
+  only one USB plug, which is likely used by a Wi-Fi USB device
+* Add some mechanism to properly stop kiwix-serve
+
+== Technical considerations for the port on Raspberry Pi ==
+
+* Mount:
+  The USB key could not be mounted during the boot, when /etc/init.d/kiwix-plug
+  is launched. If no Kiwix USB key is found, this script waits some Kiwix USB
+  key is mounted; this is achieved with the program inotifywait monitoring
+  /media. This mechanism use the LXDE feature to auto-mount USB keys, possibly
+  usbmount could be used with a hook to launch kiwix-serve.
+* Wi-Fi management:
+  The Access Point (AP) Wi-Fi is created with hostapd and wpa_supplicant has
+  to be deactivated to free up the Wi-Fi interface. The DHCP server dnsmasq has
+  to be launched before hostapd to be ready to distribute IP addresses.
+* Read rights on the USB key:
+  I didn’t succeed in changing the dmask of the FAT32 USB mount, so unprivileged
+  programs cannot read the USB key (nginx, awstats, hostapd), so I copied the
+  files on the system SD card (exempt the ZIM files, too big); but the binaries
+  are quite big and the ZIM are not accessible by nginx. Possibly this could be
+  solved by using usbmount. kiwix-serve can read the ZIM files since it has root
+  rights.
 
