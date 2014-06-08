@@ -66,7 +66,7 @@ The setup process has 3 steps, based on 3 scripts:
 
 2 Run "setup_raspberry.sh" to configure your Raspberry Pi.
 
-3 Run "setup_content.sh" to copy everything necessary on your
+3 Run "setup_usbkey.sh" to copy everything necessary on your
   storage device
 
 == Retrieving the code ==

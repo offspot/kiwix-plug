@@ -4,7 +4,7 @@ ROOT_ESCAPED="${ROOT//\//\/}"
 SSID=KIWIX_PLUG
 
 # Device probber
-DEVICE=guruplug
+DEVICE=dreamplug
 if [ -f "/etc/init.d/tonido" ]
 then
     DEVICE=tonidoplug
