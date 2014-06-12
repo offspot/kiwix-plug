@@ -85,13 +85,7 @@ if [ -f "/etc/init.d/udhcpd" ]
 then
     /etc/init.d/udhcpd stop
 fi
-if [ "$DEVICE" = "raspberrypi" ]
-then
-    cp "$ROOT/system/conf/dnsmasq-raspberrypi.conf" /tmp/dnsmasq.conf
-    dnsmasq --conf-file=/tmp/dnsmasq.conf
-else
-    dnsmasq --conf-file=$ROOT/system/conf/dnsmasq.conf
-fi
+dnsmasq --conf-file=$ROOT/system/conf/dnsmasq.conf
 
 # Add IP forwarding
 if [ ! "$DEVICE" = "raspberrypi" ]
