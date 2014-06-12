@@ -64,7 +64,7 @@ The setup process has 3 steps, based on 3 scripts:
   especialy downloads the binaries to install on the plug, compute
   indexes, etc.
 
-2 Run "setup_raspberry.sh" to configure your Raspberry Pi.
+2 Run "setup_raspberrypi.sh" to configure your Raspberry Pi.
 
 3 Run "setup_usbkey.sh" to copy everything necessary on your
   storage device
@@ -109,9 +109,9 @@ computer.
 
 If you configure remotely the Raspberry Pi and if you have changed the
 default password or the default user on Raspberry Pi, you will have to
-change these at the beginning of 'setup_raspberry.sh'.
+change these at the beginning of 'setup_raspberrypi.sh'.
 
-Run "./setup_raspberry.sh", this should do a few things. This will be
+Run "./setup_raspberrypi.sh", this should do a few things. This will be
 fast, because this only install if necessary a few packages, add an
 init.d script and initiate the clock.
 
