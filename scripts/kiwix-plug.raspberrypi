@@ -1,0 +1,87 @@
+#! /bin/bash
+### BEGIN INIT INFO
+# Provides: kiwix-plug
+# Required-Start: $all
+# Required-Stop: $all
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Start kiwix-plug at the boot time
+# Description: Make everything necessary to have a kiwix-plug running
+### END INIT INFO
+
+INOTIFY_FIFO=/var/run/kiwix-inotify
+PLUG_LOCK=/var/lock/kiwix-plug
+
+start_inotify() {
+  if [ ! -e $INOTIFY_FIFO ] ; then
+    mkfifo $INOTIFY_FIFO
+  else
+    return
+  fi
+  inotifywait -m -e create /media > "$INOTIFY_FIFO" &
+  INOTIFY_PID=$!
+  trap "exit_inotify" 2 3 15
+  
+  while read file ; do
+    MOUNT=$(check_mounts)
+    if [ -n "$MOUNT" ] ; then
+      execute_kiwixplug $MOUNT
+    fi
+  done < "$INOTIFY_FIFO"
+}
+
+exit_inotify() {
+  kill $INOTIFY_PID
+  rm $INOTIFY_FIFO
+  exit 0
+}
+
+check_mounts() {
+  IFS=$'\n'
+  sync
+  for MOUNT in `df | sed "s/^ *//;s/ *$//;s/ \{1,\}/ /g" | cut --delimiter=" " -f6- | grep "/media/"`
+  do
+    if [ -f "$MOUNT/system/kiwix-plug" ]
+    then
+      break
+    fi
+    MOUNT=
+  done
+  unset IFS
+  echo $MOUNT
+}
+
+execute_kiwixplug() {
+  echo "Found kiwix-plug USB key at $1"
+  cp "$1/system/kiwix-plug" /tmp/
+  chmod +x /tmp/kiwix-plug
+  /tmp/kiwix-plug "$1" > /tmp/kiwix-plug.log 2>/dev/null &
+  touch $PLUG_LOCK
+  exit_inotify
+}
+
+# Carry out specific functions when asked to by the system
+case "$1" in
+  start)
+    echo "Starting script kiwix-plug"
+    MOUNT=$(check_mounts)
+
+    if [ "$MOUNT" = "" ]
+    then
+      echo "Unable to find a kiwix-plug USB key plugged :("
+      start_inotify
+    else
+      execute_kiwixplug $MOUNT
+    fi
+    ;;
+  stop)
+    echo "Stopping script kiwix-plug"
+    rm $PLUG_LOCK
+    ;;
+  *)
+    echo "Usage: /etc/init.d/kiwix-plug {start|stop}"
+    exit 1
+    ;;
+esac
+
+exit 0
