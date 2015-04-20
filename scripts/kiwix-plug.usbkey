@@ -132,7 +132,7 @@ if [ -e /etc/init.d/apache ] ; then /etc/init.d/apache stop ; fi
 if [ -e /etc/init.d/apache2 ] ; then /etc/init.d/apache2 stop ; fi
 
 # Stop ssh
-#if [ -e /etc/init.d/ssh ] ; then /etc/init.d/ssh stop ; fi
+if [ -e /etc/init.d/ssh ] ; then /etc/init.d/ssh stop ; fi
 
 # Setup Web server (nginx)
 # Horrible hack for Raspberry: the FAT USB keys are mounted with dmask=0077, making
