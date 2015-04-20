@@ -121,16 +121,10 @@ fi                                                                              
 # delivered with a self-compiled nginx, so we need to check the
 # package instead of the binary
 echo -e "                                                                                  \n\
-NGINX=\`dpkg -l nginx-full | grep ii\`                                                     \n\
-if [ \"\$NGINX\" = \"\" ]                                                                  \n\
-then                                                                                       \n\
-  echo \"Installing nginx...\"                                                             \n\
+  echo \"(Re)-nstalling nginx...\"                                                         \n\
   apt-get update                                                                           \n\
-  dpkg --purge nginx-full nginx-common                                                     \n\ 
+  apt-get remove --purge nginx nginx-full nginx-common                                     \n\ 
   apt-get -o DPkg::options::=--force-confmiss --assume-yes install nginx-common nginx-full \n\
-else                                                                                       \n\
-  echo \"nginx is already installed.\"                                                     \n\
-fi                                                                                         \n\
 " >> $COMMANDS
 
 # Check if wireless-tools is installed
