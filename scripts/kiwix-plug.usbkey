@@ -15,6 +15,13 @@ else
     fi
 fi
 
+# Where is uaputl
+UAPUTL=`whereis uaputl | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
+if [ "$UAPUTL" = "" ]
+then
+    UAPUTL=`find /root -name "uaputl" -type f`
+fi
+
 # Insert mandatory module for Wi-Fi
 if [ ! "$DEVICE" = "raspberrypi" ]
 then
@@ -39,18 +46,20 @@ then
 fi
 
 # Configure the Wi-Fi and start the Wi-Fi hotspot on non-Raspberry
+cd `dirname $UAPUTL`
+$UAPUTL bss_stop
 if [ ! "$DEVICE" = "raspberrypi" ]
 then
-    uaputl bss_stop
     ifconfig uap0 down
-    uaputl sys_cfg_ssid $SSID
+    $UAPUTL sys_cfg_ssid $SSID
     ifconfig uap0 192.168.3.1 up
-    uaputl bss_start
 else
     wpa_cli terminate
     ifconfig wlan0 down
+    $UAPUTL sys_cfg_ssid $SSID
     ifconfig wlan0 192.168.3.1 up
 fi
+$UAPUTL bss_start
 
 # Configure the eth0 or eth1 interface
 if [ ! "$DEVICE" = "raspberrypi" ]

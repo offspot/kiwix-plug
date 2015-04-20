@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # List deb packages to check/install:
 # apt-get -o DPkg::options::=--force-confmiss --assume-yes install dialog install dnsmasq-base awstats nginx wireless-tools ntpdate
@@ -42,23 +42,23 @@ n
 EOF
 
 # Write remote commands in a file
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 echo \"\"                                                                                  \n\
 echo \"Successfuly connected to the plug...\"                                              \n\
 " > $COMMANDS
 
 # Setup the environement variable for non-interactive tty
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 export DEBIAN_FRONTEND=noninteractive                                                      \n\
 " >> $COMMANDS
 
 # For security reason run dpkg
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 dpkg --configure -a                                                                        \n\
 " >> $COMMANDS
 
 # Check if dialog is there and install it otherwise
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 DIALOG=\`dpkg -l dialog | grep ii\`                                                        \n\
 if [ \"\$DIALOG\" = \"\" ]                                                                 \n\
 then                                                                                       \n\
@@ -78,7 +78,7 @@ fi                                                                              
 " >> $COMMANDS
 
 # Check if dnsmasq is there and install it otherwise
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 DNSMASQ=\`whereis dnsmasq | cut --delimiter=\":\" -f2 | cut --delimiter=\" \" -f2\`        \n\
 if [ \"\$DNSMASQ\" = \"\" ]                                                                \n\
 then                                                                                       \n\
@@ -98,7 +98,7 @@ fi                                                                              
 " >> $COMMANDS
 
 # Check if awstats is installed
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 AWSTATS=\`dpkg -l awstats | grep ii\`                                                      \n\
 if [ \"\$AWSTATS\" = \"\" ]                                                                \n\
 then                                                                                       \n\
@@ -117,21 +117,24 @@ else                                                                            
 fi                                                                                         \n\
 " >> $COMMANDS
 
-# Check if nginx is there and install it otherwise
-echo "                                                                                     \n\
-NGINX=\`whereis nginx | cut --delimiter=\":\" -f2 | cut --delimiter=\" \" -f2\`            \n\
+# Check if nginx is there and install it otherwise. Dreamplugs are
+# delivered with a self-compiled nginx, so we need to check the
+# package instead of the binary
+echo -e "                                                                                  \n\
+NGINX=\`dpkg -l nginx-full | grep ii\`                                                     \n\
 if [ \"\$NGINX\" = \"\" ]                                                                  \n\
 then                                                                                       \n\
   echo \"Installing nginx...\"                                                             \n\
   apt-get update                                                                           \n\
-  apt-get -o DPkg::options::=--force-confmiss --assume-yes install nginx                   \n\
+  dpkg --purge nginx-full nginx-common                                                     \n\ 
+  apt-get -o DPkg::options::=--force-confmiss --assume-yes install nginx-common nginx-full \n\
 else                                                                                       \n\
   echo \"nginx is already installed.\"                                                     \n\
 fi                                                                                         \n\
 " >> $COMMANDS
 
 # Check if wireless-tools is installed
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 WTOOLS=\`dpkg -l wireless-tools | grep ii\`                                                \n\
 if [ \"\$WTOOLS\" = \"\" ]                                                                 \n\
 then                                                                                       \n\
@@ -151,7 +154,7 @@ fi                                                                              
 " >> $COMMANDS
 
 # Check if ntpdate is installed and update the clock (ntpdate-debian)
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 NTPDATE=\`dpkg -l ntpdate | grep ii\`                                                      \n\
 if [ \"\$NTPDATE\" = \"\" ]                                                                \n\
 then                                                                                       \n\
@@ -172,7 +175,7 @@ ntpdate-debian                                                                  
 " >> $COMMANDS
 
 # Setup the init.d script
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 IN_RC_LOCAL=\`grep \"/etc/init.d/kiwix-plug\" /etc/rc.local\`                              \n\
 if [ \"\$IN_RC_LOCAL\" = \"\" ]                                                            \n\
 then                                                                                       \n\
@@ -189,10 +192,10 @@ chmod +x /etc/rc.local                                                          
 " >> $COMMANDS
 
 # Avoid ubsmount mounting a flashdrive with a 077 umask
-echo "                                                                                     \n\
+echo -e "                                                                                     \n\
 if [ -f \"/etc/usbmount/usbmount.conf\" ]                                                  \n\
 then                                                                                       \n\
-  sed -i \"s/umask=077/umask=022/g\" /etc/usbmount/usbmount.conf                              \n\
+  sed -i \"s/umask=077/umask=022/g\" /etc/usbmount/usbmount.conf                           \n\
 else                                                                                       \n\
   echo \"no usbmount config file to patch\"                                                \n\
 fi                                                                                         \n\
