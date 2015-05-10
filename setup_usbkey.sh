@@ -92,8 +92,11 @@ mkdir "$MOUNT/log/"
 mkdir "$MOUNT/stats/"
 mkdir "$MOUNT/goinfre/"
 
+# USB drive can be ext4, then we should allow the plug to write on it
+sudo chmod -R 777 "$MOUNT"
+
 # Flush everything on the USB drive
-#sync
+sync
 
 # End music
 beep -f 659 -l 460 -n -f 784 -l 340 -n -f 659 -l 230 -n -f 659 -l 110 -n -f 880 -l 230 -n -f 659 -l 230 -n -f 587 -l 230 -n -f 659 -l 460 -n -f 988 -l 340 -n -f 659 -l 230 -n -f 659 -l 110 -n -f 1047 -l 230 -n -f 988 -l 230 -n -f 784 -l 230 -n -f 659 -l 230 -n -f 988 -l 230 -n -f 1318 -l 230 -n -f 659 -l 110 -n -f 587 -l 230 -n -f 587 -l 110 -n -f 494 -l 230 -n -f 740 -l 230 -n -f 659 -l 460
