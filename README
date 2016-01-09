@@ -10,6 +10,9 @@ available in the ZIM format. The solution is adapated for the
 Globalscape Dreamplug, use the Kiwix-serve technology and many open
 source softwares. This documentation explains how to setup Kiwix-plug.
 
+If you want to install kiwix-plug on a RaspberryPi, please read
+README_RASPBERRYPI
+
 == Requirements ==
 * A Dreamplug
   (http://www.globalscaletechnologies.com/p-54-dreamplug-devkit.aspx)

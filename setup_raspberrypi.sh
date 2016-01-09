@@ -26,67 +26,13 @@ then
     exit 1
 fi
 
-check_package() {
-  if [ "$3" = "soft" ] ; then
-    PKG=\`dpkg -l $1 | grep ^ii\`
-  else
-    PKG=\`whereis $1 | cut --delimiter=":" -f2 | cut --delimiter=" " -f2\`
-  fi
-  if [ "$PKG" = "" ]
-  then
-    echo "Installing $1..."
-    sudo apt-get update
-    sudo apt-get $4 --assume-yes install $2
-    if [ "$?" != "0" ]
-    then
-      echo "Unable to install correctly $1"
-      exit 1
-    else
-      echo "$1 installation successful"
-    fi
-  else
-    echo "$1 is already installed."
-  fi
-}
-
-# Check if we are on the Raspberry Pi
-if [ "`cat /etc/issue | cut -c1-8`" = "Raspbian" ] ; then
-  
-  # Install required packages
-  dpkg --configure -a
-  install_package dialog        dialog        soft
-  install_package dnsmasq       dnsmasq-base  hard
-  install_package awstats       awstats       soft
-  install_package nginx         nginx         hard "-o DPkg::options::=--force-confmiss"
-  install_package hostapd       hostapd       soft
-  install_package inotify-tools inotify-tools soft
-  
-  # Setup the init.d script
-  sudo cp scripts/kiwix-plug.raspberrypi /etc/init.d/kiwix-plug
-  IN_RC_LOCAL=\`grep "/etc/init.d/kiwix-plug" /etc/rc.local\`
-  if [ "$IN_RC_LOCAL" = "" ]
-  then
-    echo "Updating /etc/rc.local..."
-    sudo sed -i -e 's/exit 0//' /etc/rc.local
-    sudo echo "" >> /etc/rc.local
-    sudo echo "/etc/init.d/kiwix-plug start" >> /etc/rc.local
-    sudo echo "" >> /etc/rc.local
-    sudo echo "exit 0" >> /etc/rc.local
-  else
-    echo "rc.local already updated"
-  fi
-  sudo chmod +x /etc/init.d/kiwix-plug
-  sudo chmod +x /etc/rc.local
-  
-  # Avoid ubsmount mounting a flashdrive with a 077 umask
-  if [ -f "/etc/usbmount/usbmount.conf" ]
-  then
+# Avoid ubsmount mounting a flashdrive with a 077 umask
+if [ -f "/etc/usbmount/usbmount.conf" ]
+then
     sudo sed -i "s/umask=077/umask=022/g" /etc/usbmount/usbmount.conf
-  else
-    echo "no usbmount config file to patch"
-  fi
-  
 else
+    echo "no usbmount config file to patch"
+fi
 
 # Find the IP of the plug
 IP=`sudo arp-scan --localnet | grep 'b8:27:eb' | cut -s -f1 | tail -n1`
@@ -99,33 +45,70 @@ else
 fi
 
 # Copy init.d script
-pscp -pw "$SSH_PASS" scripts/kiwix-plug.raspberrypi "$SSH_LOGIN@$IP:/tmp/kiwix-plug" <<EOF
+echo "Connecting to RaspberryPi at IP $IP"
+pscp -pw "$SSH_PASS" scripts/kiwix-plug.plug "$SSH_LOGIN@$IP:/tmp/kiwix-plug" <<EOF
 n
 EOF
 
 # Write remote commands in a file
 echo "                                                                                     \n\
-echo \"\"                                                                                  \n\
-if [ ! \"`cat /etc/issue | cut -c1-8`\" = \"Raspbian\" ] ; then                            \n\
-  echo \"Fatal error: this device has not Raspbian. Abort.\"                               \n\
+echo \"Connected to the the RaspberryPi\"                                                  \n\
+export SYSTEM_NAME=\`cat /etc/issue | head -n1 | cut -c1-8\`                               \n\
+if [ ! \"\$SYSTEM_NAME\" = \"Raspbian\" ] ; then                                           \n\
+  echo \"Fatal error: this device has not Raspbian (\$SYSTEM_NAME found). Abort.\"         \n\
   exit 1                                                                                   \n\
 fi                                                                                         \n\
 echo \"Successfuly connected to the Raspberry Pi...\"                                      \n\
 " > $COMMANDS
 
+# Mount data
+echo "                                                                                     \n\
+echo \"Customizing /etc/fstab...\"                                                         \n\
+export IN_FSTAB=\`grep mmcblk0p4 /etc/fstab\`                                              \n\
+if [ \"\$IN_FSTAB\" = \"\" ] ; then                                                        \n\
+  sudo mkdir /media/data                                                                   \n\
+  sudo sh -c \"echo /dev/mmcblk0p4 /media/data ext4 defaults 0 0 >> /etc/fstab\"           \n\
+fi                                                                                         \n\
+" >> $COMMANDS
+
 # Move kiwix-plug to its final location
-echo "
+echo "                                                                                     \n\
 sudo mv /tmp/kiwix-plug /etc/init.d/kiwix-plug                                             \n\
-" > $COMMANDS
+echo \"Move kiwix-plug launcher in /etc/init.d/kiwix-plug\"                                \n\
+" >> $COMMANDS
 
 # Setup the environement variable for non-interactive tty
 echo "                                                                                     \n\
 export DEBIAN_FRONTEND=noninteractive                                                      \n\
 " >> $COMMANDS
 
+# Update package catalog
+echo "                                                                                      \n\
+sudo apt-get update                                                                         \n\
+" >> $COMMANDS
+
 # For security reason run dpkg
 echo "                                                                                     \n\
 sudo dpkg --configure -a                                                                   \n\
+" >> $COMMANDS
+
+# Check if uaputl is there and install it otherwise
+echo "                                                                                     \n\
+UAPUTL=\`dpkg -l uaputl | grep ^ii\`                                                       \n\
+if [ \"\$UAPUTL\" = \"\" ]                                                                 \n\
+then                                                                                       \n\
+  echo \"Installing uaputl...\"                                                            \n\
+  sudo apt-get --assume-yes install uaputl                                                 \n\
+  if [ \"$?\" != \"0\" ]                                                                   \n\
+  then                                                                                     \n\
+    echo \"Unable to install correctly uaputl\"                                            \n\
+    exit 1                                                                                 \n\
+  else                                                                                     \n\
+    echo \"uaputl installation successful\"                                                \n\
+  fi                                                                                       \n\
+else                                                                                       \n\
+  echo \"uaputl is already installed.\"                                                    \n\
+fi                                                                                         \n\
 " >> $COMMANDS
 
 # Check if dialog is there and install it otherwise
@@ -134,7 +117,6 @@ DIALOG=\`dpkg -l dialog | grep ^ii\`                                            
 if [ \"\$DIALOG\" = \"\" ]                                                                 \n\
 then                                                                                       \n\
   echo \"Installing dialog...\"                                                            \n\
-  sudo apt-get update                                                                      \n\
   sudo apt-get --assume-yes install dialog                                                 \n\
   if [ \"$?\" != \"0\" ]                                                                   \n\
   then                                                                                     \n\
@@ -154,7 +136,6 @@ DNSMASQ=\`whereis dnsmasq | cut --delimiter=\":\" -f2 | cut --delimiter=\" \" -f
 if [ \"\$DNSMASQ\" = \"\" ]                                                                \n\
 then                                                                                       \n\
   echo \"Installing dnsmasq...\"                                                           \n\
-  sudo apt-get update                                                                      \n\
   sudo apt-get --assume-yes install dnsmasq-base                                           \n\
   if [ \"$?\" != \"0\" ]                                                                   \n\
   then                                                                                     \n\
@@ -174,7 +155,6 @@ AWSTATS=\`dpkg -l awstats | grep ^ii\`                                          
 if [ \"\$AWSTATS\" = \"\" ]                                                                \n\
 then                                                                                       \n\
   echo \"Installing awstats...\"                                                           \n\
-  sudo apt-get update                                                                      \n\
   sudo apt-get --assume-yes install awstats                                                \n\
   if [ \"$?\" != \"0\" ]                                                                   \n\
   then                                                                                     \n\
@@ -194,7 +174,6 @@ NGINX=\`whereis nginx | cut --delimiter=\":\" -f2 | cut --delimiter=\" \" -f2\` 
 if [ \"\$NGINX\" = \"\" ]                                                                  \n\
 then                                                                                       \n\
   echo \"Installing nginx...\"                                                             \n\
-  sudo apt-get update                                                                      \n\
   sudo apt-get -o DPkg::options::=--force-confmiss --assume-yes install nginx              \n\
 else                                                                                       \n\
   echo \"nginx is already installed.\"                                                     \n\
@@ -207,7 +186,6 @@ HOSTAPD=\`dpkg -l hostapd | grep ^ii\`                                          
 if [ \"\$HOSTAPD\" = \"\" ]                                                                \n\
 then                                                                                       \n\
   echo \"Installing hostapd...\"                                                           \n\
-  sudo apt-get update                                                                      \n\
   sudo apt-get --assume-yes install hostapd                                                \n\
   if [ \"$?\" != \"0\" ]                                                                   \n\
   then                                                                                     \n\
@@ -227,7 +205,6 @@ HOSTAPD=\`dpkg -l inotify-tools | grep ^ii\`                                    
 if [ \"\$INOTIFY\" = \"\" ]                                                                \n\
 then                                                                                       \n\
   echo \"Installing inotify-tools...\"                                                     \n\
-  sudo apt-get update                                                                      \n\
   sudo apt-get --assume-yes install inotify-tools                                          \n\
   if [ \"$?\" != \"0\" ]                                                                   \n\
   then                                                                                     \n\
@@ -272,8 +249,6 @@ EOF
 
 # Clear
 rm -f $COMMANDS
-
-fi
 
 # End music
 beep -f 659 -l 460 -n -f 784 -l 340 -n -f 659 -l 230 -n -f 659 -l 110 -n -f 880 -l 230 -n -f 659 -l 230 -n -f 587 -l 230 -n -f 659 -l 460 -n -f 988 -l 340 -n -f 659 -l 230 -n -f 659 -l 110 -n -f 1047 -l 230 -n -f 988 -l 230 -n -f 784 -l 230 -n -f 659 -l 230 -n -f 988 -l 230 -n -f 1318 -l 230 -n -f 659 -l 110 -n -f 587 -l 230 -n -f 587 -l 110 -n -f 494 -l 230 -n -f 740 -l 230 -n -f 659 -l 460

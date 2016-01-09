@@ -1,0 +1,99 @@
+*********************************************************************
+*                                                                   *
+*                      KIWIX-PLUG                                   *
+*                                                                   *
+*********************************************************************
+
+This is the documentation about Kiwix-plug for the Raspberry Pi and is
+complementary to the README. Kiwix-plug is a solution allowing
+everyone to set up an open Wifi kiosk to deliver contents available in
+the ZIM format. The solution is adapated for the Raspberry Pi, use the
+Kiwix-serve technology and many open source softwares. This
+documentation explains how to setup Kiwix-plug.
+
+== Requirements ==
+* A Raspberry Pi (http://www.raspberry.org)
+* A Wi-Fi USB dongle or any Wi-Fi device, with a Linux driver compatible
+  with hostapd: currently hostap, wired, madwifi, test, none, nl80211, bsd
+* An SD card with at least 4GB to store the OS and the data.
+* ZIM files you want to spread (http://openzim.org/ZIM_File_Archive)
+* A wireline LAN allowing access to Internet with a free RJ45 port
+* A master computer with a UNIX and a root access, GNU/Linux is perfect.
+  This computer needs a SD card port to setup kiwix-serve in the Raspbian
+  system, and possibly a free USB port to put the flash drive to
+  setup. You need free space on this system: at least 3x the size
+  of the ZIM files you want to copy on the storage device.
+* Time: preparing the "master" (mainly downloading the ZIM files and
+  computing the full-text search engine indexes) can take hours,
+  depending of the size of the contents and the power of your computer.
+  Do not wait the last minute!
+
+== Overview ==
+
+The installation comes in 3 steps:
+
+0 Get the code to do all the stuff.
+
+1 Run "setup_master.sh" to prepare everything on your computer. It
+  especialy downloads the binaries to install on the plug, compute
+  indexes, etc.
+
+2 Run "setup_raspberrypi_sd.sh" to prepare a raw SD card with
+  Raspbian.
+
+3 Run "setup_raspberrypi.sh" to finalize Raspbian system
+  configuration.
+
+4 Run "setup_usbkey.sh" to copy all data necessary on your USB flash
+  drive because data partition does not have to be on the SD card.
+
+5 OPTIONAL: Add a router to the plug to increase the wireless
+  coverage.
+
+== Retrieving the code ==
+
+See README
+
+== Setup the master ==
+
+See README
+
+== Setup SD card with Raspbian ==
+
+You can set up the Raspberry Pi either from the Raspberry Pi itself
+either with SSH from a remote computer. In the first case, the
+Raspberry Pi is called "master" and must be connected to the Internet.
+In the second case, the remote computer is called the "master", must
+be connected to the Internet, and the Raspberry Pi must be connected
+to this computer through the local network.
+
+== Setup the Raspberry Pi ==
+
+We will now do a minimal configuration of the Raspberry Pi system
+card. Connect your Raspberry Pi to the same local network as the
+master computer.
+
+Run "./setup_raspberrypi.sh", this should do a few things. This will
+be fast, because this only install if necessary a few packages, add an
+init.d script and initiate the clock.
+
+WARNING: Make sure your Wi-Fi USB dongle or Wi-Fi connection has a
+Linux driver, and this one is compatible with the Wi-Fi Access Point
+software (hostapd). Currently it has only been tested with a D-Link
+with the driver rtl8192cu, which requires a special compilation of hostapd.
+If your Wi-Fi driver is not nl80211, you have to change this parameter in the
+USB key configuration USBKEY/system/conf/hostapd.conf after the files are
+copied on the USB key in the next step.
+
+== Setup the flash storage with content ==
+
+See README
+
+== Conclusion ==
+
+You should have now a perfectly working kiwix-plug. You should see now
+a new Wifi network called "KIWIX_PLUG" appearing. Connect to it using
+your laptop/smartophone/tablet, open a new Web browser windows and go
+on any website. You should land to the Kiwix-plug Welcome page.
+
+Enjoy! To any problem: http://reportabug.kiwix.org

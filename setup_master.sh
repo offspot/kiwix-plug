@@ -131,8 +131,6 @@ then
     rm -rf $ROOT/bin/kiwix* $ROOT/bin/.kiwix-*
     rm -rf $ROOT/data/library/library.xml
     rm -rf $ROOT/data/index/*.idx
-else
-    echo "Do not re-download already present files"
 fi
 
 # Download GNU/Linux static (for kiwix-index)
