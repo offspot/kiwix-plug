@@ -51,7 +51,7 @@ n
 EOF
 
 # Write remote commands in a file
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 echo \"Connected to the the RaspberryPi\"                                                  \n\
 export SYSTEM_NAME=\`cat /etc/issue | head -n1 | cut -c1-8\`                               \n\
 if [ ! \"\$SYSTEM_NAME\" = \"Raspbian\" ] ; then                                           \n\
@@ -62,7 +62,7 @@ echo \"Successfuly connected to the Raspberry Pi...\"                           
 " > $COMMANDS
 
 # Mount data
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 echo \"Customizing /etc/fstab...\"                                                         \n\
 export IN_FSTAB=\`grep mmcblk0p4 /etc/fstab\`                                              \n\
 if [ \"\$IN_FSTAB\" = \"\" ] ; then                                                        \n\
@@ -72,28 +72,28 @@ fi                                                                              
 " >> $COMMANDS
 
 # Move kiwix-plug to its final location
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 sudo mv /tmp/kiwix-plug /etc/init.d/kiwix-plug                                             \n\
 echo \"Move kiwix-plug launcher in /etc/init.d/kiwix-plug\"                                \n\
 " >> $COMMANDS
 
 # Setup the environement variable for non-interactive tty
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 export DEBIAN_FRONTEND=noninteractive                                                      \n\
 " >> $COMMANDS
 
 # Update package catalog
-echo "                                                                                      \n\
+echo -e "                                                                                   \n\
 sudo apt-get update                                                                         \n\
 " >> $COMMANDS
 
 # For security reason run dpkg
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 sudo dpkg --configure -a                                                                   \n\
 " >> $COMMANDS
 
 # Check if uaputl is there and install it otherwise
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 UAPUTL=\`dpkg -l uaputl | grep ^ii\`                                                       \n\
 if [ \"\$UAPUTL\" = \"\" ]                                                                 \n\
 then                                                                                       \n\
@@ -112,7 +112,7 @@ fi                                                                              
 " >> $COMMANDS
 
 # Check if dialog is there and install it otherwise
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 DIALOG=\`dpkg -l dialog | grep ^ii\`                                                       \n\
 if [ \"\$DIALOG\" = \"\" ]                                                                 \n\
 then                                                                                       \n\
@@ -131,7 +131,7 @@ fi                                                                              
 " >> $COMMANDS
 
 # Check if dnsmasq is there and install it otherwise
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 DNSMASQ=\`whereis dnsmasq | cut --delimiter=\":\" -f2 | cut --delimiter=\" \" -f2\`        \n\
 if [ \"\$DNSMASQ\" = \"\" ]                                                                \n\
 then                                                                                       \n\
@@ -150,7 +150,7 @@ fi                                                                              
 " >> $COMMANDS
 
 # Check if awstats is installed
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 AWSTATS=\`dpkg -l awstats | grep ^ii\`                                                     \n\
 if [ \"\$AWSTATS\" = \"\" ]                                                                \n\
 then                                                                                       \n\
@@ -169,7 +169,7 @@ fi                                                                              
 " >> $COMMANDS
 
 # Check if nginx is there and install it otherwise
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 NGINX=\`whereis nginx | cut --delimiter=\":\" -f2 | cut --delimiter=\" \" -f2\`            \n\
 if [ \"\$NGINX\" = \"\" ]                                                                  \n\
 then                                                                                       \n\
@@ -181,7 +181,7 @@ fi                                                                              
 " >> $COMMANDS
 
 # Check if hostapd is there and install it otherwise
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 HOSTAPD=\`dpkg -l hostapd | grep ^ii\`                                                     \n\
 if [ \"\$HOSTAPD\" = \"\" ]                                                                \n\
 then                                                                                       \n\
@@ -200,7 +200,7 @@ fi                                                                              
 " >> $COMMANDS
 
 # Check if inotify-tools is there and install it otherwise
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 HOSTAPD=\`dpkg -l inotify-tools | grep ^ii\`                                               \n\
 if [ \"\$INOTIFY\" = \"\" ]                                                                \n\
 then                                                                                       \n\
@@ -219,7 +219,7 @@ fi                                                                              
 " >> $COMMANDS
 
 # Setup the init.d script
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 IN_RC_LOCAL=\`grep \"/etc/init.d/kiwix-plug\" /etc/rc.local\`                              \n\
 if [ \"\$IN_RC_LOCAL\" = \"\" ]                                                            \n\
 then                                                                                       \n\
@@ -233,7 +233,7 @@ sudo chmod +x /etc/rc.local                                                     
 " >> $COMMANDS
 
 # Avoid ubsmount mounting a flashdrive with a 077 umask
-echo "                                                                                     \n\
+echo -e "                                                                                  \n\
 if [ -f \"/etc/usbmount/usbmount.conf\" ]                                                  \n\
 then                                                                                       \n\
   sudo sed -i \"s/umask=077/umask=022/g\" /etc/usbmount/usbmount.conf                      \n\
