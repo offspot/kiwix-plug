@@ -180,6 +180,25 @@ else                                                                            
 fi                                                                                         \n\
 " >> $COMMANDS
 
+# Check if firmware-brcm80211 is installed and install it otherwise
+
+echo -e "                                                                                  \n\
+BRCM80211=\`dpkg -l firmware-brcm80211 | grep ^ii\`                                        \n\
+if [ \"\$BRCM80211\" = \"\" ]                                                              \n\
+then                                                                                       \n\
+  echo \"Installing firmware-brcm80211...\"                                                \n\
+  sudo apt-get --assume-yes install firmware-brcm80211                                     \n\
+  if [ \"$?\" != \"0\" ]                                                                   \n\
+    then \"Unable to install correctly firmware-brcm80211\"                                \n\
+    exit 1                                                                                 \n\
+  else                                                                                     \n\
+    echo \"firmware-brcm80211 installation successfull\"                                   \n\
+  fi                                                                                       \n\
+else                                                                                       \n\
+  echo \"firmware-brcm80211 is already installed.\"                                        \n\
+fi                                                                                         \n\
+" >> $COMMANDS
+
 # Check if hostapd is there and install it otherwise
 echo -e "                                                                                  \n\
 HOSTAPD=\`dpkg -l hostapd | grep ^ii\`                                                     \n\
