@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # List deb packages to check/install:
 # apt-get -o DPkg::options::=--force-confmiss --assume-yes install dialog install dnsmasq-base awstats nginx wireless-tools ntpdate
