@@ -49,11 +49,11 @@ then
     BIN_TO_INSTALL="yes"
 fi
 
-# Check if the mtools are installed
-MLABEL=`whereis mlabel | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
-if [ "$MLABEL" = "" ]
+# Check if the e2fsprogs are installed
+E2LABEL=`whereis e2label | cut --delimiter=":" -f2 | cut --delimiter=" " -f2`
+if [ "$E2LABEL" = "" ]
 then
-    echo "You need to install the mtools (apt-get install mtools)."
+    echo "You need to install the e2fsprogs (apt-get install e2fsprogs)."
     BIN_TO_INSTALL="yes"
 fi
 

@@ -45,11 +45,11 @@ then
 fi
 
 # Set USB label
-echo "Setting new label KIWIX to USB key at $DEVICE ..."
-echo "drive a: file=\"$DEVICE\"" > ~/.mtoolsrc
-echo "mtools_skip_check=1" >> ~/.mtoolsrc
-sudo mlabel a:"KIWIX"
-sudo mlabel -s a:
+# Original script used mlabel for dos-based format of usb key,
+# but I figure ext4 will be better for a linux-based system, hence
+# mlabel should instead be e2label
+echo "Setting new label KiwixContent to USB key at $DEVICE ..."
+sudo e2label $DEVICE KiwixContent
 sync
 
 # Copy the data files
