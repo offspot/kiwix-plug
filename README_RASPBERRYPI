@@ -41,8 +41,8 @@ The installation comes in 3 steps:
 2 Run "setup_raspberrypi_sd.sh" to prepare a raw SD card with
   Raspbian.
 
-3 Run "setup_raspberrypi.sh" to finalize Raspbian system
-  configuration.
+3 Boot the Pi from the new SD card, and run "setup_raspberrypi.sh" to 
+  finalize Raspbian system configuration.
 
 4 Run "setup_usbkey.sh" to copy all data necessary on your USB flash
   drive because data partition does not have to be on the SD card.
