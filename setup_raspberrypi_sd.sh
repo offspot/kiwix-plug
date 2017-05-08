@@ -1,6 +1,8 @@
 #!/bin/bash
 
-RASPBIAN_IMAGE_URL=http://download.kiwix.org/dev/raspbian_lite_latest.zip
+# RASPBIAN_IMAGE_URL=http://download.kiwix.org/dev/raspbian_lite_latest.zip
+# John - update raspian image
+RASPBIAN_IMAGE_URL=https://downloads.raspberrypi.org/raspbian_lite_latest
 
 # Compute script path
 BINARY_ORG="$0"
