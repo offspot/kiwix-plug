@@ -156,36 +156,36 @@ then
 fi
 
 # Download Kiwix for Windows
-if [ ! -f "$ROOT/bin/.kiwix.zip.finished" -o ! -f "$ROOT/bin/kiwix.zip" ]
-then
-    rm -f "$ROOT/bin/.kiwix.zip.finished" "$ROOT/bin/kiwix.zip"
-    wget -c $KIWIX_WINDOWS_URL -O "$ROOT/bin/kiwix.zip"
-    touch "$ROOT/bin/.kiwix.zip.finished"
-fi
+# if [ ! -f "$ROOT/bin/.kiwix.zip.finished" -o ! -f "$ROOT/bin/kiwix.zip" ]
+# then
+#     rm -f "$ROOT/bin/.kiwix.zip.finished" "$ROOT/bin/kiwix.zip"
+#     wget -c $KIWIX_WINDOWS_URL -O "$ROOT/bin/kiwix.zip"
+#     touch "$ROOT/bin/.kiwix.zip.finished"
+# fi
 
 # Download Kiwix for OSX
-if [ ! -f "$ROOT/bin/.kiwix.dmg.finished" -o ! -f "$ROOT/bin/kiwix.dmg" ]
-then
-    rm -f "$ROOT/bin/.kiwix.dmg.finished" "$ROOT/bin/kiwix.dmg"
-    wget -c $KIWIX_OSX_URL -O "$ROOT/bin/kiwix.dmg"
-    touch "$ROOT/bin/.kiwix.dmg.finished"
-fi
+# if [ ! -f "$ROOT/bin/.kiwix.dmg.finished" -o ! -f "$ROOT/bin/kiwix.dmg" ]
+# then
+#     rm -f "$ROOT/bin/.kiwix.dmg.finished" "$ROOT/bin/kiwix.dmg"
+#     wget -c $KIWIX_OSX_URL -O "$ROOT/bin/kiwix.dmg"
+#     touch "$ROOT/bin/.kiwix.dmg.finished"
+# fi
 
 # Download Kiwix for Android
-if [ ! -f "$ROOT/bin/.kiwix.apk.finished" -o ! -f "$ROOT/bin/kiwix.apk" ]
-then
-    rm -f "$ROOT/bin/.kiwix.apk.finished" "$ROOT/bin/kiwix.apk"
-    wget -c $KIWIX_ANDROID_URL -O "$ROOT/bin/kiwix.apk"
-    touch "$ROOT/bin/.kiwix.apk.finished"
-fi
+# if [ ! -f "$ROOT/bin/.kiwix.apk.finished" -o ! -f "$ROOT/bin/kiwix.apk" ]
+# then
+#     rm -f "$ROOT/bin/.kiwix.apk.finished" "$ROOT/bin/kiwix.apk"
+#     wget -c $KIWIX_ANDROID_URL -O "$ROOT/bin/kiwix.apk"
+#     touch "$ROOT/bin/.kiwix.apk.finished"
+# fi
 
 # Download the sources
-if [ ! -f "$ROOT/bin/.kiwix-src.tar.xz.finished" -o ! -f "$ROOT/bin/kiwix-src.tar.xz" ]
-then
-    rm -f "$ROOT/bin/.kiwix-src.tar.xz.finished" "$ROOT/bin/kiwix-src.tar.xz"
-    wget -c $KIWIX_SRC_URL -O "$ROOT/bin/kiwix-src.tar.xz"
-    touch "$ROOT/bin/.kiwix-src.tar.xz.finished"
-fi
+# if [ ! -f "$ROOT/bin/.kiwix-src.tar.xz.finished" -o ! -f "$ROOT/bin/kiwix-src.tar.xz" ]
+# then
+#     rm -f "$ROOT/bin/.kiwix-src.tar.xz.finished" "$ROOT/bin/kiwix-src.tar.xz"
+#     wget -c $KIWIX_SRC_URL -O "$ROOT/bin/kiwix-src.tar.xz"
+#     touch "$ROOT/bin/.kiwix-src.tar.xz.finished"
+# fi
 
 # Rename the ZIM files by adding a "_" at the beginning
 # John - hmmm - why? I don't get it - don't do it for now.
