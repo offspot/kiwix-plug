@@ -6,7 +6,7 @@
 # Init a few variables
 SSH_LOGIN=pi
 SSH_PASS=raspberry
-COMMANDS=/tmp/setup_plug_commands.sh
+COMMANDS=/var/tmp/setup_plug_commands.sh
 
 # Check if the DNS works
 `host www.kiwix.org > /dev/null`
