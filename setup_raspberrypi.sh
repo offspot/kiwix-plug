@@ -35,13 +35,19 @@ else
 fi
 
 # Find the IP of the plug
-IP=`sudo arp-scan --localnet | grep 'b8:27:eb' | cut -s -f1 | tail -n1`
-if [ "$IP" = "" ]
-then
-    echo "Unable to find the IP of the Raspberry Pi on your local network."
-    exit 1
+# John - Check probable address...
+IP=10.22.1.11
+if ping -c1 $IP ; then
+  echo "The IP of the Raspberry Pi is $IP"
 else
-    echo "The IP of the Raspberry Pi is $IP"
+  IP=`sudo arp-scan --localnet | grep 'b8:27:eb' | cut -s -f1 | tail -n1`
+  if [ "$IP" = "" ]
+  then
+      echo "Unable to find the IP of the Raspberry Pi on your local network."
+      exit 1
+  else
+      echo "The IP of the Raspberry Pi is $IP"
+  fi
 fi
 
 # Copy init.d script and unplug2shutdown.py
