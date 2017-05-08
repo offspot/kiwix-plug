@@ -120,9 +120,12 @@ then
     exit 1
 fi
 
-# Make a subversion update
+# Make a git update
 echo "Resync kiwix-plug code with the online git repository"
-git pull origin master
+if git stash ; then
+    git pull origin master
+    git stash pop
+fi
 
 # Check if should clean
 if [ "$1" == "clean" ]
