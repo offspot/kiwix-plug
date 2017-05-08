@@ -1,6 +1,6 @@
 #!/bin/bash
 ROOT=$1
-SSID="KIWIX PLUG"
+SSID="WikiWifi"
 
 # Device probber
 DEVICE=dreamplug
