@@ -202,7 +202,7 @@ IN_RC_LOCAL=\`grep \"/etc/init.d/kiwix-plug\" /etc/rc.local\`                   
 if [ \"\$IN_RC_LOCAL\" = \"\" ]                                                            \n\
 then                                                                                       \n\
   echo \"Updating /etc/rc.local...\"                                                       \n\
-  sudo sed -i -e 's/exit 0/\\\\n\/etc\/init.d\/kiwix-plug start\\\\n\\\\nexit 0/' /etc/rc.local \n\
+  sudo sed -i -e 's/^exit 0/\\\\n\/etc\/init.d\/kiwix-plug start\\\\n\\\\nexit 0/' /etc/rc.local \n\
 else                                                                                       \n\
   echo \"rc.local already updated\"                                                        \n\
 fi                                                                                         \n\
@@ -220,7 +220,7 @@ else                                                                            
 fi                                                                                         \n\
 " >> $COMMANDS
 
-# Connect the plug per ssh and run a few commands
+# Connect the plug per ssh and run commands
 plink -ssh -pw "$SSH_PASS" "$SSH_LOGIN@$IP" -m $COMMANDS <<EOF
 n
 EOF
