@@ -53,13 +53,13 @@ sudo mlabel -s a:
 sync
 
 # Copy the data files
-cp --verbose -r "$ROOT/data/" "$MOUNT"
+rsync -avr --progress --stats "$ROOT/data" "$MOUNT"
 
 # Create system directory
-mkdir "$MOUNT/system/"
+mkdir -p "$MOUNT/system/"
 
 # Copy system kiwix-plug script
-cp --verbose "$ROOT/scripts/kiwix-plug.usbkey" "$MOUNT/system/kiwix-plug"
+rsync -avr "$ROOT/scripts/kiwix-plug.usbkey" "$MOUNT/system/kiwix-plug"
 chmod +x "$MOUNT/system/kiwix-plug"
 
 # Copy unplug2shutdown script
@@ -67,8 +67,8 @@ rsync -avr "$ROOT/scripts/unplug2shutdown.py" "$MOUNT/system/unplug2shutdown.py"
 chmod +x "$MOUNT/system/unplug2shutdown.py"
 
 # Copy the binaries
-mkdir "$MOUNT/system/bin/"
-cp --verbose "$ROOT/bin/kiwix-serve" "$MOUNT/system/bin/"
+mkdir -p "$MOUNT/system/bin/"
+rsync -avr "$ROOT/bin/kiwix-serve" "$MOUNT/system/bin/"
 
 # Copy the binaries packages
 mkdir "$MOUNT/packages/"
@@ -79,11 +79,11 @@ cp --verbose "$ROOT/bin/kiwix.zip" "$MOUNT/packages/"
 cp --verbose "$ROOT/bin/kiwix-src.tar.gz" "$MOUNT/packages/"
 
 # Copy the landing HTML pages
-mkdir "$MOUNT/system/landing/"
+mkdir -p "$MOUNT/system/landing/"
 cp -r --verbose "$ROOT/landing" "$MOUNT/system/"
 
 # Copy the configuration scripts
-mkdir "$MOUNT/system/conf/"
+mkdir -p "$MOUNT/system/conf/"
 cp -r --verbose "$ROOT/conf/" "$MOUNT/system/"
 
 # Remove useless files & directories
@@ -92,9 +92,9 @@ find "$MOUNT" -name ".git*" -exec /bin/rm -rf '{}' \;
 find "$MOUNT" -name ".finished" -exec /bin/rm -rf '{}' \;
 
 # Create log & stats & share directories
-mkdir "$MOUNT/log/"
-mkdir "$MOUNT/stats/"
-mkdir "$MOUNT/goinfre/"
+mkdir -p "$MOUNT/log/"
+mkdir -p "$MOUNT/stats/"
+mkdir -p "$MOUNT/goinfre/"
 
 # USB drive can be ext4, then we should allow the plug to write on it
 sudo chmod -R 777 "$MOUNT"

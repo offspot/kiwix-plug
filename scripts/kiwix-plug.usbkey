@@ -137,6 +137,7 @@ ln -s /tmp/kiwix.nginx.conf /etc/nginx/sites-enabled/default
 /etc/init.d/nginx start
 
 # Run awstats in loop
+mkdir -p /tmp/kiwix-log
 if [ "$DEVICE" = "raspberrypi" ]
 then
   sed -e "s/ROOT\\//\/tmp\/kiwix-/" $ROOT/system/conf/awstats.conf > /tmp/awstats.kiwix.conf
