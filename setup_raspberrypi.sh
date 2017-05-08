@@ -44,9 +44,12 @@ else
     echo "The IP of the Raspberry Pi is $IP"
 fi
 
-# Copy init.d script
+# Copy init.d script and unplug2shutdown.py
 echo "Connecting to RaspberryPi at IP $IP"
 pscp -pw "$SSH_PASS" scripts/kiwix-plug.plug "$SSH_LOGIN@$IP:/tmp/kiwix-plug" <<EOF
+n
+EOF
+pscp -pw "$SSH_PASS" scripts/unplug2shutdown.py "$SSH_LOGIN@$IP:/tmp/" <<EOF
 n
 EOF
 
@@ -74,6 +77,7 @@ fi                                                                              
 # Move kiwix-plug to its final location
 echo -e "                                                                                  \n\
 sudo mv /tmp/kiwix-plug /etc/init.d/kiwix-plug                                             \n\
+sudo mv /tmp/unplug2shutdown.py /usr/local/bin/                                            \n\
 echo \"Move kiwix-plug launcher in /etc/init.d/kiwix-plug\"                                \n\
 " >> $COMMANDS
 
@@ -235,6 +239,12 @@ then                                                                            
 else                                                                                       \n\
   echo \"inotify-tools is already installed.\"                                             \n\
 fi                                                                                         \n\
+" >> $COMMANDS
+
+# Configure unplug2shutdown, by getting the user to insert the USB key
+echo -e "                                                                                  \n\
+echo \"Configure unplug2shutdown, by inserting the KiwixContent USB key when requested\"   \n\
+sudo /usr/local/bin/unplug2shutdown.py --configure                                         \n\
 " >> $COMMANDS
 
 # Setup the init.d script

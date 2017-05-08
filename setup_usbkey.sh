@@ -62,6 +62,10 @@ mkdir "$MOUNT/system/"
 cp --verbose "$ROOT/scripts/kiwix-plug.usbkey" "$MOUNT/system/kiwix-plug"
 chmod +x "$MOUNT/system/kiwix-plug"
 
+# Copy unplug2shutdown script
+rsync -avr "$ROOT/scripts/unplug2shutdown.py" "$MOUNT/system/unplug2shutdown.py"
+chmod +x "$MOUNT/system/unplug2shutdown.py"
+
 # Copy the binaries
 mkdir "$MOUNT/system/bin/"
 cp --verbose "$ROOT/bin/kiwix-serve" "$MOUNT/system/bin/"
