@@ -96,44 +96,6 @@ echo -e "                                                                       
 sudo dpkg --configure -a                                                                   \n\
 " >> $COMMANDS
 
-# Check if uaputl is there and install it otherwise
-echo -e "                                                                                  \n\
-UAPUTL=\`dpkg -l uaputl | grep ^ii\`                                                       \n\
-if [ \"\$UAPUTL\" = \"\" ]                                                                 \n\
-then                                                                                       \n\
-  echo \"Installing uaputl...\"                                                            \n\
-  sudo apt-get --assume-yes install uaputl                                                 \n\
-  if [ \"$?\" != \"0\" ]                                                                   \n\
-  then                                                                                     \n\
-    echo \"Unable to install correctly uaputl\"                                            \n\
-    exit 1                                                                                 \n\
-  else                                                                                     \n\
-    echo \"uaputl installation successful\"                                                \n\
-  fi                                                                                       \n\
-else                                                                                       \n\
-  echo \"uaputl is already installed.\"                                                    \n\
-fi                                                                                         \n\
-" >> $COMMANDS
-
-# Check if dialog is there and install it otherwise
-echo -e "                                                                                  \n\
-DIALOG=\`dpkg -l dialog | grep ^ii\`                                                       \n\
-if [ \"\$DIALOG\" = \"\" ]                                                                 \n\
-then                                                                                       \n\
-  echo \"Installing dialog...\"                                                            \n\
-  sudo apt-get --assume-yes install dialog                                                 \n\
-  if [ \"$?\" != \"0\" ]                                                                   \n\
-  then                                                                                     \n\
-    echo \"Unable to install correctly dialog\"                                            \n\
-    exit 1                                                                                 \n\
-  else                                                                                     \n\
-    echo \"dialog installation successful\"                                                \n\
-  fi                                                                                       \n\
-else                                                                                       \n\
-  echo \"dialog is already installed.\"                                                    \n\
-fi                                                                                         \n\
-" >> $COMMANDS
-
 # Check if dnsmasq is there and install it otherwise
 echo -e "                                                                                  \n\
 DNSMASQ=\`whereis dnsmasq | cut --delimiter=\":\" -f2 | cut --delimiter=\" \" -f2\`        \n\
@@ -141,7 +103,7 @@ if [ \"\$DNSMASQ\" = \"\" ]                                                     
 then                                                                                       \n\
   echo \"Installing dnsmasq...\"                                                           \n\
   sudo apt-get --assume-yes install dnsmasq-base                                           \n\
-  if [ \"$?\" != \"0\" ]                                                                   \n\
+  if [ \"\$?\" != \"0\" ]                                                                   \n\
   then                                                                                     \n\
     echo \"Unable to install correctly dnsmasq\"                                           \n\
     exit 1                                                                                 \n\
@@ -150,25 +112,6 @@ then                                                                            
   fi                                                                                       \n\
 else                                                                                       \n\
   echo \"dnsmasq is already installed.\"                                                   \n\
-fi                                                                                         \n\
-" >> $COMMANDS
-
-# Check if awstats is installed
-echo -e "                                                                                  \n\
-AWSTATS=\`dpkg -l awstats | grep ^ii\`                                                     \n\
-if [ \"\$AWSTATS\" = \"\" ]                                                                \n\
-then                                                                                       \n\
-  echo \"Installing awstats...\"                                                           \n\
-  sudo apt-get --assume-yes install awstats                                                \n\
-  if [ \"$?\" != \"0\" ]                                                                   \n\
-  then                                                                                     \n\
-    echo \"Unable to install correctly awstats\"                                           \n\
-    exit 1                                                                                 \n\
-  else                                                                                     \n\
-    echo \"awstats installation successful\"                                               \n\
-  fi                                                                                       \n\
-else                                                                                       \n\
-  echo \"awstats is already installed.\"                                                   \n\
 fi                                                                                         \n\
 " >> $COMMANDS
 
@@ -184,61 +127,27 @@ else                                                                            
 fi                                                                                         \n\
 " >> $COMMANDS
 
-# Check if firmware-brcm80211 is installed and install it otherwise
-
-echo -e "                                                                                  \n\
-BRCM80211=\`dpkg -l firmware-brcm80211 | grep ^ii\`                                        \n\
-if [ \"\$BRCM80211\" = \"\" ]                                                              \n\
-then                                                                                       \n\
-  echo \"Installing firmware-brcm80211...\"                                                \n\
-  sudo apt-get --assume-yes install firmware-brcm80211                                     \n\
-  if [ \"$?\" != \"0\" ]                                                                   \n\
-    then \"Unable to install correctly firmware-brcm80211\"                                \n\
-    exit 1                                                                                 \n\
-  else                                                                                     \n\
-    echo \"firmware-brcm80211 installation successfull\"                                   \n\
-  fi                                                                                       \n\
-else                                                                                       \n\
-  echo \"firmware-brcm80211 is already installed.\"                                        \n\
-fi                                                                                         \n\
-" >> $COMMANDS
-
-# Check if hostapd is there and install it otherwise
-echo -e "                                                                                  \n\
-HOSTAPD=\`dpkg -l hostapd | grep ^ii\`                                                     \n\
-if [ \"\$HOSTAPD\" = \"\" ]                                                                \n\
-then                                                                                       \n\
-  echo \"Installing hostapd...\"                                                           \n\
-  sudo apt-get --assume-yes install hostapd                                                \n\
-  if [ \"$?\" != \"0\" ]                                                                   \n\
-  then                                                                                     \n\
-    echo \"Unable to install correctly hostapd\"                                           \n\
-    exit 1                                                                                 \n\
-  else                                                                                     \n\
-    echo \"hostapd installation successful\"                                               \n\
-  fi                                                                                       \n\
-else                                                                                       \n\
-  echo \"hostapd is already installed.\"                                                   \n\
-fi                                                                                         \n\
-" >> $COMMANDS
-
-# Check if inotify-tools is there and install it otherwise
-echo -e "                                                                                  \n\
-HOSTAPD=\`dpkg -l inotify-tools | grep ^ii\`                                               \n\
-if [ \"\$INOTIFY\" = \"\" ]                                                                \n\
-then                                                                                       \n\
-  echo \"Installing inotify-tools...\"                                                     \n\
-  sudo apt-get --assume-yes install inotify-tools                                          \n\
-  if [ \"$?\" != \"0\" ]                                                                   \n\
-  then                                                                                     \n\
-    echo \"Unable to install correctly inotify-tools\"                                     \n\
-    exit 1                                                                                 \n\
-  else                                                                                     \n\
-    echo \"inotify-tools installation successful\"                                         \n\
-  fi                                                                                       \n\
-else                                                                                       \n\
-  echo \"inotify-tools is already installed.\"                                             \n\
-fi                                                                                         \n\
+# Check if various packages are installed
+# python-gobject and python-gudev are for unplug2shutdown, a python script to detect when
+# a configured usb device is removed, and shutdown the pi - since it has now power off button
+echo -e "                                                                                     \n\
+for pkg in etckeeper uaputl dialog awstats hostapd inotify-tools firmware-brcm80211 python-gobject python-gudev; do \n\
+  FOUND=\`dpkg -l \$pkg | grep ^ii\`                                                          \n\
+  if [ \"\$FOUND\" = \"\" ]                                                                   \n\
+  then                                                                                        \n\
+    echo \"Installing \$pkg...\"                                                              \n\
+    sudo apt-get --assume-yes install \$pkg                                                   \n\
+    if [ \"\$?\" != \"0\" ]                                                                   \n\
+    then                                                                                      \n\
+      echo \"Unable to install correctly \$pkg\"                                              \n\
+      exit 1                                                                                  \n\
+    else                                                                                      \n\
+      echo \"\$pkg installation successful\"                                                  \n\
+    fi                                                                                        \n\
+  else                                                                                        \n\
+    echo \"\$pkg is already installed.\"                                                      \n\
+  fi                                                                                          \n\
+done                                                                                          \n\
 " >> $COMMANDS
 
 # Configure unplug2shutdown, by getting the user to insert the USB key
