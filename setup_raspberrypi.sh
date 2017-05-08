@@ -70,13 +70,47 @@ fi                                                                              
 echo \"Successfuly connected to the Raspberry Pi...\"                                      \n\
 " > $COMMANDS
 
-# Mount data
-echo -e "                                                                                  \n\
+# Change locale from GB to, in this case, AU
+echo -e "                                                                                     \n\
+echo \"Setting locale to en_AU.UTF-8...\"                                                  \n\
+sudo sed -i 's/^ *en_/# &/' /etc/locale.gen                                                \n\
+sudo sed -i 's/^# \\\\(en_AU.UTF-8\\\\)/\\\\1/' /etc/locale.gen                            \n\
+sudo dpkg-reconfigure -phigh locales                                                       \n\
+" >> $COMMANDS
+
+#  Change keyboard to US keyboard
+echo "                                                                                     \n\
+echo \"Change to US keyboard layout...\"                                                   \n\
+PKG=keyboard-configuration                                                                 \n\
+echo '
+keyboard-configuration  keyboard-configuration/altgr    select  The default for the keyboard layout
+keyboard-configuration  keyboard-configuration/compose  select  No compose key
+keyboard-configuration  keyboard-configuration/ctrl_alt_bksp    boolean false
+keyboard-configuration  keyboard-configuration/layoutcode       string  us
+keyboard-configuration  keyboard-configuration/layout   select   English (US)
+keyboard-configuration  keyboard-configuration/modelcode        string  pc105
+keyboard-configuration  keyboard-configuration/model    select  Generic 105-key (Intl) PC
+keyboard-configuration  keyboard-configuration/optionscode      string
+keyboard-configuration  keyboard-configuration/store_defaults_in_debconf_db     boolean true
+keyboard-configuration  keyboard-configuration/switch   select  No temporary switch
+keyboard-configuration  keyboard-configuration/toggle   select  No toggling
+keyboard-configuration  keyboard-configuration/unsupported_config_layout        boolean true
+keyboard-configuration  keyboard-configuration/unsupported_config_options       boolean true
+keyboard-configuration  keyboard-configuration/unsupported_layout       boolean true
+keyboard-configuration  keyboard-configuration/unsupported_options      boolean true
+keyboard-configuration  keyboard-configuration/variantcode      string
+keyboard-configuration  keyboard-configuration/variant  select  English (US)
+keyboard-configuration  keyboard-configuration/xkb-keymap       select  us
+' > /tmp/$PKG.$$                                                                           \n\
+sudo debconf-set-selections /tmp/$PKG.$$                                                   \n\
+sudo dpkg-reconfigure -pcritical keyboard-configuration                                        \n\
+" >> $COMMANDS
+
+# Mount data, from usb flash key, using a label to find what to mount
 echo \"Customizing /etc/fstab...\"                                                         \n\
-export IN_FSTAB=\`grep mmcblk0p4 /etc/fstab\`                                              \n\
+export IN_FSTAB=\`grep /media/data /etc/fstab\`                                            \n\
 if [ \"\$IN_FSTAB\" = \"\" ] ; then                                                        \n\
-  sudo mkdir /media/data                                                                   \n\
-  sudo sh -c \"echo /dev/mmcblk0p4 /media/data ext4 defaults 0 0 >> /etc/fstab\"           \n\
+  sudo sh -c \"echo LABEL=KiwixContent /media/data ext4 defaults,ro,nofail 0 0 >> /etc/fstab\"    \n\
 fi                                                                                         \n\
 " >> $COMMANDS
 
