@@ -1,175 +1,24 @@
-<!DOCTYPE html>
 <html>
-  <head>
-    <!--  <base href="/" /> -->
-
-  <meta charset="utf-8">
-  <title>Kiwix-plug</title>
-  <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;" />
-  <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen">
-  <link rel="stylesheet" href="css/style.css" type="text/css">
-  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <script type="text/javascript" src="js/jquery.js"></script>
-  <script type="text/javascript" src="js/jquery-1.7.min.js" ></script>
-  </head>
-
-  <body class="home">
-
-	<div id="main">
-		<div class="wrapper outer">
-			<div class="wrapper inner">
-				<div class="content">
-				  <div id="intro">
-				    <h1 class="bienvenue-afri">Welcome to the Kiwix-plug</h1>
-				    <p>Access <FONT COLOR="#e71c72"><b>freely</b></font> to all the <FONT COLOR="#e71c72"><b> content </b></font> of <FONT COLOR="#e71c72"><b>Wikipedia</b></font>, <FONT COLOR="#e71c72"><b>Wikiversity</b></font>, <FONT COLOR="#e71c72"><b>TED talks</b></font> and even more... <FONT COLOR="#e71c72"><b>without any Internet connection</b></font>.<br /></p>
-
-				    
-				    <div id="features">
-				      <div class="container">
-					
-				        <p class="pic-content">
-					  
-					  <b>In English...</b>
-					  <br/>
-					  <a href="_wikipedia_en_all_2015-04/"><img src="img/logo-wikipedia-en.png" alt="Wikipedia" /></a>
-					  <a href="_gutenberg_en_all_10_2014/"><img src="img/logo-gutenberg-en.png" alt="Gutenberg" /></a>
-					  <a href="_wiktionary_en_all_2015-04/"><img src="img/logo-wiktionary-en.png" alt="Wiktionary" /></a>
-					  <a href="_wikiversity_en_all_2015-05/"><img src="img/logo-wikiversity-en.png" alt="Wikiversity" /></a>
-					  <a href="_wikibooks_en_all_2015-05/"><img src="img/logo-wikibooks-en.png" alt="Wikibooks" /></a>
-					  <a href="_wikinews_en_all_2015-05/"><img src="img/logo-wikinews-en.png" alt="Wikinews" /></a>
-					  <a href="_wikiquote_en_all_2015-05/"><img src="img/logo-wikiquote-en.png" alt="Wikiquote" /></a>
-					  <a href="_wikivoyage_en_all_2015-05/"><img src="img/logo-wikivoyage-en.png" alt="Wikivoyage" /></a>
-					  <a href="_wikispecies_en_all_2015-05/"><img src="img/logo-wikispecies.png" alt="Wikispecies" /></a>
-					  <a href="_ted_en_entertainment_2015-02/"><img src="img/logo-ted-entertainment.png" alt="TED Entertainment" /></a>
-					  <a href="_ted_en_business_2015-02/"><img src="img/logo-ted-business.png" alt="TED Business" /></a>
-					  <a href="_ted_en_global_issues_2015-02/"><img src="img/logo-ted-global_issues.png" alt="TED Global issues" /></a>
-					  <a href="_ted_en_science_2015-02/"><img src="img/logo-ted-science.png" alt="TED Science" /></a>
-					  <a href="_ted_en_technology_2015-02/"><img src="img/logo-ted-technology.png" alt="TED Technology" /></a>
-					  <a href="_ted_en_design_2015-02/"><img src="img/logo-ted-design.png" alt="TED Design" /></a>
-
-					  <br/><br/>
-					  <b>In Afrikaans...</b>
-					  <br/>
-					  <a href="_wikipedia_af_all_2015-05/"><img src="img/logo-wikipedia-af.png" alt="Wikipedia" /></a>
-					  <a href="_wiktionary_af_all_2015-05/"><img src="img/logo-wiktionary-af.png" alt="Wikiwoordeboek" /></a>
-					  <a href="_wikibooks_af_all_2015-05/"><img src="img/logo-wikibooks-af.png" alt="Wikibooks" /></a>
-					  <a href="_wikiquote_af_all_2015-05/"><img src="img/logo-wikiquote-af.png" alt="Wikiquote" /></a>
-
-					  <!--
-					  <b>En français...</b>
-					  <br/>
-					  <a href="_wikipedia_fr_all_2015-03/"><img src="img/logo-wikipedia-fr.png" alt="Wikipédia" /></a>
-					  <a href="_gutenberg_fr_all_10_2014/"><img src="img/logo-gutenberg-fr.png" alt="Gutenberg" /></a>
-					  <a href="_wiktionary_fr_all_2015-04/"><img src="img/logo-wiktionary-fr.png" alt="Wiktionnaire" /></a>
-					  <a href="_wikiversity_fr_all_2015-04/"><img src="img/logo-wikiversity-fr.png" alt="Wikiversité" /></a>
-					  <a href="_wikibooks_fr_all_2015-04/"><img src="img/logo-wikibooks-fr.png" alt="Wikilivres" /></a>
-					  <a href="_wikinews_fr_all_2015-04/"><img src="img/logo-wikinews-fr.png" alt="Wikinews" /></a>
-					  <a href="_wikiquote_fr_all_2015-04/"><img src="img/logo-wikiquote-fr.png" alt="Wikiquote" /></a>
-					  <a href="_wikivoyage_fr_all_2015-04/"><img src="img/logo-wikivoyage-fr.png" alt="Wikivoyage" /></a>
-
-					  <br/><br/>
-
-					  <br/><br/>
-					  <b>Auf Deutsch...</b>
-					  <br/>
-					  <a href="_wikipedia_de_all_2014-12/"><img src="img/logo-wikipedia-de.png" alt="Wikipedia" /></a>
-					  <a href="_gutenberg_de_all_10_2014/"><img src="img/logo-gutenberg-de.png" alt="Gutenberg" /></a>
-					  <a href="_wiktionary_de_all_2015-05/"><img src="img/logo-wiktionary-de.png" alt="Wiktionary" /></a>
-					  <a href="_wikiversity_de_all_2015-05/"><img src="img/logo-wikiversity-de.png" alt="Wikiversität" /></a>
-					  <a href="_wikibooks_de_all_2015-05/"><img src="img/logo-wikibooks-de.png" alt="Wikilivres" /></a>
-					  <a href="_wikinews_de_all_2015-05/"><img src="img/logo-wikinews-de.png" alt="Wikinews" /></a>
-					  <a href="_wikiquote_de_all_2015-05/"><img src="img/logo-wikiquote-de.png" alt="Wikiquote" /></a>
-					  <a href="_wikivoyage_de_all_2015-05/"><img src="img/logo-wikivoyage-de.png" alt="Wikivoyage" /></a>
-					  <br/>
-	
-					  <br/><br/>
-					  <b>In italiano...</b>
-					  <br/>
-					  <a href="_wikipedia_it_all_2015-04/"><img src="img/logo-wikipedia-it.png" alt="Wikipedia" /></a>
-					  <a href="_gutenberg_it_all_10_2014/"><img src="img/logo-gutenberg-it.png" alt="Gutenberg" /></a>
-					  <a href="_wiktionary_it_all_2015-05/"><img src="img/logo-wiktionary-it.png" alt="Wikizionario" /></a>
-					  <a href="_wikiversity_it_all_2015-05/"><img src="img/logo-wikiversity-it.png" alt="Wikiversità" /></a>
-					  <a href="_wikibooks_it_all_2015-05/"><img src="img/logo-wikibooks-it.png" alt="Wikibooks" /></a>
-					  <a href="_wikinews_it_all_2015-05/"><img src="img/logo-wikinews-it.png" alt="Wikinotizie" /></a>
-					  <a href="_wikiquote_it_all_2015-05/"><img src="img/logo-wikiquote-it.png" alt="Wikiquote" /></a>
-					  <a href="_wikivoyage_it_all_2015-05/"><img src="img/logo-wikivoyage-it.png" alt="Wikivoyage" /></a>
-					  -->
-
-					  <strong><a href="contents2download/" class="bt-dl-later">Download the data to your own computer</a></strong>
-					  <a href="packages2download/" class="bt-dl-later">Download the software for your own operating system:</a>
-<br>
-<a href="packages2download/kiwix.tar.bz2"><img src="img/gnu.png" alt="Kiwix pour GNU/Linux"/></a>
-<a href="packages2download/kiwix.apk"><img src="img/android.png" alt="Kiwix pour Google Android"/></a>
- <a href="packages2download/kiwix.zip"><img src="img/win.png" alt="Kiwix pour Microsoft Windows"/></a>
- <a href="packages2download/kiwix.dmg"><img src="img/mac.png" alt="Kiwix pour Apple OSX"/></a>
- <a href="packages2download/kiwix-src.tar.gz"><img src="img/folder.png" alt="Code source de Kiwix"/></a>
-
-				        </p>
-					
-				      </div>
-
-
-
-				            <div id="shadow-box"></div>
-
-
-				            <div id="footer-min">
-
-				            <div id="liens-footer-min">
-						<p><a href="http://www.wikimedia.ch/" target="_blank">Wikimedia CH</a></p>
-						<p class=""><a href="http://www.kiwix.org/wiki/Main_Page/fr" target="_blank">Kiwix</a></p>
-				            	</div>
-				<form>
-
-				<p class="credit">Follow us on <a href="http://twitter.com/Kiwixoffline">Twitter</a>.</p>
-				<p><a href="mailto:contact@kiwix.org" target="_blank">Contact us</a></p>
-
-			</form>
-				            </div>
-				        </div>
-
-
-						<p id="future-text"></p>
-					</div><!-- /#intro -->
-
-
-				</div><!-- /.content -->
-			</div><!-- /.wrapper inner -->
-		</div><!-- /.wrapper outer -->
-	</div><!-- /#main -->
-
-
-	<div id="footer">
-
-
-
-
-				<ul id="footer-links">
-
-
-
-
-						<a href="http://www.wikimedia.ch/" class="links-table" target="_blank"><li class="footer-link-wmch"></li></a>
-						<a href="http://www.kiwix.org/" class="links-table" target="_blank"><li class="footer-link-kiwix"></li></a>
-				</ul>
-				<div class="content">
-
-					<p class="marginn"></p>
-
-				</div><!-- /.content -->
-				<form>
-
-					<div id="wrapper-inner">
-						<div id="wrapper-outer">
-				<p class="credit">Follow us on <a href="http://twitter.com/Kiwixoffline">Twitter</a>. // Contact <a href="mailto:contact@kiwix.org" target="_blank">Kiwix</a> : contact@kiwix.org</p>
-
-				</div>
-				</div>
-			</form>
-	</div><!-- /#footer -->
-
-
+<head>
+</head>
+<body>
+    <h1>
+        WELCOME...
+    </h1>
+    <h2>
+        to the Uncertainty Village Wiki Server
+    </h2>
+    <h3>
+        THIS IS NOT THE INTERNET!!
+    </h3>
+    This is just some free, locally cached Wiki web pages:
+    <table>
+        <tr>
+            <td><a href="http://en.wikipedia.org/wikipedia_en_all_2016-05/"><img src="img/logo-wikipedia-en.png" alt="Wikipedia" /></a></td>
+            <td><a href="http://en.wiktionary.org/wiktionary_en_all_2016-05/"><img src="img/logo-wiktionary-en.png" alt="Wiktionary" /></a></td>
+        </tr>
+    </table>
+    Note - contrary to what your device might suggest, there's no login for this page.  (Your phone probably assumes that by logging in, you'll get access to the real internet.  Naha... we're too far from civilization...)
+    Powered by <img src="img/logo-kiwix.png">
 </body>
-
 </html>
