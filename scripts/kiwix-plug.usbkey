@@ -117,7 +117,8 @@ then
 fi
 cp "$ROOT/system/bin/kiwix-serve" /tmp/kiwix-serve
 chmod +x /tmp/kiwix-serve
-/tmp/kiwix-serve --library --port=4201 --daemon "$ROOT/data/library/library.xml" 
+/tmp/kiwix-serve --library --port=4201 --daemon "$ROOT/data/library/wikipedia_en_all_2016-05.zim.xml"
+/tmp/kiwix-serve --library --port=4202 --daemon "$ROOT/data/library/wiktionary_en_all_2016-05.zim.xml"
 
 # Stop apache (if necessary)
 if [ -e /etc/init.d/apache ] ; then /etc/init.d/apache stop ; fi
