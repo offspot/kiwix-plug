@@ -85,7 +85,6 @@ then
     exit 1
 else
     echo "kiwix-plug system will be installed on $DEVICE..."
-    sleep 5
 fi
 
 # Copying the image to the SD card
