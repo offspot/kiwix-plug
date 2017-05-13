@@ -27,9 +27,9 @@ fi
 IFS=$'\n'
 for MOUNT in `df | sed "s/^ *//;s/ *$//;s/ \{1,\}/ /g" | cut --delimiter=" " -f6- | grep "/media/"`
 do
-   if [ "$(ls -A "$MOUNT")" = "" ]
+   if [ "$(ls -A "$MOUNT")" = "" -o -x "$MOUNT/system/bin/kiwix-serve" ]
    then
-      echo "Empty removable device found at $MOUNT. This will be used to install kiwix-plug."
+      echo "Empty or existing removable device found at $MOUNT. This will be used to (re)install kiwix-plug."
       DEVICE=`df | sed "s/^ *//;s/ *$//;s/ \{1,\}/ /g" | grep "$MOUNT$" | cut --delimiter=" " -f1`
       break
    fi
