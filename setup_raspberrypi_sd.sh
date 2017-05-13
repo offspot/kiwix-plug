@@ -94,16 +94,23 @@ echo "Copying the image $RASPBIAN_IMG to the SD card..."
 sudo dd if=$RASPBIAN_IMG of=$DEVICE bs=1M
 
 # Formating the rest of the SD card partition in EXT4
-sudo umount /dev/sdb1
-sudo umount /dev/sdb2
-sudo umount /dev/sdb3
-sudo umount /dev/sdb4
-(echo n; echo p; echo ; echo ; echo ; echo w ; echo q) | sudo fdisk /dev/sdb
-(echo n; echo p; echo ; echo ; echo ; echo w ; echo q) | sudo fdisk /dev/sdb
-(echo n; echo d; echo 3; echo w ; echo q) | sudo fdisk /dev/sdb
-sudo mkfs.ext4 -F /dev/sdb4
-sudo mkdir /tmp/tmp_mnt
-sudo mount /dev/sdb4 /tmp/tmp_mnt
-sudo rm -rf /tmp/tmp_mnt/*
-sudo umount /tmp/tmp_mnt
-sudo rmdir /tmp/tmp_mnt
+# No.  Just use raspi-config --expand-rootfs to expand it once the pi comes up.
+# Otherwise
+# a) we don't have enough space on the root fs to add all the programs we'll probably want
+# b) we'll waste space via multiple partitions.  I've no really good reason to divide the storage,
+#    except perhaps to avoid filling the sd card with log messages from nginx - but for me now,
+#    that's not a big drama.
+# sudo umount ${DEVICE}1
+# sudo umount ${DEVICE}2
+# sudo umount ${DEVICE}3
+# sudo umount ${DEVICE}4
+# (echo n; echo p; echo ; echo ; echo ; echo w) | sudo fdisk ${DEVICE}
+# (echo n; echo p; echo ; echo ; echo ; echo w) | sudo fdisk ${DEVICE}
+# (echo d; echo 3; echo w) | sudo fdisk ${DEVICE}
+# sudo mkfs.ext4 -F ${DEVICE}4
+# DIR=/tmp/tmp_mnt$$
+# sudo mkdir -p $DIR
+# sudo mount ${DEVICE}4 $DIR
+# sudo rm -rf $DIR/*
+# sudo umount $DIR
+# sudo rmdir $DIR
