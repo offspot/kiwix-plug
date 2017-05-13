@@ -71,12 +71,13 @@ mkdir -p "$MOUNT/system/bin/"
 rsync -avr "$ROOT/bin/kiwix-serve" "$MOUNT/system/bin/"
 
 # Copy the binaries packages
-mkdir "$MOUNT/packages/"
-cp --verbose "$ROOT/bin/kiwix.tar.bz2" "$MOUNT/packages/"
-cp --verbose "$ROOT/bin/kiwix.dmg" "$MOUNT/packages/"
-cp --verbose "$ROOT/bin/kiwix.apk" "$MOUNT/packages/"
-cp --verbose "$ROOT/bin/kiwix.zip" "$MOUNT/packages/"
-cp --verbose "$ROOT/bin/kiwix-src.tar.gz" "$MOUNT/packages/"
+# No - this is to act as a server only, via wifi
+# mkdir -p "$MOUNT/packages/"
+# cp --verbose "$ROOT/bin/kiwix.tar.bz2" "$MOUNT/packages/"
+# cp --verbose "$ROOT/bin/kiwix.dmg" "$MOUNT/packages/"
+# cp --verbose "$ROOT/bin/kiwix.apk" "$MOUNT/packages/"
+# cp --verbose "$ROOT/bin/kiwix.zip" "$MOUNT/packages/"
+# cp --verbose "$ROOT/bin/kiwix-src.tar.gz" "$MOUNT/packages/"
 
 # Copy the landing HTML pages
 mkdir -p "$MOUNT/system/landing/"
