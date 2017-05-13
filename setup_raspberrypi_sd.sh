@@ -81,14 +81,15 @@ fi
 DEVICE=$1
 if [ "$DEVICE" == "" ]
 then
-    echo "please specify a device path where to install the system"
+    echo "please specify a device (not a partition) where to install the system, eg /dev/sdb"
+    exit 1
 else
     echo "kiwix-plug system will be installed on $DEVICE..."
     sleep 5
 fi
 
 # Copying the image to the SD card
-RASPBIAN_IMG=`find bin -name "*raspbian*.img"`
+RASPBIAN_IMG=`find bin -name "*raspbian*.img" | xargs ls -r -1 | head -n1`
 echo "Copying the image $RASPBIAN_IMG to the SD card..."
 sudo dd if=$RASPBIAN_IMG of=$DEVICE bs=1M
 
