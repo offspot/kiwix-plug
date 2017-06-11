@@ -6,7 +6,7 @@
 # Init a few variables
 SSH_LOGIN=pi
 SSH_PASS=raspberry
-COMMANDS=/tmp/setup_plug_commands.sh
+COMMANDS=/var/tmp/setup_plug_commands.sh
 
 # Check if the DNS works
 `host www.kiwix.org > /dev/null`
@@ -35,18 +35,27 @@ else
 fi
 
 # Find the IP of the plug
-IP=`sudo arp-scan --localnet | grep 'b8:27:eb' | cut -s -f1 | tail -n1`
-if [ "$IP" = "" ]
-then
-    echo "Unable to find the IP of the Raspberry Pi on your local network."
-    exit 1
+# John - Check probable address...
+IP=10.22.1.11
+if ping -c1 $IP ; then
+  echo "The IP of the Raspberry Pi is $IP"
 else
-    echo "The IP of the Raspberry Pi is $IP"
+  IP=`sudo arp-scan --localnet | grep 'b8:27:eb' | cut -s -f1 | tail -n1`
+  if [ "$IP" = "" ]
+  then
+      echo "Unable to find the IP of the Raspberry Pi on your local network."
+      exit 1
+  else
+      echo "The IP of the Raspberry Pi is $IP"
+  fi
 fi
 
-# Copy init.d script
+# Copy init.d script and unplug2shutdown.py
 echo "Connecting to RaspberryPi at IP $IP"
 pscp -pw "$SSH_PASS" scripts/kiwix-plug.plug "$SSH_LOGIN@$IP:/tmp/kiwix-plug" <<EOF
+n
+EOF
+pscp -pw "$SSH_PASS" scripts/unplug2shutdown.py "$SSH_LOGIN@$IP:/tmp/" <<EOF
 n
 EOF
 
@@ -61,19 +70,54 @@ fi                                                                              
 echo \"Successfuly connected to the Raspberry Pi...\"                                      \n\
 " > $COMMANDS
 
-# Mount data
-echo -e "                                                                                  \n\
+# Change locale from GB to, in this case, AU
+echo -e "                                                                                     \n\
+echo \"Setting locale to en_AU.UTF-8...\"                                                  \n\
+sudo sed -i 's/^ *en_/# &/' /etc/locale.gen                                                \n\
+sudo sed -i 's/^# \\\\(en_AU.UTF-8\\\\)/\\\\1/' /etc/locale.gen                            \n\
+sudo dpkg-reconfigure -phigh locales                                                       \n\
+" >> $COMMANDS
+
+#  Change keyboard to US keyboard
+echo "                                                                                     \n\
+echo \"Change to US keyboard layout...\"                                                   \n\
+PKG=keyboard-configuration                                                                 \n\
+echo '
+keyboard-configuration  keyboard-configuration/altgr    select  The default for the keyboard layout
+keyboard-configuration  keyboard-configuration/compose  select  No compose key
+keyboard-configuration  keyboard-configuration/ctrl_alt_bksp    boolean false
+keyboard-configuration  keyboard-configuration/layoutcode       string  us
+keyboard-configuration  keyboard-configuration/layout   select   English (US)
+keyboard-configuration  keyboard-configuration/modelcode        string  pc105
+keyboard-configuration  keyboard-configuration/model    select  Generic 105-key (Intl) PC
+keyboard-configuration  keyboard-configuration/optionscode      string
+keyboard-configuration  keyboard-configuration/store_defaults_in_debconf_db     boolean true
+keyboard-configuration  keyboard-configuration/switch   select  No temporary switch
+keyboard-configuration  keyboard-configuration/toggle   select  No toggling
+keyboard-configuration  keyboard-configuration/unsupported_config_layout        boolean true
+keyboard-configuration  keyboard-configuration/unsupported_config_options       boolean true
+keyboard-configuration  keyboard-configuration/unsupported_layout       boolean true
+keyboard-configuration  keyboard-configuration/unsupported_options      boolean true
+keyboard-configuration  keyboard-configuration/variantcode      string
+keyboard-configuration  keyboard-configuration/variant  select  English (US)
+keyboard-configuration  keyboard-configuration/xkb-keymap       select  us
+' > /tmp/$PKG.$$                                                                           \n\
+sudo debconf-set-selections /tmp/$PKG.$$                                                   \n\
+sudo dpkg-reconfigure -pcritical keyboard-configuration                                        \n\
+" >> $COMMANDS
+
+# Mount data, from usb flash key, using a label to find what to mount
 echo \"Customizing /etc/fstab...\"                                                         \n\
-export IN_FSTAB=\`grep mmcblk0p4 /etc/fstab\`                                              \n\
+export IN_FSTAB=\`grep /media/data /etc/fstab\`                                            \n\
 if [ \"\$IN_FSTAB\" = \"\" ] ; then                                                        \n\
-  sudo mkdir /media/data                                                                   \n\
-  sudo sh -c \"echo /dev/mmcblk0p4 /media/data ext4 defaults 0 0 >> /etc/fstab\"           \n\
+  sudo sh -c \"echo LABEL=KiwixContent /media/data ext4 defaults,ro,nofail 0 0 >> /etc/fstab\"    \n\
 fi                                                                                         \n\
 " >> $COMMANDS
 
 # Move kiwix-plug to its final location
 echo -e "                                                                                  \n\
 sudo mv /tmp/kiwix-plug /etc/init.d/kiwix-plug                                             \n\
+sudo mv /tmp/unplug2shutdown.py /usr/local/bin/                                            \n\
 echo \"Move kiwix-plug launcher in /etc/init.d/kiwix-plug\"                                \n\
 " >> $COMMANDS
 
@@ -92,44 +136,6 @@ echo -e "                                                                       
 sudo dpkg --configure -a                                                                   \n\
 " >> $COMMANDS
 
-# Check if uaputl is there and install it otherwise
-echo -e "                                                                                  \n\
-UAPUTL=\`dpkg -l uaputl | grep ^ii\`                                                       \n\
-if [ \"\$UAPUTL\" = \"\" ]                                                                 \n\
-then                                                                                       \n\
-  echo \"Installing uaputl...\"                                                            \n\
-  sudo apt-get --assume-yes install uaputl                                                 \n\
-  if [ \"$?\" != \"0\" ]                                                                   \n\
-  then                                                                                     \n\
-    echo \"Unable to install correctly uaputl\"                                            \n\
-    exit 1                                                                                 \n\
-  else                                                                                     \n\
-    echo \"uaputl installation successful\"                                                \n\
-  fi                                                                                       \n\
-else                                                                                       \n\
-  echo \"uaputl is already installed.\"                                                    \n\
-fi                                                                                         \n\
-" >> $COMMANDS
-
-# Check if dialog is there and install it otherwise
-echo -e "                                                                                  \n\
-DIALOG=\`dpkg -l dialog | grep ^ii\`                                                       \n\
-if [ \"\$DIALOG\" = \"\" ]                                                                 \n\
-then                                                                                       \n\
-  echo \"Installing dialog...\"                                                            \n\
-  sudo apt-get --assume-yes install dialog                                                 \n\
-  if [ \"$?\" != \"0\" ]                                                                   \n\
-  then                                                                                     \n\
-    echo \"Unable to install correctly dialog\"                                            \n\
-    exit 1                                                                                 \n\
-  else                                                                                     \n\
-    echo \"dialog installation successful\"                                                \n\
-  fi                                                                                       \n\
-else                                                                                       \n\
-  echo \"dialog is already installed.\"                                                    \n\
-fi                                                                                         \n\
-" >> $COMMANDS
-
 # Check if dnsmasq is there and install it otherwise
 echo -e "                                                                                  \n\
 DNSMASQ=\`whereis dnsmasq | cut --delimiter=\":\" -f2 | cut --delimiter=\" \" -f2\`        \n\
@@ -137,7 +143,7 @@ if [ \"\$DNSMASQ\" = \"\" ]                                                     
 then                                                                                       \n\
   echo \"Installing dnsmasq...\"                                                           \n\
   sudo apt-get --assume-yes install dnsmasq-base                                           \n\
-  if [ \"$?\" != \"0\" ]                                                                   \n\
+  if [ \"\$?\" != \"0\" ]                                                                   \n\
   then                                                                                     \n\
     echo \"Unable to install correctly dnsmasq\"                                           \n\
     exit 1                                                                                 \n\
@@ -146,25 +152,6 @@ then                                                                            
   fi                                                                                       \n\
 else                                                                                       \n\
   echo \"dnsmasq is already installed.\"                                                   \n\
-fi                                                                                         \n\
-" >> $COMMANDS
-
-# Check if awstats is installed
-echo -e "                                                                                  \n\
-AWSTATS=\`dpkg -l awstats | grep ^ii\`                                                     \n\
-if [ \"\$AWSTATS\" = \"\" ]                                                                \n\
-then                                                                                       \n\
-  echo \"Installing awstats...\"                                                           \n\
-  sudo apt-get --assume-yes install awstats                                                \n\
-  if [ \"$?\" != \"0\" ]                                                                   \n\
-  then                                                                                     \n\
-    echo \"Unable to install correctly awstats\"                                           \n\
-    exit 1                                                                                 \n\
-  else                                                                                     \n\
-    echo \"awstats installation successful\"                                               \n\
-  fi                                                                                       \n\
-else                                                                                       \n\
-  echo \"awstats is already installed.\"                                                   \n\
 fi                                                                                         \n\
 " >> $COMMANDS
 
@@ -180,61 +167,33 @@ else                                                                            
 fi                                                                                         \n\
 " >> $COMMANDS
 
-# Check if firmware-brcm80211 is installed and install it otherwise
-
-echo -e "                                                                                  \n\
-BRCM80211=\`dpkg -l firmware-brcm80211 | grep ^ii\`                                        \n\
-if [ \"\$BRCM80211\" = \"\" ]                                                              \n\
-then                                                                                       \n\
-  echo \"Installing firmware-brcm80211...\"                                                \n\
-  sudo apt-get --assume-yes install firmware-brcm80211                                     \n\
-  if [ \"$?\" != \"0\" ]                                                                   \n\
-    then \"Unable to install correctly firmware-brcm80211\"                                \n\
-    exit 1                                                                                 \n\
-  else                                                                                     \n\
-    echo \"firmware-brcm80211 installation successfull\"                                   \n\
-  fi                                                                                       \n\
-else                                                                                       \n\
-  echo \"firmware-brcm80211 is already installed.\"                                        \n\
-fi                                                                                         \n\
+# Check if various packages are installed
+# python-gobject and python-gudev are for unplug2shutdown, a python script to detect when
+# a configured usb device is removed, and shutdown the pi - since it has now power off button
+echo -e "                                                                                     \n\
+for pkg in etckeeper uaputl dialog awstats hostapd inotify-tools firmware-brcm80211 python-gobject python-gudev; do \n\
+  FOUND=\`dpkg -l \$pkg | grep ^ii\`                                                          \n\
+  if [ \"\$FOUND\" = \"\" ]                                                                   \n\
+  then                                                                                        \n\
+    echo \"Installing \$pkg...\"                                                              \n\
+    sudo apt-get --assume-yes install \$pkg                                                   \n\
+    if [ \"\$?\" != \"0\" ]                                                                   \n\
+    then                                                                                      \n\
+      echo \"Unable to install correctly \$pkg\"                                              \n\
+      exit 1                                                                                  \n\
+    else                                                                                      \n\
+      echo \"\$pkg installation successful\"                                                  \n\
+    fi                                                                                        \n\
+  else                                                                                        \n\
+    echo \"\$pkg is already installed.\"                                                      \n\
+  fi                                                                                          \n\
+done                                                                                          \n\
 " >> $COMMANDS
 
-# Check if hostapd is there and install it otherwise
+# Configure unplug2shutdown, by getting the user to insert the USB key
 echo -e "                                                                                  \n\
-HOSTAPD=\`dpkg -l hostapd | grep ^ii\`                                                     \n\
-if [ \"\$HOSTAPD\" = \"\" ]                                                                \n\
-then                                                                                       \n\
-  echo \"Installing hostapd...\"                                                           \n\
-  sudo apt-get --assume-yes install hostapd                                                \n\
-  if [ \"$?\" != \"0\" ]                                                                   \n\
-  then                                                                                     \n\
-    echo \"Unable to install correctly hostapd\"                                           \n\
-    exit 1                                                                                 \n\
-  else                                                                                     \n\
-    echo \"hostapd installation successful\"                                               \n\
-  fi                                                                                       \n\
-else                                                                                       \n\
-  echo \"hostapd is already installed.\"                                                   \n\
-fi                                                                                         \n\
-" >> $COMMANDS
-
-# Check if inotify-tools is there and install it otherwise
-echo -e "                                                                                  \n\
-HOSTAPD=\`dpkg -l inotify-tools | grep ^ii\`                                               \n\
-if [ \"\$INOTIFY\" = \"\" ]                                                                \n\
-then                                                                                       \n\
-  echo \"Installing inotify-tools...\"                                                     \n\
-  sudo apt-get --assume-yes install inotify-tools                                          \n\
-  if [ \"$?\" != \"0\" ]                                                                   \n\
-  then                                                                                     \n\
-    echo \"Unable to install correctly inotify-tools\"                                     \n\
-    exit 1                                                                                 \n\
-  else                                                                                     \n\
-    echo \"inotify-tools installation successful\"                                         \n\
-  fi                                                                                       \n\
-else                                                                                       \n\
-  echo \"inotify-tools is already installed.\"                                             \n\
-fi                                                                                         \n\
+echo \"Configure unplug2shutdown, by inserting the KiwixContent USB key when requested\"   \n\
+sudo /usr/local/bin/unplug2shutdown.py --configure                                         \n\
 " >> $COMMANDS
 
 # Setup the init.d script
@@ -243,7 +202,7 @@ IN_RC_LOCAL=\`grep \"/etc/init.d/kiwix-plug\" /etc/rc.local\`                   
 if [ \"\$IN_RC_LOCAL\" = \"\" ]                                                            \n\
 then                                                                                       \n\
   echo \"Updating /etc/rc.local...\"                                                       \n\
-  sudo sed -i -e 's/exit 0/\\\\n\/etc\/init.d\/kiwix-plug start\\\\n\\\\nexit 0/' /etc/rc.local \n\
+  sudo sed -i -e 's/^exit 0/\\\\n\/etc\/init.d\/kiwix-plug start\\\\n\\\\nexit 0/' /etc/rc.local \n\
 else                                                                                       \n\
   echo \"rc.local already updated\"                                                        \n\
 fi                                                                                         \n\
@@ -261,13 +220,13 @@ else                                                                            
 fi                                                                                         \n\
 " >> $COMMANDS
 
-# Connect the plug per ssh and run a few commands
+# Connect the plug per ssh and run commands
 plink -ssh -pw "$SSH_PASS" "$SSH_LOGIN@$IP" -m $COMMANDS <<EOF
 n
 EOF
 
 # Clear
-rm -f $COMMANDS
+# rm -f $COMMANDS
 
 # End music
 beep -f 659 -l 460 -n -f 784 -l 340 -n -f 659 -l 230 -n -f 659 -l 110 -n -f 880 -l 230 -n -f 659 -l 230 -n -f 587 -l 230 -n -f 659 -l 460 -n -f 988 -l 340 -n -f 659 -l 230 -n -f 659 -l 110 -n -f 1047 -l 230 -n -f 988 -l 230 -n -f 784 -l 230 -n -f 659 -l 230 -n -f 988 -l 230 -n -f 1318 -l 230 -n -f 659 -l 110 -n -f 587 -l 230 -n -f 587 -l 110 -n -f 494 -l 230 -n -f 740 -l 230 -n -f 659 -l 460

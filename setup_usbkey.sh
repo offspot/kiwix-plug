@@ -27,9 +27,9 @@ fi
 IFS=$'\n'
 for MOUNT in `df | sed "s/^ *//;s/ *$//;s/ \{1,\}/ /g" | cut --delimiter=" " -f6- | grep "/media/"`
 do
-   if [ "$(ls -A "$MOUNT")" = "" ]
+   if [ "$(ls -A "$MOUNT")" = "" -o -x "$MOUNT/system/bin/kiwix-serve" ]
    then
-      echo "Empty removable device found at $MOUNT. This will be used to install kiwix-plug."
+      echo "Empty or existing removable device found at $MOUNT. This will be used to (re)install kiwix-plug."
       DEVICE=`df | sed "s/^ *//;s/ *$//;s/ \{1,\}/ /g" | grep "$MOUNT$" | cut --delimiter=" " -f1`
       break
    fi
@@ -45,41 +45,46 @@ then
 fi
 
 # Set USB label
-echo "Setting new label KIWIX to USB key at $DEVICE ..."
-echo "drive a: file=\"$DEVICE\"" > ~/.mtoolsrc
-echo "mtools_skip_check=1" >> ~/.mtoolsrc
-sudo mlabel a:"KIWIX"
-sudo mlabel -s a:
+# Original script used mlabel for dos-based format of usb key,
+# but I figure ext4 will be better for a linux-based system, hence
+# mlabel should instead be e2label
+echo "Setting new label KiwixContent to USB key at $DEVICE ..."
+sudo e2label $DEVICE KiwixContent
 sync
 
 # Copy the data files
-cp --verbose -r "$ROOT/data/" "$MOUNT"
+rsync -avr --progress --stats "$ROOT/data" "$MOUNT"
 
 # Create system directory
-mkdir "$MOUNT/system/"
+mkdir -p "$MOUNT/system/"
 
 # Copy system kiwix-plug script
-cp --verbose "$ROOT/scripts/kiwix-plug.usbkey" "$MOUNT/system/kiwix-plug"
+rsync -avr "$ROOT/scripts/kiwix-plug.usbkey" "$MOUNT/system/kiwix-plug"
 chmod +x "$MOUNT/system/kiwix-plug"
 
+# Copy unplug2shutdown script
+rsync -avr "$ROOT/scripts/unplug2shutdown.py" "$MOUNT/system/unplug2shutdown.py"
+chmod +x "$MOUNT/system/unplug2shutdown.py"
+
 # Copy the binaries
-mkdir "$MOUNT/system/bin/"
-cp --verbose "$ROOT/bin/kiwix-serve" "$MOUNT/system/bin/"
+mkdir -p "$MOUNT/system/bin/"
+rsync -avr "$ROOT/bin/kiwix-serve" "$MOUNT/system/bin/"
 
 # Copy the binaries packages
-mkdir "$MOUNT/packages/"
-cp --verbose "$ROOT/bin/kiwix.tar.bz2" "$MOUNT/packages/"
-cp --verbose "$ROOT/bin/kiwix.dmg" "$MOUNT/packages/"
-cp --verbose "$ROOT/bin/kiwix.apk" "$MOUNT/packages/"
-cp --verbose "$ROOT/bin/kiwix.zip" "$MOUNT/packages/"
-cp --verbose "$ROOT/bin/kiwix-src.tar.gz" "$MOUNT/packages/"
+# No - this is to act as a server only, via wifi
+# mkdir -p "$MOUNT/packages/"
+# cp --verbose "$ROOT/bin/kiwix.tar.bz2" "$MOUNT/packages/"
+# cp --verbose "$ROOT/bin/kiwix.dmg" "$MOUNT/packages/"
+# cp --verbose "$ROOT/bin/kiwix.apk" "$MOUNT/packages/"
+# cp --verbose "$ROOT/bin/kiwix.zip" "$MOUNT/packages/"
+# cp --verbose "$ROOT/bin/kiwix-src.tar.gz" "$MOUNT/packages/"
 
 # Copy the landing HTML pages
-mkdir "$MOUNT/system/landing/"
+mkdir -p "$MOUNT/system/landing/"
 cp -r --verbose "$ROOT/landing" "$MOUNT/system/"
 
 # Copy the configuration scripts
-mkdir "$MOUNT/system/conf/"
+mkdir -p "$MOUNT/system/conf/"
 cp -r --verbose "$ROOT/conf/" "$MOUNT/system/"
 
 # Remove useless files & directories
@@ -88,9 +93,9 @@ find "$MOUNT" -name ".git*" -exec /bin/rm -rf '{}' \;
 find "$MOUNT" -name ".finished" -exec /bin/rm -rf '{}' \;
 
 # Create log & stats & share directories
-mkdir "$MOUNT/log/"
-mkdir "$MOUNT/stats/"
-mkdir "$MOUNT/goinfre/"
+mkdir -p "$MOUNT/log/"
+mkdir -p "$MOUNT/stats/"
+mkdir -p "$MOUNT/goinfre/"
 
 # USB drive can be ext4, then we should allow the plug to write on it
 sudo chmod -R 777 "$MOUNT"

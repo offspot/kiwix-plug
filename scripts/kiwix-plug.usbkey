@@ -1,6 +1,6 @@
 #!/bin/bash
 ROOT=$1
-SSID="KIWIX PLUG"
+SSID="WikiWifi"
 
 # Device probber
 DEVICE=dreamplug
@@ -61,21 +61,22 @@ fi
 $UAPUTL bss_start
 
 # Configure the eth0 or eth1 interface
-ifconfig eth1 >& /dev/null
-RC=$?
-NIC=eth1
-if [[ $RC != 0 ]]
-then
-    NIC=eth0
-fi
-ifconfig $NIC 192.168.2.1 netmask 255.255.255.0
+# NO - leave as is for DHCP
+# ifconfig eth1 >& /dev/null
+# RC=$?
+# NIC=eth1
+# if [[ $RC != 0 ]]
+# then
+    # NIC=eth0
+# fi
+# ifconfig $NIC 192.168.2.1 netmask 255.255.255.0
 
 # Kill dhclient if necessary
-DHCLIENT_RUNNING=`ps aux | grep dhclient | grep $NIC | wc -l`
-if [ ! "$DHCLIENT_RUNNING" = "1" ]
-then
-    kill -9 `pidof dhclient`
-fi
+# DHCLIENT_RUNNING=`ps aux | grep dhclient | grep $NIC | wc -l`
+# if [ ! "$DHCLIENT_RUNNING" = "1" ]
+# then
+#     kill -9 `pidof dhclient`
+# fi
 
 # Setup DNS & DHCP (dnsmasq)
 /etc/init.d/dnsmasq stop
@@ -116,14 +117,16 @@ then
 fi
 cp "$ROOT/system/bin/kiwix-serve" /tmp/kiwix-serve
 chmod +x /tmp/kiwix-serve
-/tmp/kiwix-serve --library --port=4201 --daemon "$ROOT/data/library/library.xml" 
+/tmp/kiwix-serve --library --port=4201 --daemon "$ROOT/data/library/wikipedia_en_all_2016-05.zim.xml"
+/tmp/kiwix-serve --library --port=4202 --daemon "$ROOT/data/library/wiktionary_en_all_2016-05.zim.xml"
 
 # Stop apache (if necessary)
 if [ -e /etc/init.d/apache ] ; then /etc/init.d/apache stop ; fi
 if [ -e /etc/init.d/apache2 ] ; then /etc/init.d/apache2 stop ; fi
 
 # Stop ssh
-if [ -e /etc/init.d/ssh ] ; then /etc/init.d/ssh stop ; fi
+# No - leave it running for now so I can log in and see what's happening
+# if [ -e /etc/init.d/ssh ] ; then /etc/init.d/ssh stop ; fi
 
 # Setup Web server (nginx)
 /etc/init.d/nginx stop
@@ -135,6 +138,7 @@ ln -s /tmp/kiwix.nginx.conf /etc/nginx/sites-enabled/default
 /etc/init.d/nginx start
 
 # Run awstats in loop
+mkdir -p /tmp/kiwix-log
 if [ "$DEVICE" = "raspberrypi" ]
 then
   sed -e "s/ROOT\\//\/tmp\/kiwix-/" $ROOT/system/conf/awstats.conf > /tmp/awstats.kiwix.conf

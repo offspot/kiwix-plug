@@ -18,7 +18,7 @@ case "$1" in
     echo "Starting script kiwix-plug"
     IFS=$'\n'
     for MOUNT in `df | sed "s/^ *//;s/ *$//;s/ \{1,\}/ /g" | cut --delimiter=" " -f6- | grep "/media/"`
-    do 
+    do
       if [ -f "$MOUNT/system/kiwix-plug" ]
       then
 	break
@@ -26,6 +26,15 @@ case "$1" in
       MOUNT=
     done
     unset IFS
+
+    U2S=/usr/local/bin/unplug2shutdown.py
+    if [ -x $U2S ]
+    then
+        # Start script in background to shutdown pi when USB key is removed
+        $U2S &
+    else
+        echo "$U2S not found :("
+    fi
 
     if [ "$MOUNT" = "" ]
     then
